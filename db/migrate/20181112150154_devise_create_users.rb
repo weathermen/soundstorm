@@ -35,9 +35,9 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
       t.datetime :locked_at
 
       ## Profile
-      t.string :display_name
+      t.string :display_name, null: false
       t.string :location
-      t.text :key_pem
+      t.text :key_pem, null: false
 
       t.timestamps null: false
     end

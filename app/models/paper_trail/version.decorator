@@ -1,0 +1,7 @@
+module PaperTrail
+  decorate Version do
+    decorated do
+      after_create :broadcast
+    end
+  end
+end

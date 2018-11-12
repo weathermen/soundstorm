@@ -8,8 +8,10 @@ one:
   name: one
   display_name: User One
   email: one@example.com
+  key_pem: "<%= Rails.root.join('test', 'fixtures', 'files', 'one.pem').read.to_s %>"
 
 two:
   name: two
   display_name: User Two
   email: two@example.com
+  key_pem: "<%= Rails.root.join('test', 'fixtures', 'files', 'two.pem').read.to_s %>"

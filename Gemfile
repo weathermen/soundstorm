@@ -37,6 +37,10 @@ gem 'devise'
 gem 'hamlit-rails'
 # Generate friendly slugs
 gem 'friendly_id'
+# Track changes to models
+gem 'paper_trail'
+gem 'paper_trail-globalid'
+gem 'rails-decorators'
 
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console
