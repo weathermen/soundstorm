@@ -10,12 +10,6 @@ class UsersController < ApplicationController
   end
 
   def webfinger
-    resource = params[:resource]
-    handle = resource.gsub(/acct:/, '')
-    name, host = handle.split('@')
-
-    head :not_found and return unless host == Rails.application.credentials.host
-
-    @user = User.find_by(name: name)
+    @user = User.find_by_resource!(params[:resource])
   end
 end

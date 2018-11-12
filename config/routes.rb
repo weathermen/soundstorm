@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   end
 
   get '/.well-known/webfinger', to: 'users#webfinger'
+  get :inbox, to: 'activities#create'
 
   root to: 'users#activity'
 end

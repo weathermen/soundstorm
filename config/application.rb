@@ -18,5 +18,13 @@ module Soundstorm
     config.generators do |generate|
       generate.assets false
     end
+
+    config.host = ENV.fetch('HOST', 'soundstorm.test')
+    config.action_mailer.default_url_options = { host: config.host }
+
+    config.activity_streams_context = [
+      'https://www.w3.org/ns/activitystreams',
+      'https://w3id.org/security/v1'
+    ]
   end
 end
