@@ -1,0 +1,26 @@
+version: '3'
+services:
+  db:
+    image: postgres
+    volumes:
+      - postgresql:/var/lib/postgresql/data
+  redis:
+    image: redis
+  web:
+    build: .
+    command: bin/rails server -p 3000 -b '0.0.0.0'
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/srv
+      - node_modules:/node_modules
+      - yarn_cache:/root/.yarn-cache
+      - bundle:/gems
+volumes:
+  postgresql:
+  bundle:
+  node_modules:
+  yarn_cache:
