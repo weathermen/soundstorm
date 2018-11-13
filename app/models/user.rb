@@ -2,6 +2,8 @@
 # like display name and private key information for identifying over
 # ActivityPub/Webfinger.
 class User < ApplicationRecord
+  extend FriendlyId
+
   include Federatable
 
   # Generate 2048-bit keys
@@ -14,14 +16,18 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :confirmable, :lockable, :timeoutable, :trackable #, :omniauthable
 
-  before_validation :generate_key, if: :encrypted_password_changed?
-  before_validation :ensure_host, on: :create
-
   has_many :tracks
   has_many :follower_follows, class_name: 'Follow', as: :follower
   has_many :following_follows, class_name: 'Follow', as: :following
   has_many :followers, class_name: 'User', through: :follower_follows
   has_many :following, class_name: 'User', through: :following_follows
+
+  delegate :attributes, to: :actor, prefix: true
+
+  friendly_id :name, use: %i[slugged finders]
+
+  before_validation :generate_key, if: :encrypted_password_changed?
+  before_validation :ensure_host, on: :create
 
   validates :name, presence: true, uniqueness: true
   validates :host, presence: true

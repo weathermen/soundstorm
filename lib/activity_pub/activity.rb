@@ -15,6 +15,25 @@ module ActivityPub
       actor.to_global_id
     end
 
+    # Attributes of this activity receipt.
+    def attributes
+      {
+        id: id,
+        type: type,
+        author: author,
+        object: payload
+      }
+    end
+
+    # The actual model record
+    def model
+      model_class.find_or_create_by(slug: model_id) do |record|
+        record.attributes = payload
+      end
+    end
+
+    private
+
     # Slug of the model
     def model_id
       File.basename(payload[:id], '.json')
@@ -28,13 +47,6 @@ module ActivityPub
     # Class of the model
     def model_class
       model_type.constantize
-    end
-
-    # The actual model record
-    def model
-      model_class.friendly.find_or_create_by(id: model_id) do |record|
-        record.attributes = payload
-      end
     end
   end
 end

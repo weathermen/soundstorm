@@ -5,17 +5,21 @@ module ActivityPub
     WEBFINGER_REL = 'self'
     WEBFINGER_CONTENT_TYPE = 'application/activity+json'
 
-    attr_reader :name, :type, :host, :private_key
+    attr_reader :name, :type, :host, :secret, :private_key
 
     delegate :public_key, to: :private_key
     delegate :to_json, to: :as_json
     delegate :to_global_id, to: :user
 
-    def initialize(name:, type: DEFAULT_TYPE, host:, key:, secret:)
+    def initialize(name:, type: DEFAULT_TYPE, host:, key:, secret: nil)
       @name = name
       @type = type
       @host = host
-      @private_key = OpenSSL::PKey::RSA.new(key, secret)
+      @private_key = if key.is_a? OpenSSL::Pkey::RSA
+                       key
+                     else
+                       OpenSSL::PKey::RSA.new(key, secret)
+                     end
     end
 
     def user
@@ -24,6 +28,15 @@ module ActivityPub
 
     def id
       "https://#{host}/#{name}"
+    end
+
+    def attributes
+      {
+        name: name,
+        type: type,
+        host: host,
+        key: private_key
+      }
     end
 
     def as_webfinger

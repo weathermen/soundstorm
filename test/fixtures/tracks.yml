@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+one_untitled:
   user: one
-  name: MyString
-  duration: 1
+  name: Untitled
+  duration: 300
 
-two:
+two_hello_world:
   user: two
-  name: MyString
-  duration: 1
+  name: Hello World
+  duration: 230
