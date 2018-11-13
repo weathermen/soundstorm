@@ -11,5 +11,7 @@ class UsersController < ApplicationController
 
   def webfinger
     @user = User.find_by_resource!(params[:resource])
+
+    render json: @user.as_webfinger
   end
 end
