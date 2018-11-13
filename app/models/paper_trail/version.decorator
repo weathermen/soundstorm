@@ -1,30 +1,31 @@
 module PaperTrail
   decorate Version do
     decorated do
-      include Rails.application.routes.url_helpers
-
       after_create :broadcast
 
       delegate :actor, :followers, to: :whodunnit
       delegate :activity_id, to: :item
     end
 
-    def activity_id
-      url_for(item)
-    end
-
-    def parent_activity_id
-      url_for(item.parent) if item.respond_to?(:parent)
+    class_methods do
+      def from_remote(activity, user)
+        create!(
+          item: activity.record,
+          event: activity.type,
+          whodunnit: user.to_global_id,
+          object: activity.payload,
+          remote: true
+        )
+      end
     end
 
     def message
       ActivityPub::Message.new(
-        id: activity_id,
+        id: item.activity_id,
         type: item_type,
         published: created_at,
         actor: actor,
-        parent_id: parent_activity_id,
-        content: activity_content
+        payload: item.as_activity
       )
     end
 

@@ -12,6 +12,7 @@ module ActivityPub
   W3ID_NAMESPACE = 'https://w3id.org/security/v1'
 
   autoload :Actor
+  autoload :Activity
   autoload :Message
   autoload :Broadcast
   autoload :Signature

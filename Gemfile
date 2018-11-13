@@ -43,6 +43,8 @@ gem 'paper_trail-globalid'
 gem 'rails-decorators'
 # Use HTTP.rb to communicate over ActivityPub
 gem 'http'
+# Embed data in ActiveRecord models
+gem 'active_record-embedded', github: 'tubbo/active_record-embedded', branch: 'master'
 
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console

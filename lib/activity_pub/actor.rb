@@ -9,12 +9,17 @@ module ActivityPub
 
     delegate :public_key, to: :private_key
     delegate :to_json, to: :as_json
+    delegate :to_global_id, to: :user
 
     def initialize(name:, type: DEFAULT_TYPE, host:, key:, secret:)
       @name = name
       @type = type
       @host = host
       @private_key = OpenSSL::PKey::RSA.new(key, secret)
+    end
+
+    def user
+      @user ||= User.find_or_initialize_by(name: name, host: host)
     end
 
     def id

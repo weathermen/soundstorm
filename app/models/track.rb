@@ -1,4 +1,6 @@
 class Track < ApplicationRecord
+  include Commentable
+
   extend FriendlyId
 
   belongs_to :user

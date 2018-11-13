@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/tubbo/active_record-embedded.git
+  revision: 8660781f7661d482d86ac718b223b7829209512c
+  branch: master
+  specs:
+    active_record-embedded (0.1.0.pre)
+      activerecord (~> 5.2.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -265,6 +273,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_record-embedded!
   bcrypt (~> 3.1.7)
   bootsnap (>= 1.1.0)
   capybara (>= 2.15, < 4.0)
