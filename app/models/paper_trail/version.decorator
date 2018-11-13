@@ -4,28 +4,35 @@ module PaperTrail
       after_create :broadcast
 
       delegate :actor, :followers, to: :whodunnit
-      delegate :activity_id, to: :item
+      delegate :activity_id, :as_activity, to: :item
     end
 
     class_methods do
       def from_remote(activity, user)
         create!(
+          remote: true,
           item: activity.record,
           event: activity.type,
           whodunnit: user.to_global_id,
-          object: activity.payload,
-          remote: true
+          object: {
+            ip: activity.ip,
+            activity: activity.payload
+          }
         )
       end
     end
 
+    def type
+      event.classify
+    end
+
     def message
       ActivityPub::Message.new(
-        id: item.activity_id,
-        type: item_type,
+        id: activity_id,
+        type: type,
         published: created_at,
         actor: actor,
-        payload: item.as_activity
+        payload: as_activity
       )
     end
 

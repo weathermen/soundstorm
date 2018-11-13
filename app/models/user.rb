@@ -2,6 +2,8 @@
 # like display name and private key information for identifying over
 # ActivityPub/Webfinger.
 class User < ApplicationRecord
+  include Federatable
+
   # Generate 2048-bit keys
   KEY_LENGTH = 2048
 
@@ -79,10 +81,24 @@ class User < ApplicationRecord
     )
   end
 
+  # Express activity related to this user as a "Profile" object.
+  #
+  # @return [Hash]
+  def as_activity
+    super.merge(
+      type: 'Profile',
+      summary: display_name,
+      describes: {
+        type: 'Person',
+        name: name
+      }
+    )
+  end
+
   private
 
   # Generate a private key for this +User+ when created or when the
-  # password changes.
+  # password changes. Uses +User::KEY_LENGTH+ to determine length.
   #
   # @private
   def generate_key
@@ -90,14 +106,17 @@ class User < ApplicationRecord
                                      .to_pem(cipher, encrypted_password)
   end
 
-  def generate_resource
-    self.resource = "acct:#{handle}"
-  end
-
+  # Cipher used to generate RSA keys, configured by +User::KEY_CIPHER+.
+  #
+  # @private
+  # @return [OpenSSL::Cipher]
   def cipher
     @cipher ||= OpenSSL::Cipher.new(KEY_CIPHER)
   end
 
+  # Ensure +:host+ is set to the configured host if not previously set.
+  #
+  # @private
   def ensure_host
     self.host ||= Rails.configuration.host
   end

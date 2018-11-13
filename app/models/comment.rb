@@ -1,9 +1,9 @@
 class Comment < ApplicationRecord
+  include Federatable
+
   belongs_to :user
   belongs_to :parent, class_name: 'Comment', optional: true
   belongs_to :commentable, polymorphic: true
-
-  has_paper_trail
 
   validates :content, presence: true
 
@@ -19,5 +19,17 @@ class Comment < ApplicationRecord
 
   def children
     Comment.where(parent: self)
+  end
+
+  def parent_activity_id
+    parent&.activity_id || commentable.activity_id
+  end
+
+  def as_activity
+    super.merge(
+      type: 'Note',
+      inReplyTo: parent_activity_id,
+      content: content
+    )
   end
 end
