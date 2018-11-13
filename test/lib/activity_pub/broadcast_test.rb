@@ -15,9 +15,12 @@ module ActivityPub
       )
       @message = Message.new(
         id: '12345',
-        type: 'Note',
+        type: 'Update',
         actor: @actor,
-        content: '<p>Hello World</p>'
+        payload: {
+          type: 'Note',
+          content: '<p>Hello World</p>'
+        }
       )
       @broadcast = Broadcast.new(message: @message, destination: @destination)
     end

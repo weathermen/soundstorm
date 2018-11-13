@@ -5,11 +5,11 @@ module ActivityPub
     setup do
       @user = users(:one)
       @track = @user.tracks.first
-      @url = "https://test.host/#{@user.name}/#{@track.slug}"
+      @url = "https://test.host/#{@user.name}/#{@track.name.parameterize}"
       @activity = Activity.new(
         id: @url,
         type: 'Create',
-        actor: @user.actor_attributes,
+        actor: @user.as_actor,
         payload: @track.as_activity
       )
     end

@@ -3,9 +3,13 @@
 one_untitled:
   user: one
   name: Untitled
+  slug: untitled
   duration: 300
+  audio: <%= Rails.root.join('test', 'fixtures', 'files', 'one.mp3').read %>
 
 two_hello_world:
   user: two
   name: Hello World
+  slug: hello-world
   duration: 230
+  audio: <%= Rails.root.join('test', 'fixtures', 'files', 'two.wav').read %>

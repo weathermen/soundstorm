@@ -79,12 +79,20 @@ class User < ApplicationRecord
 
   # ActivityPub representation of this User.
   def actor
-    ActivityPub::Actor.new(
+    ActivityPub::Actor.new(as_actor)
+  end
+
+  def activity_id
+    Rails.application.routes.url_helpers.user_url(self, host: host)
+  end
+
+  def as_actor
+    {
       name: name,
-      host: Rails.configuration.host,
+      host: host,
       key: key_pem,
       secret: encrypted_password
-    )
+    }
   end
 
   # Express activity related to this user as a "Profile" object.

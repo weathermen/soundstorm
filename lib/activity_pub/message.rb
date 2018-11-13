@@ -19,9 +19,8 @@ module ActivityPub
     def as_json
       {
         "@context": ACTIVITYSTREAMS_NAMESPACE,
-        type: type,
-        name: name,
         id: id,
+        type: type,
         actor: actor.id,
         object: attributes
       }

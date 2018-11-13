@@ -6,12 +6,16 @@
 #
 one:
   name: one
+  slug: one
   display_name: User One
   email: one@example.com
+  encrypted_password: "$2a$11$.lCKX2b5hOViEx1r74nyj.r4bI/bKhMJFQAEeNnCaF.Q2sI0Dwcwe"
   key_pem: "<%= Rails.root.join('test', 'fixtures', 'files', 'one.pem').read.to_s %>"
 
 two:
   name: two
+  slug: two
   display_name: User Two
   email: two@example.com
+  encrypted_password: "$2a$11$qOhMADOLv728QcfQ2w3VG.kT0kneQM2HSaDh42dnrHITjgRCjyd.."
   key_pem: "<%= Rails.root.join('test', 'fixtures', 'files', 'two.pem').read.to_s %>"
