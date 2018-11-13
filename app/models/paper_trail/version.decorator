@@ -7,21 +7,6 @@ module PaperTrail
       delegate :activity_id, :as_activity, to: :item
     end
 
-    class_methods do
-      def from_remote(activity, user)
-        create!(
-          remote: true,
-          item: activity.record,
-          event: activity.type,
-          whodunnit: user.to_global_id,
-          object: {
-            ip: activity.ip,
-            activity: activity.payload
-          }
-        )
-      end
-    end
-
     def type
       event.classify
     end

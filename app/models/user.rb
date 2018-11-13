@@ -53,13 +53,15 @@ class User < ApplicationRecord
     find_by(name: name, host: host)
   end
 
-  # Create a new +User+ record from an actor object.
-  def self.from_actor(actor)
-    find_or_create_by!(
-      name: actor.name,
-      host: actor.host,
-      password: SecureRandom.hex + 'A1!'
-    )
+  # Create a new +User+ record from an actor ID.
+  #
+  # @return [User]
+  def self.find_or_create_by_actor_id(actor_id)
+    uri = URI.parse(actor_id)
+
+    find_or_create_by!(name: uri.path, host: uri.host) do |user|
+      user.password = SecureRandom.hex
+    end
   end
 
   def follow(user)

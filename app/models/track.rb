@@ -17,6 +17,10 @@ class Track < ApplicationRecord
     Rails.application.routes.url_helpers.user_track_url(user, self, host: user.host)
   end
 
+  def audio_url
+    Rails.application.routes.url_helpers.rails_blob_path(audio, host: user.host)
+  end
+
   # Represent this object as an "Audio" type in activity feeds.
   #
   # @return [Hash]
@@ -26,8 +30,8 @@ class Track < ApplicationRecord
       name: name,
       url: {
         type: 'Link',
-        href: audio.url,
-        mediaType: audio.type
+        href: audio_url,
+        mediaType: audio.content_type
       }
     )
   end

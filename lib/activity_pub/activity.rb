@@ -24,29 +24,5 @@ module ActivityPub
         object: payload
       }
     end
-
-    # The actual model record
-    def model
-      model_class.find_or_create_by(slug: model_id) do |record|
-        record.attributes = payload
-      end
-    end
-
-    private
-
-    # Slug of the model
-    def model_id
-      File.basename(payload[:id], '.json')
-    end
-
-    # Type of this model
-    def model_type
-      payload[:type]
-    end
-
-    # Class of the model
-    def model_class
-      model_type.constantize
-    end
   end
 end
