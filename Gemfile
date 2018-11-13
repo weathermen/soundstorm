@@ -41,6 +41,8 @@ gem 'friendly_id'
 gem 'paper_trail'
 gem 'paper_trail-globalid'
 gem 'rails-decorators'
+# Use HTTP.rb to communicate over ActivityPub
+gem 'http'
 
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console

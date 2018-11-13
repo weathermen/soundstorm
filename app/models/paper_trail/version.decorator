@@ -1,7 +1,35 @@
 module PaperTrail
   decorate Version do
     decorated do
+      include Rails.application.routes.url_helpers
+
       after_create :broadcast
+
+      delegate :actor, :followers, to: :whodunnit
+      delegate :activity_id, to: :item
+    end
+
+    def activity_id
+      url_for(item)
+    end
+
+    def parent_activity_id
+      url_for(item.parent) if item.respond_to?(:parent)
+    end
+
+    def message
+      ActivityPub::Message.new(
+        id: activity_id,
+        type: item_type,
+        published: created_at,
+        actor: actor,
+        parent_id: parent_activity_id,
+        content: activity_content
+      )
+    end
+
+    def broadcast
+      BroadcastMessageJob.perform_later(self)
     end
   end
 end

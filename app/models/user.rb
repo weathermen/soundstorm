@@ -2,6 +2,8 @@
 # like display name and private key information for identifying over
 # ActivityPub/Webfinger.
 class User < ApplicationRecord
+  include ActiveRecord::Embedded
+
   # Generate 2048-bit keys
   KEY_LENGTH = 2048
 
@@ -16,16 +18,12 @@ class User < ApplicationRecord
 
   has_many :tracks
 
+  embeds_many :followers
+  embeds_many :follows
+
   validates :name, presence: true, uniqueness: true
   validates :display_name, presence: true
   validates :key_pem, presence: true, uniqueness: true
-
-  # @!method
-  #   ActivityPub Public Key for this User, generated from the private
-  #   key.
-  #
-  #   @return [OpenSSL::PKey::RSA]
-  delegate :public_key, to: :private_key
 
   # Find a given +User+ record by its Webfinger resource string, and
   # throw an exception when the User cannot be found.
@@ -56,11 +54,14 @@ class User < ApplicationRecord
     "#{name}@#{Rails.configuration.host}"
   end
 
-  # ActivityPub Private Key for this User.
-  #
-  # @return [OpenSSL::PKey::RSA]
-  def private_key
-    OpenSSL::PKey::RSA.new(key_pem, encrypted_password)
+  # ActivityPub representation of this User.
+  def actor
+    ActivityPub::Actor.new(
+      name: name,
+      host: Rails.configuration.host,
+      key: key_pem,
+      secret: encrypted_password
+    )
   end
 
   private
