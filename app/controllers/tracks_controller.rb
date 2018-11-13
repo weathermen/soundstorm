@@ -1,11 +1,6 @@
 class TracksController < ApplicationController
   before_action :authenticate_user!, except: %i[index show]
 
-  def index
-    @user = User.find(params[:user_id])
-    @tracks = @user.tracks
-  end
-
   def show
     @user = User.find(params[:user_id])
     @track = @user.tracks.find(params[:id])
@@ -63,7 +58,7 @@ class TracksController < ApplicationController
       if @track.destroy
         flash[:notice] = t('.success', name: @track.name)
 
-        format.html { redirect_to @track }
+        format.html { redirect_to current_user }
         format.json { render json: @track }
       else
         flash[:notice] = t('.failure', errors: @track.errors.full_messages.to_sentence)

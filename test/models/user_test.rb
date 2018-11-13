@@ -12,6 +12,7 @@ class UserTest < ActiveSupport::TestCase
   test 'generate private key for new user' do
     user = User.create(
       name: 'new-user',
+      host: Rails.configuration.host,
       display_name: 'New User',
       password: 'HelloD0lly1!',
       email: 'new-user@example.com'
@@ -19,19 +20,13 @@ class UserTest < ActiveSupport::TestCase
 
     assert user.valid?, user.errors.full_messages.to_sentence
     assert user.key_pem.present?
-    assert user.private_key.present?
-    assert user.public_key.present?
-    assert_equal user.public_key.to_pem, user.private_key.public_key.to_pem
   end
 
   test 'regenerate private key when password changes' do
     user = users(:one)
 
-    assert_changes -> { user.public_key.to_pem } do
+    assert_changes -> { user.key_pem } do
       assert user.update!(password: 'TotallyN3wPassword$')
-    end
-    assert_changes -> { user.private_key.to_pem } do
-      assert user.update!(password: 'AnotherTotallyN3wPassword$')
     end
   end
 end

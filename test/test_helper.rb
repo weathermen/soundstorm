@@ -20,3 +20,7 @@ class ActiveSupport::TestCase
     PaperTrail.request.enabled = was_enabled_for_request
   end
 end
+
+class ActionDispatch::IntegrationTest
+  include Devise::Test::IntegrationHelpers
+end

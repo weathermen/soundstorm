@@ -23,6 +23,7 @@ class User < ApplicationRecord
   has_many :following, class_name: 'User', through: :following_follows
 
   delegate :attributes, to: :actor, prefix: true
+  delegate :as_webfinger, to: :actor
 
   friendly_id :name, use: %i[slugged finders]
 
