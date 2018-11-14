@@ -30,4 +30,13 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  application:
+    title: Soundstorm
+    nav:
+      timeline: Timeline
+      library: Library
+      profile: "Logged in as %{name}"
+      settings: Settings
+      logout: "Log out '%{name}'"
+      login: Log in
+      signup: Sign up

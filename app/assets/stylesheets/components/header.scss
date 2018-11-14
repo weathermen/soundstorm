@@ -1,0 +1,14 @@
+.header {
+  display: grid;
+  grid-template-columns: 1fr 3fr 2fr;
+}
+
+  .header__search {
+    input {
+      width: 100%;
+    }
+  }
+
+  .header__navigation {
+    text-align: right;
+  }

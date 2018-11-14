@@ -1,0 +1,10 @@
+%article.splash
+  %header.splash__title
+    %h1 Soundstorm
+    %h2 Share your music with the Fediverse.
+  %main.splash__about
+    %p Soundstorm is a music sharing platform.
+  %footer.splash__buttons
+    %nav
+      = link_to t('application.nav.login'), new_user_session_path, class: 'button'
+      = link_to t('application.nav.signup'), new_user_registration_path, class: 'button'

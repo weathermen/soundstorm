@@ -1,0 +1,13 @@
+%article.search
+  %header.search__summary
+    %h1.search__title
+      #{@search.count} results for "#{@search.query}"
+    %nav.search__filters
+      - @search.types.each do |type, results|
+        = link_to url_for(type: type), class: 'search__filter' do
+          #{type.titleize.pluralize} (#{results.count})
+  %main.search__listing
+    - @search.results.each do |result|
+      %li.search__result
+        = link_to result do
+          = render result

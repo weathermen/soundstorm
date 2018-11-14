@@ -3,7 +3,7 @@ module PaperTrail
     decorated do
       after_create :broadcast
 
-      delegate :actor, :followers, to: :whodunnit
+      delegate :followers, to: :whodunnit
       delegate :activity_id, :as_activity, to: :item
     end
 
@@ -16,7 +16,7 @@ module PaperTrail
         id: activity_id,
         type: type,
         published: created_at,
-        actor: actor,
+        actor: whodunnit.actor,
         payload: as_activity
       )
     end

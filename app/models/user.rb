@@ -65,12 +65,28 @@ class User < ApplicationRecord
     end
   end
 
+  # Follow a given +User+
+  #
+  # @param [User] user - User to follow
+  # @return [Follow]
   def follow(user)
     following_follows.create(follower: user)
   end
 
+  # Unfollow a given +User+.
+  #
+  # @param [User] user - User to unfollow
+  # @return [Boolean]
   def unfollow(user)
     following_follows.find_by(follower: user).destroy
+  end
+
+  # Test if a +User+ is following this user.
+  #
+  # @param [User] user - Following user
+  # @return [Boolean]
+  def following?(user)
+    following.include?(user)
   end
 
   # External ActivityPub ID for this User.
@@ -89,6 +105,7 @@ class User < ApplicationRecord
     Rails.application.routes.url_helpers.user_url(self, host: host)
   end
 
+  # Express the attributes for an +ActivityPub::Actor+ for rehydrating.
   def as_actor
     {
       name: name,
@@ -110,6 +127,11 @@ class User < ApplicationRecord
         name: name
       }
     )
+  end
+
+  # Send email notifications with ActiveJob.
+  def send_devise_notification(notification, *args)
+    devise_mailer.send(notification, self, *args).deliver_later
   end
 
   private

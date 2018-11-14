@@ -19,6 +19,13 @@ class ActiveSupport::TestCase
     PaperTrail.enabled = was_enabled
     PaperTrail.request.enabled = was_enabled_for_request
   end
+
+  def users(id)
+    super(id).tap do |user|
+      key = Rails.root.join('test', 'fixtures', 'files', "#{id}.pem")
+      user.update!(key_pem: key.read)
+    end
+  end
 end
 
 class ActionDispatch::IntegrationTest

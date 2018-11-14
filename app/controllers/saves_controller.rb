@@ -1,0 +1,2 @@
+class SavesController < ApplicationController
+end

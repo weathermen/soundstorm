@@ -1,0 +1,9 @@
+%section.player{ data: { controller: 'player' } }
+  .player__transport
+    .player__button
+      = track_player_button track.audio.url
+    .player__duration
+      .player__elapsed{ data: { target: 'elapsed' } } 00:00
+      .player__left= track.duration
+  .player__waveform
+    / TODO track waveform

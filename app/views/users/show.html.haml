@@ -1,2 +1,18 @@
 %h1 Users#show
 %p Find me in app/views/users/show.html.haml
+
+%article.profile
+  %header.profile__cover
+    %section.profile__name
+      %h1= @user.display_name
+    %section.profile__metadata
+      %dl
+        %dt Location:
+        %dd= @user.location
+    %section.profile__buttons
+      - if current_user&.following? @user
+        = button_to 'Unfollow', [@user, :follow], method: :delete
+      - else
+        = button_to 'Follow', [@user, :follow], method: :post
+  %main.profile__tracks
+    = render @user.tracks

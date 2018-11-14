@@ -5,8 +5,9 @@ Rails.application.routes.draw do
 
   devise_for :users
 
+  resource :search
+  resources :saves
   resources :tracks, except: %i[index show]
-
   resources :users, path: '', only: %i[show], concerns: :commentable do
     resources :tracks, path: '', only: %i[show], concerns: :commentable
     resource :follow, only: %i[create destroy]
@@ -15,5 +16,5 @@ Rails.application.routes.draw do
   get '/.well-known/webfinger', to: 'users#webfinger', format: :json, as: :webfinger
   get :inbox, to: 'versions#create'
 
-  root to: 'users#activity'
+  root to: 'application#index'
 end

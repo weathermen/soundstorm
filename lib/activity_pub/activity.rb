@@ -1,5 +1,5 @@
 module ActivityPub
-  # Received activity from the inbox.
+  # Incoming activity from another federated instance.
   class Activity
     attr_reader :id, :type, :actor, :payload
 

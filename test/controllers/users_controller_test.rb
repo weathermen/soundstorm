@@ -3,11 +3,6 @@ require 'test_helper'
 class UsersControllerTest < ActionDispatch::IntegrationTest
   setup do
     @user = users(:one)
-    @user.update!(
-      key_pem: File.read(
-        Rails.root.join('test', 'fixtures', 'files', 'one.pem')
-      )
-    )
     @resource = "acct:#{@user.handle}"
   end
 

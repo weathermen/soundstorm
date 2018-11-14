@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_13_143026) do
+ActiveRecord::Schema.define(version: 2018_11_13_193113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -69,6 +69,14 @@ ActiveRecord::Schema.define(version: 2018_11_13_143026) do
     t.index ["slug", "sluggable_type"], name: "index_friendly_id_slugs_on_slug_and_sluggable_type"
     t.index ["sluggable_id"], name: "index_friendly_id_slugs_on_sluggable_id"
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
+  end
+
+  create_table "saves", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_saves_on_user_id"
   end
 
   create_table "tracks", force: :cascade do |t|
@@ -130,5 +138,6 @@ ActiveRecord::Schema.define(version: 2018_11_13_143026) do
   end
 
   add_foreign_key "comments", "users"
+  add_foreign_key "saves", "users"
   add_foreign_key "tracks", "users"
 end
