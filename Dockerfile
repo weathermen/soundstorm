@@ -1,3 +1,7 @@
+#
+# Docker image build script for Soundstorm
+#
+
 # Use latest Ruby
 FROM ruby:2.5.1
 
@@ -8,16 +12,17 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
     && apt-get update -qq \
     && apt-get install -y build-essential libpq-dev nodejs yarn
 
-# Use Bundler cache
+# Set up environment
 ENV BUNDLE_PATH=/gems \
     GEM_HOME=/gems \
     BUNDLE_BIN=/gems/bin \
-    PATH=/usr/local/bundle/bin:/srv/bin:$BUNDLE_BIN:$PATH
+    APP_PATH=/srv
+    PATH=/usr/local/bundle/bin:$APP_PATH/bin:$BUNDLE_BIN:$PATH
 
-# Update application code
-RUN mkdir -p /srv
-WORKDIR /srv
-COPY . /srv
+# Copy in application code
+RUN mkdir -p $APP_PATH
+WORKDIR $APP_PATH
+COPY . $APP_PATH
 
-# Configure entrypoint to install application dependencies
+# Install application dependencies before proceeding
 ENTRYPOINT ["sh", "bin/entrypoint.sh"]

@@ -1,0 +1,28 @@
+.flash-messages {}
+
+.flash-message {
+  display: grid;
+  grid-template-columns: 35fr 1fr;
+}
+  .flash-message--notice {
+    background: green;
+    color: white;
+  }
+  .flash-message--alert {
+    background: darken(red, 20%);
+    color: white;
+  }
+
+.flash-message__text {
+  text-align: center;
+}
+.flash-message__close {
+  a {
+    text-decoration: none;
+    color: black;
+
+    &:hover {
+      color: gray;
+    }
+  }
+}

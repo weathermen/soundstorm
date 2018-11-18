@@ -5,6 +5,7 @@
     "@rails/webpacker": "3.5",
     "activestorage": "^5.2.1",
     "howler": "^2.0.15",
+    "normalize.css": "^8.0.1",
     "rails-ujs": "^5.2.1",
     "stimulus": "^1.1.0",
     "stylelint-config-recommended-scss": "^3.2.0",

@@ -20,6 +20,6 @@ module ApplicationHelper
   end
 
   def app_title
-    t(:title, scope: :application)
+    t(:title, scope: %i[layouts application])
   end
 end

@@ -1,16 +1,29 @@
+#
+# Services configuration for Soundstorm
+#
+
 version: '3'
 services:
+  # PostgreSQL is the primary persistent data store for the application.
   db:
     image: postgres
     volumes:
       - postgresql:/var/lib/postgresql/data
     networks:
       - soundstorm
-  web:
+  # Redis is used in production to store the background job queue and
+  # the various cached HTML and data used throughout the application.
+  redis:
+    image: redis
+  # In development, Mailcatcher is used to receive and process emails.
+  # It can be accessed at http://localhost:1080.
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - '1080:1080'
+  # The "majestic monolith" that powers Soundstorm
+  web: &rails
     build: .
-    deploy:
-      restart_policy:
-        condition: on-failure
     command: bin/rails server -p 3000 -b '0.0.0.0'
     ports:
       - "${PORT}:3000"
@@ -24,16 +37,16 @@ services:
       - yarn_cache:/root/.yarn-cache
       - bundle:/gems
     environment:
-      - DOCKER=1
+      - DOCKER=true
       - SOUNDSTORM_ADMIN_USERNAME
       - SOUNDSTORM_ADMIN_EMAIL
       - SOUNDSTORM_ADMIN_PASSWORD
     networks:
       - soundstorm
-  mailcatcher:
-    image: schickling/mailcatcher
-    ports:
-      - '1080:1080'
+  # Background job processor for the application
+  sidekiq:
+    <<: *rails
+    command: bin/bundle exec sidekiq -c config/sidekiq.yml
 volumes:
   postgresql:
   bundle:
