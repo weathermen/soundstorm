@@ -2,8 +2,8 @@ class Comment < ApplicationRecord
   include Federatable
 
   belongs_to :user
+  belongs_to :track, counter_cache: true
   belongs_to :parent, class_name: 'Comment', optional: true
-  belongs_to :commentable, polymorphic: true
 
   validates :content, presence: true
 

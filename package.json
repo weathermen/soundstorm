@@ -10,6 +10,74 @@
     "turbolinks": "^5.2.0"
   },
   "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint-config-standard": "^12.0.0",
     "webpack-dev-server": "2.11.2"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "parser": "babel-eslint",
+    "rules": {
+      "semi": [
+        "error",
+        "never"
+      ],
+      "quotes": [
+        "error",
+        "double"
+      ],
+      "no-unused-vars": [
+        "error",
+        {
+          "vars": "all",
+          "args": "none"
+        }
+      ],
+      "no-trailing-spaces": [
+        "error"
+      ],
+      "no-multiple-empty-lines": [
+        "error",
+        {
+          "max": 2
+        }
+      ],
+      "prefer-const": [
+        "error"
+      ],
+      "getter-return": [
+        "error"
+      ],
+      "curly": [
+        "error",
+        "multi-line"
+      ]
+    },
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true
+    },
+    "parserOptions": {
+      "sourceType": "module"
+    }
+  },
+  "babel": {
+    "presets": [
+      ["env", {
+        "modules": false,
+        "targets": {
+          "browsers": "> 1%",
+          "uglify": true
+        },
+        "useBuiltIns": true
+      }]
+    ],
+
+    "plugins": [
+      "syntax-dynamic-import",
+      "transform-object-rest-spread",
+      ["transform-class-properties", { "spec": true }]
+    ]
   }
 }

@@ -50,7 +50,7 @@ class TracksControllerTest < ActionDispatch::IntegrationTest
   test 'delete existing track' do
     delete track_url(@track)
 
-    assert_response :success
+    assert_redirected_to @track.user
     assert_raises(ActiveRecord::RecordNotFound) { @track.reload }
   end
 end

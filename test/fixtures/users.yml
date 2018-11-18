@@ -12,6 +12,7 @@ one:
   email: one@example.com
   encrypted_password: "$2a$11$.lCKX2b5hOViEx1r74nyj.r4bI/bKhMJFQAEeNnCaF.Q2sI0Dwcwe"
   key_pem: "<%= Rails.root.join('test', 'fixtures', 'files', 'one.pem').read %>"
+  confirmed_at: <%= Time.current %>
 
 two:
   name: two
@@ -21,3 +22,4 @@ two:
   email: two@example.com
   encrypted_password: "$2a$11$qOhMADOLv728QcfQ2w3VG.kT0kneQM2HSaDh42dnrHITjgRCjyd.."
   key_pem: "<%= Rails.root.join('test', 'fixtures', 'files', 'two.pem').read %>"
+  confirmed_at: <%= Time.current %>

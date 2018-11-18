@@ -1,0 +1,10 @@
+.comment
+  %header.comment__metadata
+    %strong.comment__user= comment.user.name
+    commented on
+    = link_to comment.created_at.to_s(:long), comment
+  %main.comment__content
+    = comment.content
+  %footer.comment__links
+    = link_to 'Edit', [:edit, comment]
+    = link_to 'Delete', comment, method: :delete

@@ -2,8 +2,8 @@
 
 one:
   user: one
-  url: MyString
+  track: one
 
 two:
   user: two
-  url: MyString
+  track: two

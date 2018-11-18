@@ -29,5 +29,12 @@ class ActiveSupport::TestCase
 end
 
 class ActionDispatch::IntegrationTest
-  include Devise::Test::IntegrationHelpers
+  def sign_in(user)
+    post new_user_session_path, params: {
+      user: { email: user.email, password: 'Password1!' }
+    }
+
+    assert_nil flash[:alert]
+    assert_redirected_to root_path
+  end
 end

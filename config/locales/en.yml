@@ -40,3 +40,18 @@ en:
       logout: "Log out '%{name}'"
       login: Log in
       signup: Sign up
+  tracks:
+    track:
+      likes: "%{count} likes"
+      comments: "%{count} comments"
+      listens: "%{count} listens"
+    new:
+      title: New Track
+      create: Create Track
+  likes:
+    create:
+      success: "You have liked %{track}"
+      failure: "Error liking %{track}: %{errors}"
+    destroy:
+      success: "You have unliked %{track}"
+      failure: "Error unliking %{track}: %{errors}"

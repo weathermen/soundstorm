@@ -1,0 +1,10 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  ip_address: 192.168.1.1
+  user: one
+  track: one
+
+two:
+  ip_address: 192.168.1.2
+  track: one

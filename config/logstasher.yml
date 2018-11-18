@@ -1,0 +1,5 @@
+---
+enabled: true
+suppress_app_log: false
+source: rails
+log_controller_parameters: true

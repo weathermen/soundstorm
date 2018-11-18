@@ -1,16 +1,17 @@
 Rails.application.routes.draw do
-  concern :commentable do
-    resources :comments, except: %i[index]
-  end
-
   devise_for :users
 
   resource :search
-  resources :saves
   resources :tracks, except: %i[index show]
-  resources :users, path: '', only: %i[show], concerns: :commentable do
-    resources :tracks, path: '', only: %i[show], concerns: :commentable
+  resources :users, path: '', only: %i[show] do
+    resources :tracks, path: '', only: %i[show] do
+      member do
+        post :listen
+      end
+      resources :comments, except: %i[index]
+    end
     resource :follow, only: %i[create destroy]
+    resource :like, only: %i[create destroy]
   end
 
   get '/.well-known/webfinger', to: 'users#webfinger', format: :json, as: :webfinger

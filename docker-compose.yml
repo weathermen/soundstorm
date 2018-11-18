@@ -10,7 +10,7 @@ services:
     build: .
     command: bin/rails server -p 3000 -b '0.0.0.0'
     ports:
-      - "3000:3000"
+      - "${PORT}:3000"
     depends_on:
       - db
       - redis
@@ -19,6 +19,7 @@ services:
       - node_modules:/node_modules
       - yarn_cache:/root/.yarn-cache
       - bundle:/gems
+    env_file: ./config/docker.env
 volumes:
   postgresql:
   bundle:

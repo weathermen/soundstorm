@@ -1,9 +1,11 @@
 class TracksController < ApplicationController
-  before_action :authenticate_user!, except: %i[index show]
+  before_action :authenticate_user!, except: %i[index show listen]
 
   def show
     @user = User.find(params[:user_id])
     @track = @user.tracks.find(params[:id])
+
+    content_for :page_title, "#{@track.name} by #{@user.name}"
   end
 
   def new
@@ -31,6 +33,17 @@ class TracksController < ApplicationController
         format.json { render json: @track, status: :unprocessable_entity }
       end
     end
+  end
+
+  def listen
+    @user = User.find(params[:user_id])
+    @track = @user.tracks.find(params[:id])
+    @track.listens.create(
+      ip_address: request.ip_address,
+      user: current_user
+    )
+
+    head :ok
   end
 
   def update

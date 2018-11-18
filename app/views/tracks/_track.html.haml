@@ -1,9 +1,20 @@
-%section.player{ data: { controller: 'player' } }
-  .player__transport
-    .player__button
-      = track_player_button track.audio.url
-    .player__duration
-      .player__elapsed{ data: { target: 'elapsed' } } 00:00
-      .player__left= track.duration
-  .player__waveform
-    / TODO track waveform
+%section.player{ data: { controller: 'player', track: url_for([track.user, track]) } }
+  %main
+    .player__transport
+      .player__button
+        = track_player_button track.audio.url
+      .player__duration
+        .player__elapsed{ data: { target: 'elapsed' } } 00:00
+        .player__left= track.duration
+    .player__waveform
+      = image_tag track.waveform.url
+  %footer
+    .player__comments
+      = link_to [track.user, track] do
+        = t('.comments', count: track.comments_count)
+    .player__likes
+      = link_to [track.user, track] do
+        = t('.likes', count: track.likes_count)
+    .player__listens
+      = link_to [track.user, track] do
+        = t('.listens', count: track.listens_count)

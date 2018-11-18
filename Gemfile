@@ -47,6 +47,9 @@ gem 'rails-decorators'
 gem 'http'
 # Embed data in ActiveRecord models
 gem 'active_record-embedded', github: 'tubbo/active_record-embedded', branch: 'master'
+# Use Logstash and Kibana for logs
+gem 'logstasher'
+gem 'sidekiq-logstash'
 
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console

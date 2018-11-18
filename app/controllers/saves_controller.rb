@@ -1,2 +1,0 @@
-class SavesController < ApplicationController
-end

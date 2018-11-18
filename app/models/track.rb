@@ -7,6 +7,9 @@ class Track < ApplicationRecord
   belongs_to :user
 
   has_one_attached :audio
+  has_many :listens, class_name: 'TrackListen'
+  has_many :likes
+  has_many :comments
 
   validates :name, presence: true, uniqueness: { scope: :user }
   validates :audio, presence: true
@@ -26,6 +29,7 @@ class Track < ApplicationRecord
   # @return [Hash]
   def as_activity
     super.merge(
+      actor: user.as_actor,
       type: 'Audio',
       name: name,
       url: {

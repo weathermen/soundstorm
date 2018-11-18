@@ -16,7 +16,7 @@ module ApplicationHelper
   end
 
   def page_title
-    t(:title, scope: [controller_name, action_name])
+    content_for(:page_title) || t(:title, scope: [controller_name, action_name])
   end
 
   def app_title

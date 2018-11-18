@@ -1,38 +1,87 @@
-import { Controller } from 'stimulus'
-import { Howl } from 'howler'
+import { Controller } from "stimulus"
+import { Howl } from "howler"
 
-// Controls playback of uploaded tracks
-export default class extends Controller {
-  static targets = ['button']
+/**
+ * Controls playback of uploaded tracks
+ */
+export default class Player extends Controller {
+  static targets = ["button", "elapsed"]
 
-  // Instantiate a new Howl instance
+  /**
+   * Create the sound with Howl
+   */
   connect() {
-    const href = this.buttonTarget.current.getAttribute('href')
+    const href = this.buttonTarget.current.getAttribute("href")
     const src = [href]
 
     this.sound = new Howl({ src })
   }
 
-  // Clean up existing Howl sounds from the environment when
-  // disconnected from the DOM
+  /**
+   * Clean up existing Howl sounds from the environment when
+   * disconnected from the DOM
+   */
   disconnect() {
     this.sound.unload()
   }
 
+  /**
+   * Update the elapsed time on the player
+   */
   updateElapsedTime() {
     this.elapsedTarget.current.innerText = this.sound.duration()
   }
 
-  // Toggle play/pause functionality on the sound
+  /**
+   * Test if a track is currently playing
+   */
+  get playing() {
+    return typeof this.elapsedTimeInterval !== "undefined"
+  }
+
+  get url() {
+    return this.element.getAttribute("data-track")
+  }
+
+  /**
+   * Toggle play/pause functionality on the sound
+   */
   toggle(event) {
-    if (this.sound.playing) {
-      this.buttonTarget.current.innerText = 'Play'
-      this.sound.pause()
-      clearInterval(this.elapsedTimeInterval)
+    event.preventDefault()
+
+    if (this.playing) {
+      this.pause()
     } else {
-      this.buttonTarget.current.innerText = 'Pause'
-      this.sound.play()
-      this.elapsedTimeInterval = setInterval(this.updateElapsedTime, 1000);
+      this.play()
     }
+  }
+
+  /**
+   * Pause the currently-playing track
+   */
+  pause() {
+    this.buttonTarget.current.innerText = "Play"
+    this.sound.pause()
+    clearInterval(this.elapsedTimeInterval)
+  }
+
+  /**
+   * Play the track defined by this player
+   */
+  play() {
+    this.buttonTarget.current.innerText = "Pause"
+    this.sound.play()
+    this.elapsedTimeInterval = setInterval(this.updateElapsedTime, 1000)
+    this.track()
+  }
+
+  /**
+   * Track playback by a given client.
+   */
+  async track() {
+    const method = "POST"
+    const url = `${this.url}/listen`
+
+    await fetch(url, { method })
   }
 }

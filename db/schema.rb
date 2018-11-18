@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_13_193113) do
+ActiveRecord::Schema.define(version: 2018_11_17_214230) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -79,6 +79,16 @@ ActiveRecord::Schema.define(version: 2018_11_13_193113) do
     t.index ["user_id"], name: "index_saves_on_user_id"
   end
 
+  create_table "track_listens", force: :cascade do |t|
+    t.inet "ip_address"
+    t.bigint "user_id"
+    t.bigint "track_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["track_id"], name: "index_track_listens_on_track_id"
+    t.index ["user_id"], name: "index_track_listens_on_user_id"
+  end
+
   create_table "tracks", force: :cascade do |t|
     t.bigint "user_id"
     t.string "name", null: false
@@ -139,5 +149,7 @@ ActiveRecord::Schema.define(version: 2018_11_13_193113) do
 
   add_foreign_key "comments", "users"
   add_foreign_key "saves", "users"
+  add_foreign_key "track_listens", "tracks"
+  add_foreign_key "track_listens", "users"
   add_foreign_key "tracks", "users"
 end
