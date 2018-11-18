@@ -3,6 +3,8 @@ packages:
   - ruby
   - nodejs
   - postgresql
+sources:
+  - https://git.sr.ht/~tubbo/soundstorm
 tasks:
   - setup: ./bin/setup
   - test: ./bin/rails test
