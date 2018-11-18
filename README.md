@@ -30,6 +30,12 @@ Then, browse to <http://localhost:3000> and log in with
 `$SOUNDSTORM_ADMIN_USERNAME` and `$SOUNDSTORM_ADMIN_PASSWORD`, which
 defaults to **admin** and **Password1!**.
 
+View logs at any time by running:
+
+```bash
+$ docker-compose logs -f [web|db|redis|sidekiq]
+```
+
 You can always turn the server off by running:
 
 ```bash
