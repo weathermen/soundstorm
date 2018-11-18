@@ -6,5 +6,5 @@ packages:
 sources:
   - https://git.sr.ht/~tubbo/soundstorm
 tasks:
-  - setup: 'cd soundstorm && ./bin/setup'
+  - setup: 'sudo gem install bundler && cd soundstorm && ./bin/setup'
   - test: 'cd soundstorm && ./bin/rails test'
