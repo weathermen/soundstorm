@@ -5,7 +5,6 @@ import { definitionsFromContext } from "stimulus/webpack-helpers"
 import Rails from "rails-ujs"
 import * as ActiveStorage from "activestorage"
 import Turbolinks from "turbolinks"
-import Cable from "../utils/cable"
 
 const application = Application.start()
 const context = require.context("controllers", true, /.js$/)

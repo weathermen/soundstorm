@@ -9,7 +9,10 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
     && apt-get install -y build-essential libpq-dev nodejs yarn
 
 # Use Bundler cache
-ENV BUNDLE_PATH=/gems GEM_HOME=/gems BUNDLE_BIN=/gems/bin
+ENV BUNDLE_PATH=/gems \
+    GEM_HOME=/gems \
+    BUNDLE_BIN=/gems/bin \
+    PATH=/usr/local/bundle/bin:/srv/bin:$BUNDLE_BIN:$PATH
 
 # Update application code
 RUN mkdir -p /srv

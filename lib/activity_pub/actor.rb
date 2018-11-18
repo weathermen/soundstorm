@@ -5,16 +5,17 @@ module ActivityPub
     WEBFINGER_REL = 'self'
     WEBFINGER_CONTENT_TYPE = 'application/activity+json'
 
-    attr_reader :name, :type, :host, :secret, :private_key
+    attr_reader :name, :type, :host, :secret, :summary, :private_key
 
     delegate :public_key, to: :private_key
     delegate :to_json, to: :as_json
     delegate :to_global_id, to: :user
 
-    def initialize(name:, type: DEFAULT_TYPE, host:, key:, secret: )
+    def initialize(name:, type: DEFAULT_TYPE, host:, key:, secret:, summary:)
       @name = name
       @type = type
       @host = host
+      @summary = summary
       @private_key = OpenSSL::PKey::RSA.new(key, secret)
     end
 
@@ -51,10 +52,16 @@ module ActivityPub
     def as_json
       {
         '@context': [ACTIVITYSTREAMS_NAMESPACE, W3ID_NAMESPACE],
-        id: id,
         type: type,
+        id: id,
+        following: url_for('following'),
+        followers: url_for('followers'),
+        liked: url_for('likes'),
+        inbox: url_for('inbox'),
+        outbox: url_for('outbox'),
         preferredUsername: name,
-        inbox: inbox_url,
+        name: name,
+        summary: summary,
         publicKey: {
           id: "#{id}#main-key",
           owner: id,
@@ -63,8 +70,8 @@ module ActivityPub
       }
     end
 
-    def inbox_url
-      "https://#{host}/inbox"
+    def url_for(path)
+      "https://#{host}/#{name}/#{path}.json"
     end
   end
 end

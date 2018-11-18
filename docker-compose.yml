@@ -19,7 +19,11 @@ services:
       - node_modules:/node_modules
       - yarn_cache:/root/.yarn-cache
       - bundle:/gems
-    env_file: ./config/docker.env
+    environment:
+      - DOCKER=1
+      - SOUNDSTORM_ADMIN_USERNAME
+      - SOUNDSTORM_ADMIN_EMAIL
+      - SOUNDSTORM_ADMIN_PASSWORD
 volumes:
   postgresql:
   bundle:

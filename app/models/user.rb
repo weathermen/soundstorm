@@ -30,7 +30,7 @@ class User < ApplicationRecord
   friendly_id :name, use: %i[slugged finders]
 
   before_validation :generate_key, if: :encrypted_password_changed?
-  before_validation :ensure_host, on: :create
+  before_validation :ensure_host
 
   validates :name, presence: true, uniqueness: true
   validates :host, presence: true
@@ -159,6 +159,6 @@ class User < ApplicationRecord
   #
   # @private
   def ensure_host
-    self.host ||= Rails.configuration.host
+    self.host = Rails.configuration.host if host.blank?
   end
 end

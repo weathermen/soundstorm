@@ -7,11 +7,15 @@
     "howler": "^2.0.15",
     "rails-ujs": "^5.2.1",
     "stimulus": "^1.1.0",
+    "stylelint-config-recommended-scss": "^3.2.0",
     "turbolinks": "^5.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
+    "eslint": "^5.9.0",
     "eslint-config-standard": "^12.0.0",
+    "stylelint": "^9.8.0",
+    "stylelint-scss": "^3.4.0",
     "webpack-dev-server": "2.11.2"
   },
   "eslintConfig": {
@@ -64,20 +68,30 @@
   },
   "babel": {
     "presets": [
-      ["env", {
-        "modules": false,
-        "targets": {
-          "browsers": "> 1%",
-          "uglify": true
-        },
-        "useBuiltIns": true
-      }]
+      [
+        "env",
+        {
+          "modules": false,
+          "targets": {
+            "browsers": "> 1%",
+            "uglify": true
+          },
+          "useBuiltIns": true
+        }
+      ]
     ],
-
     "plugins": [
       "syntax-dynamic-import",
       "transform-object-rest-spread",
-      ["transform-class-properties", { "spec": true }]
+      [
+        "transform-class-properties",
+        {
+          "spec": true
+        }
+      ]
     ]
+  },
+  "stylelint": {
+    "extends": "stylelint-config-recommended-scss"
   }
 }

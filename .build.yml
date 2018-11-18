@@ -1,0 +1,8 @@
+image: alpine/edge
+packages:
+  - ruby
+  - nodejs
+  - postgresql
+tasks:
+  - setup: ./bin/setup
+  - test: ./bin/rails test
