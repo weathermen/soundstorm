@@ -7,9 +7,9 @@ class Track < ApplicationRecord
   belongs_to :user
 
   has_one_attached :audio
-  has_many :listens, class_name: 'TrackListen'
-  has_many :likes
-  has_many :comments
+  has_many :listens, class_name: 'TrackListen', dependent: :destroy
+  has_many :likes, dependent: :destroy
+  has_many :comments, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { scope: :user }
   validates :audio, presence: true

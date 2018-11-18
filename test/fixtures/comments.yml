@@ -1,11 +1,12 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
-  user: one
-  commentable: one
-  content: MyText
-
-two:
+one_untitled_praise:
   user: two
-  commentable: two
-  content: MyText
+  track: one_untitled
+  content: this is good
+
+one_untitled_reply:
+  user: one
+  track: one_untitled
+  parent: one_untitled_praise
+  content: thank you

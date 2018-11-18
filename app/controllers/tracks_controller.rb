@@ -4,8 +4,7 @@ class TracksController < ApplicationController
   def show
     @user = User.find(params[:user_id])
     @track = @user.tracks.find(params[:id])
-
-    content_for :page_title, "#{@track.name} by #{@user.name}"
+    @title = "#{@track.name} by #{@user.name}"
   end
 
   def new

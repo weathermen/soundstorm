@@ -21,6 +21,8 @@ class User < ApplicationRecord
   has_many :following_follows, class_name: 'Follow', as: :following
   has_many :followers, class_name: 'User', through: :follower_follows
   has_many :following, class_name: 'User', through: :following_follows
+  has_many :likes
+  has_many :liked_tracks, through: :likes, as: :track, class_name: 'Track'
 
   delegate :attributes, to: :actor, prefix: true
   delegate :as_webfinger, to: :actor

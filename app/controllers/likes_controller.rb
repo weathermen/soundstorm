@@ -1,4 +1,11 @@
 class LikesController < ApplicationController
+  before_action :authenticate_user!
+  before_action :find_track, except: :index
+
+  def index
+    @likes = current_user.liked_tracks
+  end
+
   def create
     @like = @track.likes.build(user: current_user)
 
@@ -35,5 +42,9 @@ class LikesController < ApplicationController
         format.json { head :unprocessable_entity }
       end
     end
+  end
+
+  def find_track
+    @track = Track.find(params[:track_id])
   end
 end

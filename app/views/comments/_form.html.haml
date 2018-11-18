@@ -1,0 +1,6 @@
+= form_with model: comment, url: user_track_comments_url(comment.user, comment.track), class: 'form' do |f|
+  %main.form__fields
+    .form__field
+      = f.text_area :content
+  %footer.form__controls
+    = f.submit t('.save')

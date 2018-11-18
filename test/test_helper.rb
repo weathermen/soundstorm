@@ -29,9 +29,9 @@ class ActiveSupport::TestCase
 end
 
 class ActionDispatch::IntegrationTest
-  def sign_in(user)
+  def sign_in(user, password = 'Password1!')
     post new_user_session_path, params: {
-      user: { email: user.email, password: 'Password1!' }
+      user: { email: user.email, password: password }
     }
 
     assert_nil flash[:alert]

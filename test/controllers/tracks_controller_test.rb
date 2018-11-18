@@ -22,16 +22,11 @@ class TracksControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
 
-    post tracks_url,
-      params: { track: attributes },
-      env: { 'devise.mapping' => Devise.mappings[:user] }
-
-    assert_response :created
-
+    post tracks_url, params: { track: attributes }
     track = Track.last
 
+    assert_redirected_to track
     assert_equal attributes[:name], track.name
-    refute_nil track.duration
   end
 
   test 'update existing track' do
@@ -41,10 +36,9 @@ class TracksControllerTest < ActionDispatch::IntegrationTest
 
     patch track_url(@track), params: { track: { name: 'New Name' } }
 
-    assert_response :success
+    assert_redirected_to @track
     assert @track.reload
     assert_equal 'New Name', @track.name
-    assert_equal 'new-name', @track.slug
   end
 
   test 'delete existing track' do

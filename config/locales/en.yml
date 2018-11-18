@@ -55,3 +55,13 @@ en:
     destroy:
       success: "You have unliked %{track}"
       failure: "Error unliking %{track}: %{errors}"
+  comments:
+    create:
+      success: 'Comment on "%{track}" has been added'
+      failure: 'Error commenting on %{track}: %{errors}'
+    update:
+      success: 'Comment on "%{track}" has been edited'
+      failure: 'Error editing comment on %{track}: %{errors}'
+    destroy:
+      success: 'Deleted comment on "%{track}"'
+      failure: 'Error deleting comment on %{track}: %{errors}'

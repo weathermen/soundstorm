@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_17_214230) do
+ActiveRecord::Schema.define(version: 2018_11_17_235454) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -39,14 +39,13 @@ ActiveRecord::Schema.define(version: 2018_11_17_214230) do
 
   create_table "comments", force: :cascade do |t|
     t.bigint "user_id"
+    t.bigint "track_id"
     t.bigint "parent_id"
-    t.string "commentable_type"
-    t.bigint "commentable_id"
     t.text "content", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["commentable_type", "commentable_id"], name: "index_comments_on_commentable_type_and_commentable_id"
     t.index ["parent_id"], name: "index_comments_on_parent_id"
+    t.index ["track_id"], name: "index_comments_on_track_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
@@ -71,12 +70,13 @@ ActiveRecord::Schema.define(version: 2018_11_17_214230) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type"
   end
 
-  create_table "saves", force: :cascade do |t|
+  create_table "likes", force: :cascade do |t|
     t.bigint "user_id"
-    t.string "url"
+    t.bigint "track_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id"], name: "index_saves_on_user_id"
+    t.index ["track_id"], name: "index_likes_on_track_id"
+    t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
   create_table "track_listens", force: :cascade do |t|
@@ -96,6 +96,9 @@ ActiveRecord::Schema.define(version: 2018_11_17_214230) do
     t.integer "duration"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "comments_count"
+    t.integer "likes_count"
+    t.integer "listens_count"
     t.index ["slug"], name: "index_tracks_on_slug"
     t.index ["user_id"], name: "index_tracks_on_user_id"
   end
@@ -147,8 +150,10 @@ ActiveRecord::Schema.define(version: 2018_11_17_214230) do
     t.index ["remote"], name: "index_versions_on_remote"
   end
 
+  add_foreign_key "comments", "tracks"
   add_foreign_key "comments", "users"
-  add_foreign_key "saves", "users"
+  add_foreign_key "likes", "tracks"
+  add_foreign_key "likes", "users"
   add_foreign_key "track_listens", "tracks"
   add_foreign_key "track_listens", "users"
   add_foreign_key "tracks", "users"

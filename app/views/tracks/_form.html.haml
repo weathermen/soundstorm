@@ -1,0 +1,13 @@
+= form_with model: track, class: 'form' do |f|
+  %main.form__fields
+    .form__field
+      = f.label :name
+      = f.text_field :name
+    .form__field
+      = f.label :audio
+      = f.file_field :audio
+    .form__field
+      = f.label :description
+      = f.text_area :description
+  %footer.form__controls
+    = f.submit t('.create')
