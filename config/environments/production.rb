@@ -1,6 +1,7 @@
 Rails.application.configure do
   # Verifies that versions and hashed value of the package contents in the project's package.json
-  config.webpacker.check_yarn_integrity = false
+  config.webpacker.check_yarn_integrity = true
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
@@ -15,6 +16,7 @@ Rails.application.configure do
   # Full error reports are disabled and caching is turned on.
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
+  config.action_mailer.perform_caching     = true
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
@@ -58,14 +60,16 @@ Rails.application.configure do
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]
 
-  # Use a different cache store in production.
-  config.cache_store = :redis_cache_store
+  # Use Redis to store the cache in production
+  config.cache_store = :redis_cache_store, credentials.redis.merge(database: 0)
+  config.action_dispatch.rack_cache = {
+    metastore: credentials.redis.merge(database: 1, namespace: 'metastore'),
+    entitystore: credentials.redis.merge(database: 1, namespace: 'entitystore')
+  }
 
-  # Use a real queuing backend for Active Job (and separate queues per environment)
+  # Use Sidekiq for background jobs
   config.active_job.queue_adapter     = :sidekiq
   config.active_job.queue_name_prefix = "soundstorm_#{Rails.env}"
-
-  config.action_mailer.perform_caching = false
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
