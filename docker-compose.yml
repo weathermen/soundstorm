@@ -31,7 +31,7 @@ services:
     networks:
       - soundstorm
   mailcatcher:
-    image: mailcatcher
+    image: schickling/mailcatcher
     ports:
       - '1080:1080'
 volumes:
