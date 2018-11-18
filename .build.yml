@@ -6,5 +6,9 @@ packages:
 sources:
   - https://git.sr.ht/~tubbo/soundstorm
 tasks:
-  - setup: ./bin/setup
-  - test: ./bin/rails test
+  - setup:
+    - cd soundstorm
+    - ./bin/setup
+  - test:
+    - cd soundstorm
+    - ./bin/rails test
