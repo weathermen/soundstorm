@@ -1,7 +1,11 @@
 require 'rubocop/rake_task'
+require 'haml_lint/rake_task'
+
+HamlLint::RakeTask.new
 
 namespace :lint do
   RuboCop::RakeTask.new :ruby
+  HamlLint::RakeTask.new :haml
 
   desc 'Run ESLint JavaScript lint checks'
   task :js do

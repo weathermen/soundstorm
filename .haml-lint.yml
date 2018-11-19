@@ -1,0 +1,6 @@
+exclude:
+  - vendor/bundle/**/*
+  - node_modules
+linters:
+  LineLength:
+    max: 130

@@ -54,6 +54,8 @@ group :development, :test do
   gem 'pry-byebug'
   # Ruby code style guide
   gem 'rubocop'
+  # Lint Haml code
+  gem 'haml-lint'
 end
 
 group :development do

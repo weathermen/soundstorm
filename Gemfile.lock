@@ -86,6 +86,17 @@ GEM
       activerecord (>= 4.0.0)
     globalid (0.4.1)
       activesupport (>= 4.2.0)
+    haml (5.0.4)
+      temple (>= 0.8.0)
+      tilt
+    haml-lint (0.999.999)
+      haml_lint
+    haml_lint (0.28.0)
+      haml (>= 4.0, < 5.1)
+      rainbow
+      rake (>= 10, < 13)
+      rubocop (>= 0.50.0)
+      sysexits (~> 1.1)
     hamlit (2.9.1)
       temple (>= 0.8.0)
       thor
@@ -255,6 +266,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    sysexits (1.2.0)
     temple (0.8.0)
     thor (0.20.3)
     thread_safe (0.3.6)
@@ -300,6 +312,7 @@ DEPENDENCIES
   chromedriver-helper
   devise
   friendly_id
+  haml-lint
   hamlit-rails
   http
   jbuilder (~> 2.5)
