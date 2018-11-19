@@ -11,17 +11,22 @@ services:
       - postgresql:/var/lib/postgresql/data
     networks:
       - soundstorm
+
   # Redis is used in production to store the background job queue and
   # the various cached HTML and data used throughout the application.
-  redis:
-    image: redis
+  # redis:
+  #   image: redis
+
   # In development, Mailcatcher is used to receive and process emails.
   # It can be accessed at http://localhost:1080.
   mailcatcher:
     image: schickling/mailcatcher
     ports:
       - '1080:1080'
-  # The "majestic monolith" that powers Soundstorm
+
+  # The "majestic monolith" that powers Soundstorm, a Rails application
+  # serving HTML (for the most part) and containing all of the logic
+  # needed to run a Soundstorm instance.
   web: &rails
     build: .
     command: bin/rails server -p 3000 -b '0.0.0.0'
@@ -29,6 +34,7 @@ services:
       - "${PORT}:3000"
     depends_on:
       - db
+      # - redis
     links:
       - mailcatcher
     volumes:
@@ -43,10 +49,12 @@ services:
       - SOUNDSTORM_ADMIN_PASSWORD
     networks:
       - soundstorm
+
   # Background job processor for the application
-  sidekiq:
-    <<: *rails
-    command: bin/bundle exec sidekiq -c config/sidekiq.yml
+  # sidekiq:
+  #   <<: *rails
+  #   command: bin/bundle exec sidekiq -C config/sidekiq.yml
+
 volumes:
   postgresql:
   bundle:

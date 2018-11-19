@@ -1,5 +1,5 @@
 class UpdateActivityJob < ApplicationJob
-  queue_as :default
+  queue_as :federation
 
   def perform(user, activity)
     update = ActivityUpdate.new(user: user, activity: activity)
