@@ -4,8 +4,11 @@ packages:
   - ruby-dev
   - nodejs
   - postgresql
+  - postgresql-dev
+  - zlib
+  - zlib-dev
 sources:
   - https://git.sr.ht/~tubbo/soundstorm
 tasks:
-  - setup: 'cd soundstorm && sudo ./bin/setup'
-  - test: 'cd soundstorm && ./bin/rails test'
+  - install: cd soundstorm && sudo ./bin/setup
+  - test: cd soundstorm && ./bin/rails test
