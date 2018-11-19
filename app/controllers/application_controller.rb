@@ -1,5 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :set_paper_trail_whodunnit, if: :user_signed_in?
+  before_action :cache_page, only: :index
+
   after_action :set_headers
 
   def index

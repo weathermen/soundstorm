@@ -1,6 +1,7 @@
 class LikesController < ApplicationController
   before_action :authenticate_user!
   before_action :find_track, except: :index
+  before_action :cache_page, only: :index
 
   def index
     @likes = current_user.liked_tracks

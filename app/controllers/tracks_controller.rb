@@ -1,5 +1,6 @@
 class TracksController < ApplicationController
   before_action :authenticate_user!, except: %i[index show listen]
+  before_action :cache_page, only: :show
 
   def show
     @user = User.find(params[:user_id])

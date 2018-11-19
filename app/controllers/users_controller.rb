@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_action :cache_page
+
   def show
     @user = User.find_by(name: params[:id])
 
