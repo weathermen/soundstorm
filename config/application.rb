@@ -26,5 +26,7 @@ module Soundstorm
       'https://www.w3.org/ns/activitystreams',
       'https://w3id.org/security/v1'
     ]
+
+    config.page_cache_ttl = 15.minutes
   end
 end

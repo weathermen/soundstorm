@@ -1,6 +1,7 @@
 image: alpine/edge
 packages:
   - ruby
+  - ruby-dev
   - nodejs
   - postgresql
 sources:

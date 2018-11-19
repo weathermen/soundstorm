@@ -9,7 +9,13 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  protected
+
   def info_for_paper_trail
     { ip: request.ip }
+  end
+
+  def cache_page
+    expires_in config.page_cache_ttl, public: true if flash.blank?
   end
 end
