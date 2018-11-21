@@ -39,7 +39,7 @@ class ActivityUpdate
   end
 
   def valid?
-    model_id.present? && item.present?
+    model_id.present? && item&.persisted?
   end
 
   def attributes

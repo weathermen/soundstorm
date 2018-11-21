@@ -25,8 +25,10 @@ class UpdateActivityJobTest < ActiveJob::TestCase
           content: 'nice one bruva'
         }
       )
-      UpdateActivityJob.perform_now(user, activity)
 
+      assert_difference -> { Comment.count } do
+        UpdateActivityJob.perform_now(user, activity)
+      end
       assert_equal 1, PaperTrail::Version.count
     end
   end
