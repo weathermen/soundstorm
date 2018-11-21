@@ -9,7 +9,6 @@ module ActivityPub
 
     delegate :public_key, to: :private_key
     delegate :to_json, to: :as_json
-    delegate :to_global_id, to: :user
 
     def initialize(name:, type: DEFAULT_TYPE, host:, key:, secret:, summary:, **params)
       @name = name
@@ -27,17 +26,16 @@ module ActivityPub
     def self.find(id)
       response = HTTP.get(id)
       return unless response.success?
-      params = response.parse
 
-      new(
-        key: params['publicKey']['publicKeyPem'],
-        secret: nil,
-        **params.symbolize_keys
-      )
+      from_json(response.parse)
     end
 
-    def user
-      @user ||= User.find_or_initialize_by(name: name, host: host)
+    def self.from(json = {}, **options)
+      params = json.deep_symbolize_keys
+      params.merge!(options)
+      key = params[:publicKey][:publicKeyPem]
+
+      new(key: key, secret: nil, **params)
     end
 
     def id

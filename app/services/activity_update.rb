@@ -10,20 +10,26 @@ class ActivityUpdate
     @model ||= case activity.type
                when 'Audio' then Track
                when 'Profile' then User
+               when 'Note' then Comment
                end
   end
 
   def model_id
-    File.basename(activity.payload[:id], '.json')
+    File.basename(activity.activity_id, '.json')
   end
 
   def item
-    @item ||= model&.find(model_id)
+    @item ||= model&.find_or_create_by(id: model_id, user: user) do |record|
+      activity.payload.each do |param, value|
+        record[param] = value
+      end
+      record.save!
+    end
   end
 
   def metadata
     {
-      ip: activity.ip,
+      ip: user.last_sign_in_ip,
       activity: activity.payload
     }
   end

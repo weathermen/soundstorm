@@ -19,14 +19,10 @@ module ActivityPub
       )
     end
 
-    test 'author' do
-      assert_equal @user.to_global_id, @activity.author
-    end
-
     test 'attributes' do
       assert_equal @activity.id, @activity.attributes[:id]
       assert_equal @activity.type, @activity.attributes[:type]
-      assert_equal @activity.author, @activity.attributes[:author]
+      assert_equal @activity.actor.id, @activity.attributes[:actor]
       assert_equal @activity.payload, @activity.attributes[:object]
     end
   end

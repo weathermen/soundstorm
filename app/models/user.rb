@@ -60,10 +60,13 @@ class User < ApplicationRecord
   #
   # @return [User]
   def self.find_or_create_by_actor_id(actor_id)
-    uri = URI.parse(actor_id)
+    actor = ActivityPub::Actor.find(actor_id)
 
-    find_or_create_by!(name: uri.path, host: uri.host) do |user|
+    find_or_create_by(name: actor.name, host: actor.host) do |user|
       user.password = SecureRandom.hex
+      user.display_name = actor.summary
+      user.confirmed_at = Time.current
+      user.save!
     end
   end
 
@@ -105,6 +108,10 @@ class User < ApplicationRecord
 
   def activity_id
     Rails.application.routes.url_helpers.user_url(self, host: host)
+  end
+
+  def email_required?
+    host == Rails.configuration.host
   end
 
   # Express the attributes for an +ActivityPub::Actor+ for rehydrating.

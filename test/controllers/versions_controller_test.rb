@@ -8,7 +8,7 @@ class VersionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'post activity to inbox' do
-    host = 'test.host'
+    host = 'other.host'
     date = Time.current.utc
     private_key_path = Rails.root.join('test', 'fixtures', 'files', 'actor.pem')
     private_key = OpenSSL::PKey::RSA.new(private_key_path.read)
@@ -41,11 +41,11 @@ class VersionsControllerTest < ActionDispatch::IntegrationTest
         },
         headers: {
           'Signature': signature.header,
-          'Date': date.httpdate
+          'Date': date.httpdate,
+          'Host': "https://#{actor.host}"
         }
 
       assert_response :ok
-      assert_enqueued_jobs 1, only: UpdateActivityJob
     end
   end
 end

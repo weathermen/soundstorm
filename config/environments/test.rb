@@ -48,4 +48,6 @@ Rails.application.configure do
   config.after_initialize do
     PaperTrail.enabled = false
   end
+
+  config.active_job.queue_adapter = :test
 end
