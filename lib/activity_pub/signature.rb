@@ -24,8 +24,12 @@ module ActivityPub
     end
 
     # Contents of signed string.
-    def to_s
+    def to_signed_s
       key.sign(ActivityPub.digest, to_unsigned_s)
+    end
+
+    def to_s
+      Base64.encode64(to_signed_s)
     end
 
     # Attributes for signed string.

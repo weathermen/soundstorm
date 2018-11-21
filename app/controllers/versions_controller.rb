@@ -2,15 +2,6 @@ class VersionsController < ApplicationController
   before_action :verify_signature
 
   def create
-    @signature = request.headers['Signature']
-    @date = request.headers['Date']
-    @verification
-
-    unless @signature.verified?
-      render json: { error: t('.unauthorized') }, status: :unauthorized
-      return
-    end
-
     @activity = ActivityPub::Activity.new(**activity_data)
     @user = User.find_or_create_by_actor_id(params[:actor])
 
@@ -27,5 +18,16 @@ class VersionsController < ApplicationController
 
   def activity_params
     params.permit(:@context, :id, :type, :actor, :object)
+  end
+
+  def verify_signature
+    @signature = request.headers['Signature']
+    @date = Time.httpdate(request.headers['Date'])
+    @verification = ActivityPub::Verification.new(@signature, @date)
+
+    unless @verification.valid?
+      render json: { error: t('.unauthorized') }, status: :unauthorized
+      return
+    end
   end
 end

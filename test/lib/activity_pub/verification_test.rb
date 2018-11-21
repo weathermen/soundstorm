@@ -34,7 +34,7 @@ module ActivityPub
     test 'verify key from remote server' do
       Actor.stub :find, @actor do
         assert_equal @actor.public_key.to_pem, @verification.public_key.to_pem
-        assert @verification.verified?, "key did not verify"
+        assert @verification.verified?, "'#{@verification.comparison}' \n\ncould not be verified by signature '#{@verification.signature}' \n\nwith key '#{@actor.public_key.to_pem}'"
         assert @verification.valid?
       end
     end
