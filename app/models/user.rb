@@ -24,7 +24,7 @@ class User < ApplicationRecord
   has_many :likes
   has_many :liked_tracks, through: :likes, as: :track, class_name: 'Track'
 
-  delegate :attributes, to: :actor, prefix: true
+  delegate :id, to: :actor, prefix: true
   delegate :as_webfinger, to: :actor
 
   friendly_id :name, use: %i[slugged finders]
