@@ -111,6 +111,7 @@ class User < ApplicationRecord
   def as_actor
     {
       name: name,
+      summary: display_name,
       host: host,
       key: key_pem,
       secret: encrypted_password

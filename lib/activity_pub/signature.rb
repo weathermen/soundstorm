@@ -1,37 +1,38 @@
 module ActivityPub
   # Signed String for ActivityPub traffic.
   class Signature
-    HEADERS = '(request-target) host date'
+    DEFAULT_HEADERS = '(request-target) host date'
 
-    attr_reader :actor, :date, :private_key, :digest
+    attr_reader :id, :host, :date, :key, :headers
 
-    delegate :host, :id, :private_key, to: :actor
-
-    def initialize(actor:, date:)
-      @actor = actor
+    def initialize(id:, host:, date:, key:, headers: DEFAULT_HEADERS)
+      @id = id
+      @host = host
       @date = date
-      @digest = OpenSSL::Digest::SHA256.new
+      @key = key
+      @headers = headers
     end
 
     # Unsigned contents of string.
     def to_unsigned_s
-      <<-STR
+      str = <<~STR
         (request-target): post /inbox
         host: https://#{host}
-        date: #{date}
+        date: #{date.httpdate}
       STR
+      str.strip
     end
 
     # Contents of signed string.
     def to_s
-      private_key.sign(digest, to_unsigned_s)
+      key.sign(ActivityPub.digest, to_unsigned_s)
     end
 
     # Attributes for signed string.
     def attributes
       {
         keyId: id,
-        headers: HEADERS,
+        headers: headers,
         signature: to_s
       }
     end

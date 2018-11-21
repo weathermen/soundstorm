@@ -5,18 +5,35 @@ module ActivityPub
     WEBFINGER_REL = 'self'
     WEBFINGER_CONTENT_TYPE = 'application/activity+json'
 
-    attr_reader :name, :type, :host, :secret, :summary, :private_key
+    attr_reader :name, :type, :host, :secret, :summary, :private_key, :params
 
     delegate :public_key, to: :private_key
     delegate :to_json, to: :as_json
     delegate :to_global_id, to: :user
 
-    def initialize(name:, type: DEFAULT_TYPE, host:, key:, secret:, summary:)
+    def initialize(name:, type: DEFAULT_TYPE, host:, key:, secret:, summary:, **params)
       @name = name
       @type = type
       @host = host
       @summary = summary
       @private_key = OpenSSL::PKey::RSA.new(key, secret)
+      @params = params
+    end
+
+    # Find an +Actor+ remotely by its ID, a fully-qualified path to the
+    # JSON for this actor on a remote server.
+    #
+    # @return [Actor] or +nil+ if none can be found
+    def self.find(id)
+      response = HTTP.get(id)
+      return unless response.success?
+      params = response.parse
+
+      new(
+        key: params['publicKey']['publicKeyPem'],
+        secret: nil,
+        **params.symbolize_keys
+      )
     end
 
     def user
@@ -71,7 +88,7 @@ module ActivityPub
     end
 
     def url_for(path)
-      "https://#{host}/#{name}/#{path}.json"
+      params[path.to_sym] || "https://#{host}/#{name}/#{path}.json"
     end
   end
 end

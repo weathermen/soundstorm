@@ -9,6 +9,7 @@ module ActivityPub
       @actor = Actor.new(
         host: 'test.host',
         name: 'actor',
+        summary: 'Actor',
         key: @private_key_pem,
         secret: 'passphrase'
       )
@@ -21,10 +22,6 @@ module ActivityPub
 
     test 'id' do
       assert_equal "https://test.host/actor", @actor.id
-    end
-
-    test 'inbox url' do
-      assert_equal "https://test.host/inbox", @actor.inbox_url
     end
 
     test 'type' do

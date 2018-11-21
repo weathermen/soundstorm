@@ -9,6 +9,7 @@ module ActivityPub
       @actor = Actor.new(
         host: 'test.host',
         name: 'actor',
+        summary: 'Actor',
         key: @private_key_pem,
         secret: 'passphrase'
       )

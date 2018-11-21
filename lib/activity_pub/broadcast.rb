@@ -6,6 +6,7 @@ module ActivityPub
     def initialize(message:, destination:)
       @message = message
       @destination = destination
+      @date = Time.current
     end
 
     def deliver
@@ -27,8 +28,10 @@ module ActivityPub
 
     def signature
       @signature ||= Signature.new(
-        actor: message.actor,
-        date: message.date
+        id: message.actor_id,
+        host: destination,
+        date: date,
+        key: message.actor_private_key
       )
     end
   end

@@ -47,7 +47,6 @@ gem 'rails-decorators'
 gem 'http'
 # Use Logstash and Kibana for logs
 gem 'logstasher'
-gem 'sidekiq-logstash'
 
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console
@@ -78,6 +77,8 @@ end
 group :production do
   # Use Sidekiq to run background jobs in production
   gem 'sidekiq'
+  # Send Sidekiq logs to Logstash
+  gem 'sidekiq-logstash'
   # Use Redis to store the Rack::Cache HTTP cache
   gem 'redis-rack-cache'
 end

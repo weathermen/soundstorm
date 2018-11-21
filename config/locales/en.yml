@@ -66,3 +66,5 @@ en:
     destroy:
       success: 'Deleted comment on "%{track}"'
       failure: 'Error deleting comment on %{track}: %{errors}'
+  versions:
+    unauthorized: Request signature could not be verified.

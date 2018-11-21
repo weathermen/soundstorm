@@ -16,7 +16,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
 ENV BUNDLE_PATH=/gems \
     GEM_HOME=/gems \
     BUNDLE_BIN=/gems/bin \
-    APP_PATH=/srv
+    APP_PATH=/srv \
     PATH=/usr/local/bundle/bin:$APP_PATH/bin:$BUNDLE_BIN:$PATH
 
 # Copy in application code

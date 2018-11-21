@@ -4,6 +4,8 @@ module ActivityPub
   class Message
     attr_reader :id, :type, :published, :actor, :payload
 
+    delegate :id, :private_key, to: :actor, prefix: true
+
     def initialize(id:, type:, published: nil, actor:, payload: )
       @id = id
       @type = type
@@ -28,10 +30,6 @@ module ActivityPub
 
     def attributes
       payload.merge(to: "#{ACTIVITYSTREAMS_NAMESPACE}#Public")
-    end
-
-    def signature
-      @signature ||= Signature.new(date: date, private_key: actor.private_key)
     end
   end
 end
