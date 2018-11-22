@@ -49,6 +49,8 @@ gem 'http'
 gem 'logstasher'
 # Provide OAuth with Doorkeepr
 gem 'doorkeeper'
+# Protect the application against malicious clients
+gem 'rack-attack'
 
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console

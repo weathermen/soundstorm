@@ -68,3 +68,5 @@ en:
       failure: 'Error deleting comment on %{track}: %{errors}'
   versions:
     unauthorized: Request signature could not be verified.
+  errors:
+    too_many_requests: Too Many Requests
