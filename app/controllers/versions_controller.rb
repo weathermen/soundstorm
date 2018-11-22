@@ -7,8 +7,13 @@ class VersionsController < ApplicationController
   end
 
   def create
-    @activity = ActivityPub::Activity.new(**activity_data, host: request.headers['Host'])
-    @user = User.find_or_create_by_actor_id(@activity.actor.id)
+    @activity = ActivityPub::Activity.new(
+      host: request.headers['Host'],
+      actor: actor_params.to_unsafe_h.deep_symbolize_keys,
+      object: object_params.to_unsafe_h.deep_symbolize_keys,
+      **activity_params.to_unsafe_h.deep_symbolize_keys
+    )
+    @user = User.find_or_create_by_actor_id(@activity.actor_id)
 
     UpdateActivityJob.perform_later(@user, @activity)
 
@@ -17,12 +22,16 @@ class VersionsController < ApplicationController
 
   private
 
-  def activity_data
-    activity_params.to_unsafe_h.deep_symbolize_keys.except(:controller, :action)
+  def activity_params
+    params.permit(:@context, :id, :type)
   end
 
-  def activity_params
-    params.permit! # TODO fix this
+  def actor_params
+    params.require(:actor).permit!
+  end
+
+  def object_params
+    params.require(:object).permit!
   end
 
   def verify_signature
