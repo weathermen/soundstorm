@@ -14,15 +14,15 @@ module ActivityPub
       @activity = Activity.new(
         id: @url,
         type: 'Create',
-        actor: @user.as_actor,
+        actor: @user.actor.as_json,
         object: @track.as_activity
       )
     end
 
     test 'attributes' do
-      assert_equal @activity.id, @activity.attributes[:id]
+      assert_equal @activity.activity_id, @activity.attributes[:id]
       assert_equal @activity.type, @activity.attributes[:type]
-      assert_equal @activity.actor.id, @activity.attributes[:actor]
+      assert_equal @activity.actor_id, @activity.attributes[:actor]
       assert_equal @activity.payload, @activity.attributes[:object]
     end
   end

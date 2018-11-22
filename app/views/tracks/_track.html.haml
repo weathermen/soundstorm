@@ -2,12 +2,12 @@
   %main
     .player__transport
       .player__button
-        = track_player_button track.audio.url
+        = track_player_button track.audio
       .player__duration
         .player__elapsed{ data: { target: 'elapsed' } } 00:00
         .player__left= track.duration
     .player__waveform
-      = image_tag track.waveform.url
+      -# TODO: = image_tag track.waveform.url
   %footer
     .player__comments
       = link_to [track.user, track] do

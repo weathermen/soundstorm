@@ -5,10 +5,18 @@ module ActivityPub
 
     attr_reader :activity_id, :type, :actor, :payload
 
+    delegate :to_json, to: :as_json
+    delegate :id, to: :actor, prefix: true
+
     def initialize(id:, type:, actor:, object:, host: nil, **options)
       @activity_id = id
       @type = type
-      @actor = actor.is_a?(String) ? Actor.find(actor) : Actor.from(actor, host: host)
+      @actor = case actor
+               when String
+                 Actor.find(actor)
+               when Hash
+                 Actor.from(actor, host: host)
+               end
       @payload = object
     end
 
@@ -27,9 +35,15 @@ module ActivityPub
       {
         id: activity_id,
         type: type,
-        actor: actor.id,
+        actor: actor_id,
         object: payload
       }
+    end
+
+    def as_json
+      attributes.reverse_merge(
+        '@context': ActivityPub::ACTIVITYSTREAMS_NAMESPACE
+      )
     end
   end
 end

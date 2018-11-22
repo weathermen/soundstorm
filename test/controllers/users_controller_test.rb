@@ -20,10 +20,11 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     json = JSON.parse(response.body.to_s).deep_symbolize_keys
     profile = user_url(@user, host: @user.host, protocol: 'https')
-    inbox = inbox_url(host: @user.host, protocol: 'https')
+    inbox = inbox_user_url(@user, host: @user.host, protocol: 'https', format: :json)
     key_id = user_url(@user, anchor: 'main-key', host: @user.host, protocol: 'https')
 
-    assert_equal Rails.configuration.activity_streams_context, json[:@context]
+    assert_includes json[:@context], ActivityPub::ACTIVITYSTREAMS_NAMESPACE
+    assert_includes json[:@context], ActivityPub::W3ID_NAMESPACE
     assert_equal profile, json[:id]
     assert_equal 'Person', json[:type]
     assert_equal @user.name, json[:preferredUsername]

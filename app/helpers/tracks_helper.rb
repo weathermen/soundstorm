@@ -1,7 +1,8 @@
 module TracksHelper
-  def track_player_button(url)
+  def track_player_button(audio)
     bindings = { target: 'player.button', action: 'click->player#toggle' }
 
-    button_to 'Play', track.audio.url, data: bindings
+    return unless audio.attached?
+    button_to 'Play', audio.url, data: bindings
   end
 end

@@ -27,7 +27,7 @@ class LikesController < ApplicationController
   end
 
   def destroy
-    @like = @track.likes.find_by(user: current_user)
+    @like = @track.likes.find_by!(user: current_user)
 
     respond_to do |format|
       if @like.destroy

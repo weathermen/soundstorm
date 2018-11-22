@@ -6,31 +6,39 @@ class TrackListenTest < ActiveSupport::TestCase
   end
 
   test 'unique by ip' do
-    ip = '192.168.1.1'
-    listen = @track.listens.create(ip_address: ip)
-
-    refute listen.valid?, "#{listen} is valid when it shouldn't be"
-
-    listen.ip_address = '192.168.1.4'
+    listen = @track.listens.create(ip_address: '71.185.223.138')
 
     assert listen.valid?, listen.errors.full_messages.to_sentence
+
+    listen = @track.listens.create(ip_address: '71.185.223.138')
+
+    refute listen.valid?
   end
 
   test 'unique by user' do
     user = users(:one)
     listen = @track.listens.create(
       user: user,
-      ip_address: '192.168.1.3'
+      ip_address: '71.185.223.138'
     )
 
-    refute listen.valid?, "#{listen} is valid when it shouldn't be"
-
-    listen.user = users(:two)
-
     assert listen.valid?, listen.errors.full_messages.to_sentence
 
-    listen.user = nil
+    listen = @track.listens.create(
+      user: user,
+      ip_address: '71.185.223.138'
+    )
 
-    assert listen.valid?, listen.errors.full_messages.to_sentence
+    refute listen.valid?
+  end
+
+  test 'must have valid ip' do
+    listen = @track.listens.create
+
+    refute listen.valid?
+
+    listen = @track.listens.create(user: users(:one))
+
+    refute listen.valid?
   end
 end

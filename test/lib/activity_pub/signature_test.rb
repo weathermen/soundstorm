@@ -29,8 +29,15 @@ module ActivityPub
     end
 
     test 'signed string' do
-      assert @signature.to_s.present?
-      assert @signature.key.verify(ActivityPub.digest, @signature.to_s, @signature.to_unsigned_s)
+      assert @signature.key.verify(
+        ActivityPub.digest,
+        @signature.to_signed_s,
+        @signature.to_unsigned_s
+      )
+    end
+
+    test 'encoded string' do
+      assert_equal Base64.encode64(@signature.to_signed_s), @signature.to_s
     end
 
     test 'attributes' do

@@ -19,13 +19,12 @@ module Soundstorm
       generate.assets false
     end
 
+    # Set the host from the $HOST environment variable. Use this
+    # configuration for other settings like the GlobalID app name and
+    # ActionMailer base URL host
     config.host = ENV.fetch('HOST', 'soundstorm.test')
     config.action_mailer.default_url_options = { host: config.host }
-
-    config.activity_streams_context = [
-      'https://www.w3.org/ns/activitystreams',
-      'https://w3id.org/security/v1'
-    ]
+    config.global_id.app = config.host
 
     config.page_cache_ttl = 15.minutes
   end

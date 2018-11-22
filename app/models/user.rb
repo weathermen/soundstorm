@@ -17,12 +17,11 @@ class User < ApplicationRecord
          :confirmable, :lockable, :timeoutable, :trackable #, :omniauthable
 
   has_many :tracks
-  has_many :follower_follows, class_name: 'Follow', as: :follower
-  has_many :following_follows, class_name: 'Follow', as: :following
-  has_many :followers, class_name: 'User', through: :follower_follows
-  has_many :following, class_name: 'User', through: :following_follows
+  has_many :follows, as: :follower
+  # has_many :followers, through: :follows, source: :follower
+  # has_many :following, through: :follows, source: :followed
   has_many :likes
-  has_many :liked_tracks, through: :likes, as: :track, class_name: 'Track'
+  has_many :liked_tracks, through: :likes, source: :track
 
   delegate :id, to: :actor, prefix: true
   delegate :as_webfinger, to: :actor
@@ -75,7 +74,7 @@ class User < ApplicationRecord
   # @param [User] user - User to follow
   # @return [Follow]
   def follow(user)
-    following_follows.create(follower: user)
+    follows.create(followed_id: user.id)
   end
 
   # Unfollow a given +User+.
@@ -83,7 +82,7 @@ class User < ApplicationRecord
   # @param [User] user - User to unfollow
   # @return [Boolean]
   def unfollow(user)
-    following_follows.find_by(follower: user).destroy
+    follows.find_by(followed_id: user.id).destroy
   end
 
   # Test if a +User+ is following this user.

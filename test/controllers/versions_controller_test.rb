@@ -8,6 +8,7 @@ class VersionsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'post activity to inbox' do
+    queue = ApplicationJob.queue_adapter
     host = 'other.host'
     date = Time.current.utc
     private_key_path = Rails.root.join('test', 'fixtures', 'files', 'actor.pem')
@@ -46,6 +47,8 @@ class VersionsControllerTest < ActionDispatch::IntegrationTest
         }
 
       assert_response :ok
+      refute_empty queue.enqueued_jobs
+      assert_includes queue.enqueued_jobs.map { |j| j[:job] }, UpdateActivityJob
     end
   end
 end
