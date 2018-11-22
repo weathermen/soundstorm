@@ -6,6 +6,10 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
+require 'activity_pub'
+require 'soundstorm/hub'
+require 'soundstorm/version'
+
 module Soundstorm
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
