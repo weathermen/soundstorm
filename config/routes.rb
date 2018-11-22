@@ -3,6 +3,18 @@ Rails.application.routes.draw do
   devise_for :users
   use_doorkeeper
 
+  # errors
+  {
+    unauthorized: 401,
+    payment_required: 402,
+    forbidden: 403,
+    not_found: 404,
+    too_many_requests: 429,
+    internal_server_error: 500
+  }.each do |id, status|
+    get "/#{status}", to: 'errors#show', id: id, as: id
+  end
+
   # rest api
   resource :search, only: %i[show]
   resources :tracks, except: %i[index show]

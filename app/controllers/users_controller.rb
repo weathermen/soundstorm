@@ -2,7 +2,7 @@ class UsersController < ApplicationController
   before_action :cache_page
 
   def show
-    @user = User.find_by(name: params[:id])
+    @user = User.find_by!(name: params[:id])
 
     respond_to do |format|
       format.html # show.html.haml

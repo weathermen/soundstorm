@@ -26,6 +26,10 @@ module Soundstorm
     config.action_mailer.default_url_options = { host: config.host }
     config.global_id.app = config.host
 
+    # Expire page caches in 15 minutes
     config.page_cache_ttl = 15.minutes
+
+    # Use the Rails app for rendering errors.
+    config.exceptions_app = routes
   end
 end

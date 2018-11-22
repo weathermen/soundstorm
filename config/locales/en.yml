@@ -69,4 +69,21 @@ en:
   versions:
     unauthorized: Request signature could not be verified.
   errors:
-    too_many_requests: Too Many Requests
+    unauthorized:
+      title: Unauthorized
+      message: Please log in to view this resource.
+    payment_required:
+      title: Payment Required
+      message: This resource requires payment before it can be accessed.
+    not_found:
+      title: Not Found
+      message: The file or resource you are looking for could not be found.
+    forbidden:
+      title: Forbidden
+      message: You are no longer allowed to access this resource.
+    too_many_requests:
+      title: Too Many Requests
+      message: Your request rate is too high.
+    internal_server_error:
+      title: Server Error
+      message: The server encountered an unknown error and cannot fulfill your request.
