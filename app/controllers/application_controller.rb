@@ -1,6 +1,7 @@
 class ApplicationController < ActionController::Base
   before_action :set_paper_trail_whodunnit, if: :user_signed_in?
   before_action :cache_page, only: :index
+  before_action :doorkeeper_authorize!, if: :api?
 
   after_action :set_headers
 
@@ -28,5 +29,9 @@ class ApplicationController < ActionController::Base
     response.headers['X-Flash-Messages'] = flash.to_json
     response.headers['X-Requested-With'] = request.headers['X-Requested-With'] || ''
     response.headers['Vary'] = 'X-Requested-With, X-Flash-Messages'
+  end
+
+  def api?
+    request.format == :json && !request.xhr?
   end
 end

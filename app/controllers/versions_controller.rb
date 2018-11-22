@@ -1,6 +1,11 @@
 class VersionsController < ApplicationController
   before_action :verify_signature
 
+  def index
+    @user = User.find(params[:user_id])
+    @activities = PaperTrail::Version.unpublished.where(whodunnit: @user)
+  end
+
   def create
     @activity = ActivityPub::Activity.new(**activity_data, host: request.headers['Host'])
     @user = User.find_or_create_by_actor_id(@activity.actor.id)

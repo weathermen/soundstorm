@@ -47,6 +47,8 @@ gem 'rails-decorators'
 gem 'http'
 # Use Logstash and Kibana for logs
 gem 'logstasher'
+# Provide OAuth with Doorkeepr
+gem 'doorkeeper'
 
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console

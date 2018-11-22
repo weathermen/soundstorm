@@ -79,6 +79,8 @@ GEM
       warden (~> 1.2.3)
     domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
+    doorkeeper (5.0.2)
+      railties (>= 4.2)
     erubi (1.7.1)
     execjs (2.7.0)
     ffi (1.9.25)
@@ -311,6 +313,7 @@ DEPENDENCIES
   capybara (>= 2.15, < 4.0)
   chromedriver-helper
   devise
+  doorkeeper
   friendly_id
   haml-lint
   hamlit-rails

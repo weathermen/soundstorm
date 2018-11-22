@@ -22,6 +22,13 @@ class User < ApplicationRecord
   # has_many :following, through: :follows, source: :followed
   has_many :likes
   has_many :liked_tracks, through: :likes, source: :track
+  has_many :access_grants, class_name: "Doorkeeper::AccessGrant",
+                           foreign_key: :resource_owner_id,
+                           dependent: :delete_all
+
+  has_many :access_tokens, class_name: "Doorkeeper::AccessToken",
+                           foreign_key: :resource_owner_id,
+                           dependent: :delete_all
 
   delegate :id, to: :actor, prefix: true
   delegate :as_webfinger, to: :actor

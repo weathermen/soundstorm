@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   # user management
   devise_for :users
+  use_doorkeeper
 
   # rest api
   resource :search, only: %i[show]
@@ -9,6 +10,7 @@ Rails.application.routes.draw do
   resources :users, path: '', only: %i[show] do
     member do
       post :inbox, to: 'versions#create'
+      get :outbox, to: 'versions#index'
     end
 
     resource :follow, only: %i[create destroy]

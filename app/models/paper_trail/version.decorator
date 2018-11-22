@@ -5,6 +5,8 @@ module PaperTrail
 
       delegate :followers, to: :whodunnit
       delegate :activity_id, :as_activity, to: :item
+
+      scope :unpublished, -> { where(broadcasted_at: nil) }
     end
 
     def type
@@ -21,8 +23,12 @@ module PaperTrail
       )
     end
 
+    def broadcasted?
+      broadcasted_at.present?
+    end
+
     def broadcast
-      BroadcastMessageJob.perform_later(self)
+      BroadcastMessageJob.perform_later(self) unless broadcasted?
     end
   end
 end
