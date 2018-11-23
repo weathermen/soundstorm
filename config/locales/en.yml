@@ -30,6 +30,10 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
+  activerecord:
+    attributes:
+      user:
+        name: Username
   layouts:
     application:
       title: Soundstorm
@@ -87,3 +91,8 @@ en:
     internal_server_error:
       title: Server Error
       message: The server encountered an unknown error and cannot fulfill your request.
+  registrations:
+    new:
+      title: Sign up for a Soundstorm account
+    create:
+      title: Sign up for a Soundstorm account

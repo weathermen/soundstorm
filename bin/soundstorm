@@ -6,7 +6,10 @@ case "$1" in
   test)
     docker-compose run web bin/rails test $* --build-arg RAILS_ENV=test
     ;;
+  logs)
+    docker-compose logs -f web
+    ;;
   *)
-    docker-compose run web bin/rails $*
+    docker-compose run web ./bin/rails $*
     ;;
 esac

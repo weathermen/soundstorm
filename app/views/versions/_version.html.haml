@@ -1,0 +1,4 @@
+.activity
+  .activity__user= link_to activity.user.name, activity.user
+  .activity__verb= activity.verb
+  .activity__item= link_to activity.item.name, [activity.user, activity.item]

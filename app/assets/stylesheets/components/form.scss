@@ -1,0 +1,20 @@
+.form {}
+.form__errors {}
+.form__fields {}
+.form__field {
+  margin-top: 1vh;
+
+  label {
+    display: block;
+  }
+}
+.form__hint {
+  display: block;
+}
+.form__actions {
+  margin-top: 2vh;
+}
+
+.form-links {
+  margin-top: 2vh;
+}

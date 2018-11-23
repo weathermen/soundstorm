@@ -19,7 +19,7 @@ class User < ApplicationRecord
   has_many :tracks
   has_many :follows, as: :follower
   # has_many :followers, through: :follows, source: :follower
-  # has_many :following, through: :follows, source: :followed
+  has_many :following, through: :follows, source: :followed
   has_many :likes
   has_many :liked_tracks, through: :likes, source: :track
   has_many :access_grants, class_name: "Doorkeeper::AccessGrant",
@@ -30,13 +30,13 @@ class User < ApplicationRecord
                            foreign_key: :resource_owner_id,
                            dependent: :delete_all
 
-  delegate :id, to: :actor, prefix: true
   delegate :as_webfinger, to: :actor
 
   friendly_id :name, use: %i[slugged finders]
 
   before_validation :generate_key, if: :encrypted_password_changed?
   before_validation :ensure_host
+  before_validation :ensure_display_name
 
   validates :name, presence: true, uniqueness: true
   validates :host, presence: true
@@ -150,6 +150,13 @@ class User < ApplicationRecord
     devise_mailer.send(notification, self, *args).deliver_later
   end
 
+  # All activity by users this user follows.
+  #
+  # @return [ActiveRecord::Relation]
+  def activities
+    PaperTrail::Version.where(whodunnit: following.map(&:to_global_id))
+  end
+
   private
 
   # Generate a private key for this +User+ when created or when the
@@ -169,10 +176,19 @@ class User < ApplicationRecord
     @cipher ||= OpenSSL::Cipher.new(KEY_CIPHER)
   end
 
-  # Ensure +:host+ is set to the configured host if not previously set.
+  # Ensure +:host+ is set to the local host if blank. Blank hosts mean
+  # the user was created locally, and thus should be assigned the local
+  # host in the DB.
   #
   # @private
   def ensure_host
     self.host = Rails.configuration.host if host.blank?
+  end
+
+  # Set the +display_name+ to the user's +name+ if not explicitly set.
+  #
+  # @private
+  def ensure_display_name
+    self.display_name ||= name
   end
 end
