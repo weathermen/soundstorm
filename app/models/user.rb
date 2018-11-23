@@ -16,10 +16,11 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :confirmable, :lockable, :timeoutable, :trackable #, :omniauthable
 
+  acts_as_follower
+  acts_as_followable
+
   has_many :tracks
   has_many :follows, as: :follower
-  # has_many :followers, through: :follows, source: :follower
-  has_many :following, through: :follows, source: :followed
   has_many :likes
   has_many :liked_tracks, through: :likes, source: :track
   has_many :access_grants, class_name: "Doorkeeper::AccessGrant",
@@ -76,30 +77,6 @@ class User < ApplicationRecord
     end
   end
 
-  # Follow a given +User+
-  #
-  # @param [User] user - User to follow
-  # @return [Follow]
-  def follow(user)
-    follows.create(followed_id: user.id)
-  end
-
-  # Unfollow a given +User+.
-  #
-  # @param [User] user - User to unfollow
-  # @return [Boolean]
-  def unfollow(user)
-    follows.find_by(followed_id: user.id).destroy
-  end
-
-  # Test if a +User+ is following this user.
-  #
-  # @param [User] user - Following user
-  # @return [Boolean]
-  def following?(user)
-    following.include?(user)
-  end
-
   # External ActivityPub ID for this User.
   #
   # @return [String] +username@domain.host+
@@ -154,7 +131,7 @@ class User < ApplicationRecord
   #
   # @return [ActiveRecord::Relation]
   def activities
-    PaperTrail::Version.where(whodunnit: following.map(&:to_global_id))
+    PaperTrail::Version.where(whodunnit: following)
   end
 
   private

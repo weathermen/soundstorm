@@ -2,14 +2,28 @@
 #
 # Run commands for the Soundstorm application within a Docker container.
 
+
 case "$1" in
-  test)
-    docker-compose run web bin/rails test $* --build-arg RAILS_ENV=test
+  init)     # build containers and set up the database
+    source .env
+    echo "$RAILS_PORT" > $HOME/.puma-dev/soundstorm
     ;;
-  logs)
+  logs)     # view web application logs
     docker-compose logs -f web
     ;;
-  *)
+  start)    # start all containers
+    docker-compose up -d
+    echo "Soundstorm has started at https://soundstorm.test"
+    ;;
+  stop)     # stop and remove running containers
+    docker-compose down
+    echo "Soundstorm has shut down"
+    ;;
+  restart)  # restart the web container
+    docker-compose restart web
+    echo "Soundstorm has restarted"
+    ;;
+  *)        # delegate unknown commands to ./bin/rails
     docker-compose run web ./bin/rails $*
     ;;
 esac

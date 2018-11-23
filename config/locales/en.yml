@@ -96,3 +96,10 @@ en:
       title: Sign up for a Soundstorm account
     create:
       title: Sign up for a Soundstorm account
+  follows:
+    create:
+      success: 'You are now following %{user}'
+      failure: 'Error following %{user}'
+    destroy:
+      success: 'You are no longer following %{user}'
+      failure: 'Error following %{user}'

@@ -41,7 +41,7 @@ services:
       - yarn_cache:/root/.yarn
       - bundle:/gems
     environment:
-      - DATABASE_URL=postgres://db/soundstorm_${RAILS_ENV}
+      - DOCKER=true
       - RAILS_ENV
       - SOUNDSTORM_ADMIN_USERNAME
       - SOUNDSTORM_ADMIN_EMAIL

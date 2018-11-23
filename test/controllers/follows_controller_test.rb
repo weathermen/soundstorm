@@ -9,7 +9,6 @@ class FollowsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'follow user' do
-    skip
     post user_follow_url(@followed)
 
     assert_nil flash[:alert]
@@ -18,8 +17,7 @@ class FollowsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'unfollow user' do
-    skip
-    @follower.follows.create!(followed: @followed)
+    @follower.follow(@followed)
     delete user_follow_url(@followed)
 
     assert_nil flash[:alert]

@@ -8,7 +8,7 @@ module PaperTrail
 
       scope :unpublished, -> { where(broadcasted_at: nil) }
 
-      alias_attribute :whodunnit, :user
+      alias_attribute :user, :whodunnit
     end
 
     def upload?

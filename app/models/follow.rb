@@ -1,18 +1,12 @@
 class Follow < ApplicationRecord
-  belongs_to :follower, class_name: 'User'
-  belongs_to :followed, class_name: 'User'
+  extend ActsAsFollower::FollowerLib
+  extend ActsAsFollower::FollowScopes
 
-  def activity_id
-    return unless persisted?
-    Rails.application.routes.url_helpers.user_follow_url(
-      follower, self, host: user.host
-    )
-  end
+  # NOTE: Follows belong to the "followable" and "follower" interface
+  belongs_to :followable, polymorphic: true
+  belongs_to :follower,   polymorphic: true
 
-  def as_activity
-    super.merge(
-      actor: follower.actor_id,
-      object: followed.actor_id
-    )
+  def block!
+    self.update_attribute(:blocked, true)
   end
 end
