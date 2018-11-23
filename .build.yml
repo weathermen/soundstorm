@@ -11,4 +11,4 @@ sources:
   - https://git.sr.ht/~tubbo/soundstorm
 tasks:
   - install: cd soundstorm && sudo ./bin/setup
-  - test: cd soundstorm && ./bin/rails test
+  - test: cd soundstorm && ./bin/rails lint test
