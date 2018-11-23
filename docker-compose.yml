@@ -9,8 +9,6 @@ services:
     image: postgres
     volumes:
       - postgresql:/var/lib/postgresql/data
-    networks:
-      - soundstorm
 
   # Redis is used in production to store the background job queue and
   # the various cached HTML and data used throughout the application.
@@ -31,7 +29,7 @@ services:
     build: .
     command: bin/rails server -p 3000 -b '0.0.0.0'
     ports:
-      - "${PORT}:3000"
+      - "${RAILS_PORT}:3000"
     depends_on:
       - db
       # - redis
@@ -44,11 +42,13 @@ services:
       - bundle:/gems
     environment:
       - DOCKER=true
+      - RAILS_ENV
+      - RAILS_MASTER_KEY
+      - RAILS_MAX_THREADS
+      - RAILS_LOG_TO_STDOUT
       - SOUNDSTORM_ADMIN_USERNAME
       - SOUNDSTORM_ADMIN_EMAIL
       - SOUNDSTORM_ADMIN_PASSWORD
-    networks:
-      - soundstorm
 
   # Background job processor for the application
   # sidekiq:
@@ -60,5 +60,3 @@ volumes:
   bundle:
   node_modules:
   yarn_cache:
-networks:
-  soundstorm:
