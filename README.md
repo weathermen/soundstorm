@@ -15,16 +15,23 @@ Make sure you have [Docker][] installed and run the following command to
 set up the database:
 
 ```bash
-$ docker-compose run web bin/setup
+$ ./bin/sandstorm init
 ```
+
+You'll notice that most directives occur using the `sandstorm` command.
+This is a shell script that lives in the `bin/` directory of this repo,
+and makes it easier to interface with Docker as well as AWS ECS CLI.
 
 ## Usage
 
 Start the application by launching all containers:
 
 ```bash
-$ docker-compose up -d
+$ ./bin/soundstorm start
 ```
+
+If you're running [puma-dev][], the application will be available at
+<https://soundstorm.test>. Otherwise, browse to <http://localhost:3000>
 
 Then, browse to <http://localhost:3000> and log in with
 `$SOUNDSTORM_ADMIN_USERNAME` and `$SOUNDSTORM_ADMIN_PASSWORD`, which
@@ -33,13 +40,13 @@ defaults to **admin** and **Password1!**.
 View logs at any time by running:
 
 ```bash
-$ docker-compose logs -f [web|db|redis|sidekiq]
+$ ./bin/soundstorm logs
 ```
 
 You can always turn the server off by running:
 
 ```bash
-$ docker-compose down
+$ ./bin/sandstorm stop
 ```
 
 ## Deploying
@@ -47,15 +54,7 @@ $ docker-compose down
 To build the application for use in production:
 
 ```bash
-$ docker-compose build web \
-  --build-arg RAILS_ENV=production \
-  --build-arg RAILS_MASTER_KEY=YOUR_MASTER_KEY
-```
-
-Then, push the image to your registry:
-
-```bash
-$ docker-compose push web
+$ ./bin/sandstorm deploy
 ```
 
 You can now pull the image down with your deployment tool of choice and
@@ -66,13 +65,13 @@ start the container.
 To run tests:
 
 ```bash
-docker-compose run web bin/rails test
+$ ./bin/sandstorm test [FILES] [OPTIONS]
 ```
 
 To run ESLint, StyleLint, and RuboCop lint checks:
 
 ```bash
-docker-compose run web bin/rails lint
+$ ./bin/sandstorm lint
 ```
 
 [ActivityPub]: https://www.w3.org/TR/activitypub/

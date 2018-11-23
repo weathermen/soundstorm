@@ -5,8 +5,10 @@
 
 case "$1" in
   init)     # build containers and set up the database
-    source .env
+    export RAILS_PORT="3$[${RANDOM}%1000]"
+    echo "RAILS_PORT=$RAILS_PORT" > $PWD/.env
     echo "$RAILS_PORT" > $HOME/.puma-dev/soundstorm
+    docker-compose run web bin/rails db:setup
     ;;
   logs)     # view web application logs
     docker-compose logs -f web
@@ -22,6 +24,9 @@ case "$1" in
   restart)  # restart the web container
     docker-compose restart web
     echo "Soundstorm has restarted"
+    ;;
+  build)
+    docker-compose build web
     ;;
   *)        # delegate unknown commands to ./bin/rails
     docker-compose run web ./bin/rails $*
