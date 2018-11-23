@@ -1,0 +1,57 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://stormhub.test/instances.json
+    body:
+      encoding: UTF-8
+      string: '{"instance":{"host":"soundstorm.test","version":"1.0.0"}}'
+    headers:
+      Connection:
+      - close
+      Content-Type:
+      - application/json; charset=UTF-8
+      Host:
+      - stormhub.test
+      User-Agent:
+      - http.rb/4.0.0
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Set-Cookie:
+      - _stormhub_session=V7sSys03EBJpLBXko25KNmXeM1KMuZKVKswbI27LvFmw69lCZ5E7ea1KVQKqosfSnxTrZ8SwctmEuuRT0WiT3DvTuyr7temzDsAwS95bOr9o8WI5dU1sriMWad2C4cBPgzqzp1g%2Bh349CP00aZPFptS%2BVkuZUJSUUGb%2F6%2F03a9w%3D--e%2BECQv2bdruykJu%2F--IWNADbq%2BOJwTjdHHdVjvnQ%3D%3D;
+        path=/; HttpOnly
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      X-Request-Id:
+      - 0a9c57b9-6ca8-469f-927a-ff370ef64d80
+      X-Runtime:
+      - '0.059453'
+      X-Xss-Protection:
+      - 1; mode=block
+      Date:
+      - Fri, 23 Nov 2018 04:08:12 GMT
+      Content-Length:
+      - '0'
+      Connection:
+      - close
+    body:
+      encoding: ASCII-8BIT
+      string: ''
+    http_version: 
+  recorded_at: Fri, 23 Nov 2018 04:08:12 GMT
+recorded_with: VCR 4.0.0

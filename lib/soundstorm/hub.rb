@@ -2,7 +2,7 @@ module Soundstorm
   # Methods for pinging the Soundstorm Hub
   module Hub
     # URL to create a new Instance on the hub
-    URL = 'https://stormhub.test/instances.json'
+    URL = 'http://stormhub.test/instances.json'
 
     # Parameters for the request.
     def self.params
@@ -12,10 +12,9 @@ module Soundstorm
       }
     end
 
-    # Ping the hub and error if it cannot make the request.
-    def self.ping!
-      response = HTTP.post(URL, instance: params)
-      raise "Error: #{response}" unless response.success?
+    # Ping the hub.
+    def self.ping
+      HTTP.post(URL, json: { instance: params })
     end
   end
 end

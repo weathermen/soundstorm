@@ -1,3 +1,4 @@
+# Protect against malicious clients.
 class Rack::Attack
   # Always allow requests from localhost
   safelist('ignore/localhost') do |req|
@@ -11,24 +12,27 @@ class Rack::Attack
 
   # Block non-XHR requests to the /:user/:track/listen endpoint.
   # Prevents gaming the listen count system.
-  blocklist('listen') do |req|
+  blocklist('block/listen') do |req|
     req.post? && req.path =~ /listen/ && !req.xhr?
   end
 
   # Throttle API requests if they reach over 60 rpm from a single IP
-  throttle('api', limit: 300, period: 5.minutes) do |req|
+  throttle('throttle/api', limit: 300, period: 5.minutes) do |req|
     req.ip if req.format == :json && !req.xhr?
   end
 
   # Throttle requests to media resources if they reach over 1 request
   # per minute
-  throttle('media', limit: 30, period: 30.minutes) do |req|
+  throttle('throttle/media', limit: 30, period: 30.minutes) do |req|
     req.ip if req.get? && req.path.end_with?('.mp3')
   end
 
+  # Render the blocked response as a 403 Forbidden error
   self.blocklisted_response = lambda do
     ErrorsController.render(:show, error: :forbidden)
   end
+
+  # Render the throttled response as a 429 Too Many Requests error
   self.throttled_response = lambda do
     ErrorsController.render(:show, error: :too_many_requests)
   end

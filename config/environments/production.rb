@@ -90,5 +90,5 @@ Rails.application.configure do
 
   # Ping the directory at https://hub.soundstorm.social after the app
   # initializes
-  config.after_initialize { Soundstorm::Hub.ping! }
+  config.after_initialize { Soundstorm::Hub.ping }
 end

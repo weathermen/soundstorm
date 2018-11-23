@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :cache_page
+  skip_before_action :doorkeeper_authorize!, only: :show
 
   def show
     @user = User.find_by!(name: params[:id])
