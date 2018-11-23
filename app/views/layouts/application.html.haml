@@ -8,6 +8,7 @@
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
   %body
+    = query_diet_widget if Rails.env.development?
     %header.header
       .header__logo
         = link_to app_title, root_path

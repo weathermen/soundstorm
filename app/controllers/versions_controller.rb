@@ -27,11 +27,28 @@ class VersionsController < ApplicationController
   end
 
   def actor_params
-    params.require(:actor).permit!
+    params.require(:actor).permit(
+      :@context,
+      :type,
+      :id,
+      :preferredUsername,
+      :name,
+      :summary,
+      publicKey: [:id, :owner, :publicKeyPem]
+    )
+  end
+
+  def param_keys_for(type)
+    case type
+    when 'Note'
+      [:id, :content]
+    else
+      [:id]
+    end
   end
 
   def object_params
-    params.require(:object).permit!
+    params.require(:object).permit(*param_keys_for(params[:object][:type]))
   end
 
   def verify_signature

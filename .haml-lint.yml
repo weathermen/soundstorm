@@ -3,4 +3,4 @@ exclude:
   - node_modules
 linters:
   LineLength:
-    max: 130
+    max: 90

@@ -52,6 +52,9 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
+    annotate (2.7.4)
+      activerecord (>= 3.2, < 6.0)
+      rake (>= 10.4, < 13.0)
     archive-zip (0.11.0)
       io-like (~> 0.3.0)
     arel (9.0.0)
@@ -75,6 +78,7 @@ GEM
     bindex (0.5.0)
     bootsnap (1.3.2)
       msgpack (~> 1.0)
+    brakeman (4.3.1)
     builder (3.2.3)
     byebug (10.0.2)
     capybara (3.10.1)
@@ -201,6 +205,7 @@ GEM
       pry (>= 0.10.4)
     public_suffix (3.0.3)
     puma (3.12.0)
+    query_diet (0.6.2)
     rack (2.0.6)
     rack-attack (5.4.2)
       rack (>= 1.0, < 3)
@@ -344,9 +349,11 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_follower!
+  annotate
   aws-sdk-s3
   bcrypt (~> 3.1.7)
   bootsnap (>= 1.1.0)
+  brakeman
   capybara (>= 2.15, < 4.0)
   chromedriver-helper
   devise
@@ -366,6 +373,7 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   puma (~> 3.11)
+  query_diet
   rack-attack
   rails (~> 5.2.0)
   rails-decorators
