@@ -3,12 +3,14 @@ module PaperTrail
     decorated do
       after_create :broadcast
 
-      delegate :followers, to: :whodunnit
+      delegate :followers, :actor, to: :user
       delegate :activity_id, :as_activity, to: :item
 
       scope :unpublished, -> { where(broadcasted_at: nil) }
+    end
 
-      alias_attribute :user, :whodunnit
+    def user
+      GlobalID::Locator.locate(whodunnit)
     end
 
     def upload?
@@ -29,7 +31,7 @@ module PaperTrail
         id: activity_id,
         type: type,
         published: created_at,
-        actor: whodunnit.actor,
+        actor: actor,
         payload: as_activity
       )
     end

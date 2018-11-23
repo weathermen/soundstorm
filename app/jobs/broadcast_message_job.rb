@@ -6,5 +6,6 @@ class BroadcastMessageJob < ApplicationJob
     version.followers.each do |follower|
       ActivityPub.deliver(version.message, to: follower.host)
     end
+    version.update!(broadcasted_at: Time.current)
   end
 end

@@ -1,13 +1,17 @@
 require 'test_helper'
 
 class BroadcastMessageJobTest < ActiveJob::TestCase
-  test 'broadcast message when changes occur' do
-    version = versions(:one)
-    message = version.message
-    host = version.whodunnit.followers.first.host
+  test 'broadcast activitypub message when changes occur' do
+    user = users(:one)
+    track = tracks(:one_untitled)
+    version = PaperTrail::Version.create!(
+      whodunnit: user,
+      item: track,
+      event: 'create'
+    )
 
-    ActivityPub.stub :deliver, message, to: host do
-      assert BroadcastMessageJob.perform_now(version)
-    end
+    assert_enqueued_jobs 1, only: BroadcastMessageJob
+    assert BroadcastMessageJob.perform_now(version)
+    assert version.broadcasted?
   end
 end
