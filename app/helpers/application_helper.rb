@@ -34,4 +34,23 @@ module ApplicationHelper
   def turblinks_javascript_tag(path, **options)
     javascript_pack_tag path, options.merge(data: { turbolinks_track: 'reload' })
   end
+
+  def nav_class(path)
+    css = ['navigation__link']
+    css << 'navigation__link--current' if current_page? path
+    css
+  end
+
+  def nav_link_to(*args, &block)
+    if block_given?
+      path = *args
+
+      link_to path, class: nav_class(path), &block
+    else
+      label, path = *args
+      text = t(label, scope: %i[layouts application nav])
+
+      link_to text, path, class: nav_class(path)
+    end
+  end
 end

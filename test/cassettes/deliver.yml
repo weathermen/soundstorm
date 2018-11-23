@@ -1,0 +1,44 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: http://soundstorm.test/
+    body:
+      encoding: UTF-8
+      string: '{"@context":"https://www.w3.org/ns/activitystreams","id":"12345","type":"Update","actor":"https://soundstorm.test/actor","object":{"type":"Note","content":"\u003cp\u003eHello
+        World\u003c/p\u003e","to":"https://www.w3.org/ns/activitystreams#Public"}}'
+    headers:
+      Host:
+      - http://soundstorm.test
+      Date:
+      - Fri, 23 Nov 2018 18:51:01 GMT
+      Signature:
+      - |-
+        keyId="https://soundstorm.test/actor",headers="(request-target) host date",signature="DrYuOZgyPhz0Z7br52xKtXmawc6eFwOy2OOVz27Dd9aGzUdyiMUnrPVxjciF
+        mzCb0p08hKeyQIWR5ma5gGnDab2x4re3jWPf9qjpzm0uTGoGPdT7jRtfWNqg
+        05X6vpO3FOOGvB1MUJPKGsgU4aZOuPXytU6hlO9IxBgiuOyKvT0OX8KcDk9n
+        VYNEt5Zaq9GnKtHARGVwQEgWIeISwfdlXclG2JyIs4+OT6Q1tTOjto8Ehm2a
+        pekCmjw8Wm8d2hTyPHy0I0WIJMsr4xxGlR008Q7/0BOFF5ZCXXk3pyL4GBhC
+        T7n1ixRI+vZl11QNbdNB2shpls7EyPQX2bqMMPG6hw==
+        "
+      Connection:
+      - close
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - http.rb/4.0.0
+  response:
+    status:
+      code: 400
+      message: Bad Request
+    headers:
+      Content-Type:
+      - text/plain; charset=utf-8
+      Connection:
+      - close
+    body:
+      encoding: UTF-8
+      string: 400 Bad Request
+    http_version: 
+  recorded_at: Fri, 23 Nov 2018 18:51:01 GMT
+recorded_with: VCR 4.0.0

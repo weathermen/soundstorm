@@ -10,8 +10,7 @@ module ActivityPub
     end
 
     def deliver
-      @response ||= request.post(destination, body: message.as_json)
-      @response.success?
+      @response ||= request.post(destination, json: message.as_json)
     end
 
     def request

@@ -12,35 +12,6 @@ class UsersController < ApplicationController
     end
   end
 
-  def follow
-    @user = User.find!(params[:id])
-    @follow = current_user.follow(@user)
-
-    respond_to do |format|
-      if @follow.persisted?
-        flash[:success] = t('.success', user: @user.name)
-        format.html { redirect_to user_path(@user) }
-        format.json { render json: @follow, status: :created }
-      else
-        errors = @follow.errors.full_messages.to_sentence
-        flash[:alert] = t('.failure', user: user.name, errors: errors)
-        format.html { redirect_to user_path(@user) }
-        format.json { render json: @follow.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  def unfollow
-    @user = User.find!(params[:id])
-    current_user.unfollow(@user)
-
-    respond_to do |format|
-      flash[:success] = t('.success', user: @user.name)
-      format.html { redirect_to user_path(@user) }
-      format.json { render json: @follow, status: :created }
-    end
-  end
-
   def webfinger
     @user = User.find_by_resource!(params[:resource])
 

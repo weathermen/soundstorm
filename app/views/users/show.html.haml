@@ -14,6 +14,6 @@
           %dt Tracks:
           %dd= @user.tracks.count
     %section.profile__buttons{ data: { controller: 'follow' } }
-      = follow_button @user
+      = follow_button @user if user_signed_in? && @user != current_user
   %main.profile__tracks
     = render @user.tracks

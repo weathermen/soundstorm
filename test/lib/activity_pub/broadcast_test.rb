@@ -3,12 +3,12 @@ require 'test_helper'
 module ActivityPub
   class BroadcastTest < ActiveSupport::TestCase
     setup do
-      @destination = 'https://destination.host'
+      @destination = 'http://soundstorm.test'
       @private_key_pem = Rails.root.join(
         'test', 'fixtures', 'files', 'actor.pem'
       ).read
       @actor = Actor.new(
-        host: 'test.host',
+        host: 'soundstorm.test',
         name: 'actor',
         summary: 'Actor',
         key: @private_key_pem,
@@ -27,9 +27,10 @@ module ActivityPub
     end
 
     test 'deliver' do
-      skip 'until we can use vcr'
-      assert @broadcast.deliver
-      assert_equal 200, @broadcast.response.code
+      VCR.use_cassette :deliver do
+        assert @broadcast.deliver
+        assert_equal 201, @broadcast.response.code
+      end
     end
 
     test 'headers' do

@@ -1,3 +1,5 @@
 %article.track
   %header.track__player= render 'tracks/track', track: @track
-  %main.track__comments= render 'comments/comment', collection: @track.comments
+  %main.track__comments
+    - @track.comments.each do |comment|
+      = render 'comments/comment', comment: comment

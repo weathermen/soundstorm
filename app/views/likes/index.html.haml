@@ -1,0 +1,6 @@
+%article.library
+  %header.library__title
+    %h1= t('.title')
+  %main.library__entries
+    - @likes.each do |track|
+      = render 'tracks/track', track: track

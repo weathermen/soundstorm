@@ -38,6 +38,10 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: %i[email display_name])
+    keys = %i[email display_name location]
+
+    %i[sign_up account_update].each do |action|
+      devise_parameter_sanitizer.permit(action, keys: keys)
+    end
   end
 end

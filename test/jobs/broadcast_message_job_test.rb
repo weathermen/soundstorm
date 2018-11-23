@@ -2,8 +2,6 @@ require 'test_helper'
 
 class BroadcastMessageJobTest < ActiveJob::TestCase
   test 'broadcast message when changes occur' do
-    skip
-
     version = versions(:one)
     message = version.message
     host = version.whodunnit.followers.first.host

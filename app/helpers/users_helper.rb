@@ -1,7 +1,7 @@
 module UsersHelper
   def follow_button(user)
     styles = ['profile__follow-button']
-    label = if current_user&.following_user?(user)
+    label = if current_user.following?(user)
               styles << 'profile__follow-button--clicked'
               t('.unfollow')
             else
@@ -17,5 +17,13 @@ module UsersHelper
     }
 
     button_to label, [@user, :follow], options
+  end
+
+  def devise_form_for(model, path, **options)
+    options.merge!(class: 'form')
+    url = send("#{path}_path", model)
+    form_for(model, as: resource_name, url: url, **options) do |form|
+      yield form
+    end
   end
 end

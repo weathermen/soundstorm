@@ -8,7 +8,9 @@
     = turbolinks_stylesheet_tag 'application', media: 'all'
     = turblinks_javascript_tag 'application'
   %body
-    = query_diet_widget if Rails.env.development?
+    - if Rails.env.development?
+      %section.developer-toolbar
+        = query_diet_widget
     %header.header
       .header__logo
         = link_to app_title, root_path
@@ -16,17 +18,18 @@
         = form_with url: search_path, method: :get do |f|
           = f.search_field :q, placeholder: 'Search...', autocomplete: 'off'
       .header__navigation
-        %nav
+        %nav.navigation
           - if user_signed_in?
-            = link_to t('.nav.timeline'), root_path
-            = link_to t('.nav.library'), likes_path
-            = link_to t('.nav.profile', name: current_user.name), current_user
-            = link_to t('.nav.settings'), edit_user_registration_path
-            = link_to destroy_user_session_path do
-              = t('.nav.logout', name: current_user.name)
+            = nav_link_to current_user do
+              = image_tag current_user.avatar if current_user.avatar.attached?
+              = t('.nav.profile', name: current_user.name)
+            = nav_link_to :timeline, root_path
+            = nav_link_to :library, likes_path
+            = nav_link_to :settings, edit_user_registration_path
+            = nav_link_to :logout, destroy_user_session_path
           - else
-            = link_to t('.nav.login'), new_user_session_path
-            = link_to t('.nav.signup'), new_user_registration_path
+            = nav_link_to t('.nav.login'), new_user_session_path
+            = nav_link_to t('.nav.signup'), new_user_registration_path
     %main.page
       %section.page__flash.flash-messages
         - flash.each do |type, message|

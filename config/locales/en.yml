@@ -40,9 +40,9 @@ en:
       nav:
         timeline: Timeline
         library: Library
-        profile: "Logged in as %{name}"
+        profile: "~%{name}"
         settings: Settings
-        logout: "Log out '%{name}'"
+        logout: Log out
         login: Log in
         signup: Sign up
   tracks:
@@ -94,11 +94,6 @@ en:
     internal_server_error:
       title: Server Error
       message: The server encountered an unknown error and cannot fulfill your request.
-  registrations:
-    new:
-      title: Sign up for a Soundstorm account
-    create:
-      title: Sign up for a Soundstorm account
   follows:
     create:
       success: 'You are now following %{user}'
@@ -106,3 +101,10 @@ en:
     destroy:
       success: 'You are no longer following %{user}'
       failure: 'Error following %{user}'
+  likes:
+    index:
+      title: Library
+  users:
+    show:
+      follow: Follow
+      unfollow: Unfollow

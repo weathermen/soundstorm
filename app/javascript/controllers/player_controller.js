@@ -78,10 +78,10 @@ export default class Player extends Controller {
   /**
    * Track playback by a given client.
    */
-  async track() {
+  track() {
     const method = "POST"
     const url = `${this.url}/listen`
 
-    await fetch(url, { method })
+    fetch(url, { method })
   }
 }

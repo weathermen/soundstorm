@@ -19,6 +19,8 @@ class User < ApplicationRecord
   acts_as_follower
   acts_as_followable
 
+  has_one_attached :avatar
+
   has_many :tracks
   has_many :follows, as: :follower
   has_many :likes
@@ -131,7 +133,11 @@ class User < ApplicationRecord
   #
   # @return [ActiveRecord::Relation]
   def activities
-    PaperTrail::Version.where(whodunnit: following)
+    PaperTrail::Version.where(whodunnit: followings.map(&:to_global_id))
+  end
+
+  def to_param
+    name
   end
 
   private

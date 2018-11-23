@@ -7,7 +7,7 @@
   %main.comment__content
     = comment.content
   %footer.comment__links
-    = link_to [:edit, comment.track.user, comment.track, comment]
+    = link_to [:edit, comment.track.user, comment.track, comment] do
       = t('.edit')
-    = link_to [comment.track.user, comment.track, comment], method: :delete
+    = link_to [comment.track.user, comment.track, comment], method: :delete do
       = t('.delete')
