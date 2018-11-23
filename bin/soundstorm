@@ -1,0 +1,12 @@
+#!/usr/local/bin/zsh
+#
+# Run commands for the Soundstorm application within a Docker container.
+
+case "$1" in
+  test)
+    docker-compose run web bin/rails test $* --build-arg RAILS_ENV=test
+    ;;
+  *)
+    docker-compose run web bin/rails $*
+    ;;
+esac

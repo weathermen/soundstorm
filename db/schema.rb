@@ -50,12 +50,12 @@ ActiveRecord::Schema.define(version: 2018_11_22_031009) do
   end
 
   create_table "follows", force: :cascade do |t|
-    t.bigint "follower_id"
     t.bigint "followed_id"
+    t.bigint "following_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["followed_id"], name: "index_follows_on_followed_id"
-    t.index ["follower_id"], name: "index_follows_on_follower_id"
+    t.index ["following_id"], name: "index_follows_on_following_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|

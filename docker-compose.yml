@@ -38,14 +38,11 @@ services:
     volumes:
       - .:/srv
       - node_modules:/node_modules
-      - yarn_cache:/root/.yarn-cache
+      - yarn_cache:/root/.yarn
       - bundle:/gems
     environment:
-      - DOCKER=true
+      - DATABASE_URL=postgres://db/soundstorm_${RAILS_ENV}
       - RAILS_ENV
-      - RAILS_MASTER_KEY
-      - RAILS_MAX_THREADS
-      - RAILS_LOG_TO_STDOUT
       - SOUNDSTORM_ADMIN_USERNAME
       - SOUNDSTORM_ADMIN_EMAIL
       - SOUNDSTORM_ADMIN_PASSWORD
