@@ -1,4 +1,4 @@
-= form_with model: comment, url: user_track_comments_url(comment.user, comment.track), class: 'form' do |f|
+= form_with model: [comment.user, comment], url: url, class: 'form' do |f|
   %main.form__fields
     .form__field
       = f.text_area :content

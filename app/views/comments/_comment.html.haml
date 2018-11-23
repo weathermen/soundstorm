@@ -2,9 +2,12 @@
   %header.comment__metadata
     %strong.comment__user= comment.user.name
     commented on
-    = link_to comment.created_at.to_s(:long), [comment.track.user, comment.track, comment]
+    = link_to [comment.track.user, comment.track, comment] do
+      = comment.created_at.to_s(:long)
   %main.comment__content
     = comment.content
   %footer.comment__links
-    = link_to 'Edit', [:edit, comment.track.user, comment.track, comment]
-    = link_to 'Delete', [comment.track.user, comment.track, comment], method: :delete
+    = link_to [:edit, comment.track.user, comment.track, comment]
+      = t('.edit')
+    = link_to [comment.track.user, comment.track, comment], method: :delete
+      = t('.delete')

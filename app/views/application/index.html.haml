@@ -6,5 +6,5 @@
     %p Soundstorm is a music sharing platform.
   %footer.splash__buttons
     %nav
-      = link_to t('layouts.application.nav.login'), new_user_session_path, class: 'button'
-      = link_to t('layouts.application.nav.signup'), new_user_registration_path, class: 'button'
+      = splash_link_to :login, new_user_session_path
+      = splash_link_to :signup, new_user_registration_path

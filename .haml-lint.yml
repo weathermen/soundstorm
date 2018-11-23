@@ -3,4 +3,5 @@ exclude:
   - node_modules
 linters:
   LineLength:
-    max: 90
+    exclude:
+      - app/views/devise/**/*

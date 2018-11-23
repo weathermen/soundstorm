@@ -1,4 +1,5 @@
-%section.player{ data: { controller: 'player', track: url_for([track.user, track]) } }
+- url = url_for([track.user, track])
+%section.player{ data: { controller: 'player', track: url } }
   %main
     .player__transport
       .player__button

@@ -70,6 +70,9 @@ en:
     destroy:
       success: 'Deleted comment on "%{track}"'
       failure: 'Error deleting comment on %{track}: %{errors}'
+    comment:
+      edit: Edit
+      delete: Delete
   versions:
     unauthorized: Request signature could not be verified.
   errors:

@@ -5,8 +5,8 @@
     = title_tag
     = csrf_meta_tags
     = csp_meta_tag
-    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
-    = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
+    = turbolinks_stylesheet_tag 'application', media: 'all'
+    = turblinks_javascript_tag 'application'
   %body
     = query_diet_widget if Rails.env.development?
     %header.header
@@ -22,7 +22,8 @@
             = link_to t('.nav.library'), likes_path
             = link_to t('.nav.profile', name: current_user.name), current_user
             = link_to t('.nav.settings'), edit_user_registration_path
-            = link_to t('.nav.logout', name: current_user.name), destroy_user_session_path
+            = link_to destroy_user_session_path do
+              = t('.nav.logout', name: current_user.name)
           - else
             = link_to t('.nav.login'), new_user_session_path
             = link_to t('.nav.signup'), new_user_registration_path

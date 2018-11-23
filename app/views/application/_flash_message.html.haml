@@ -2,4 +2,6 @@
   .flash-message__text
     %p= message
   .flash-message__close
-    %p= link_to '&times;'.html_safe, '#close', data: { action: 'click->flash#close' }
+    %p
+      = link_to '#close', data: { action: 'click->flash#close' } do
+        = '&times;'.html_safe
