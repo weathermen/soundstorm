@@ -88,4 +88,6 @@ group :production do
   gem 'sidekiq-logstash'
   # Use Redis to store the Rack::Cache HTTP cache
   gem 'redis-rack-cache'
+  # Store uploaded files to AWS S3
+  gem 'aws-sdk-s3'
 end
