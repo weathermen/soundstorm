@@ -8,7 +8,7 @@ module ActivityPub
         'test', 'fixtures', 'files', 'actor.pem'
       ).read
       @actor = Actor.new(
-        host: 'soundstorm.test',
+        host: 'test.host',
         name: 'actor',
         summary: 'Actor',
         key: @private_key_pem,
@@ -20,14 +20,17 @@ module ActivityPub
         actor: @actor,
         payload: {
           type: 'Note',
-          content: '<p>Hello World</p>'
+          content: 'Hello World'
         }
       )
       @broadcast = Broadcast.new(message: @message, destination: @destination)
     end
 
     test 'deliver' do
-      VCR.use_cassette :deliver do
+      response = Minitest::Mock.new
+      response.expect(:code, 201)
+
+      @broadcast.request.stub(:post, response) do
         assert @broadcast.deliver
         assert_equal 201, @broadcast.response.code
       end
