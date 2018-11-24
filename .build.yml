@@ -9,3 +9,4 @@ tasks:
   - init: cd soundstorm && ./bin/soundstorm init
   - start: cd soundstorm && ./bin/soundstorm start
   - test: cd soundstorm && ./bin/soundstorm lint test
+  - ship: cd soundstorm && ./bin/soundstorm ship

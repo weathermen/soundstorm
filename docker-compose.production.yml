@@ -1,0 +1,37 @@
+#
+# Production services configuration for Soundstorm. Adds the `redis` and
+# `sidekiq` services.
+
+version: '3'
+services:
+  # Speed up application deployment by launching an image rather than
+  # building a container, such as in development
+  web:
+    image: tubbo/soundstorm
+    volumes: []
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+    env_file: .env.production
+  # Redis stores the ephemeral Rails/HTTP cache and Sidekiq job queue
+  redis:
+    image: redis
+    volumes:
+      - redis:/data
+  # Background job processor for the application
+  sidekiq:
+    image: tubbo/soundstorm
+    command: bin/sidekiq -C config/sidekiq.yml
+    env_file: .env.production
+    depends_on:
+      - db
+      - redis
+      - web
+    env_file: .env.production
+  # Disable Mailcatcher in production
+  mailcatcher:
+    command: echo "Mailcatcher is disabled in production"
+volumes:
+  redis:

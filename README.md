@@ -51,33 +51,43 @@ $ ./bin/soundstorm stop
 
 ## Deploying
 
-Create a [Docker Machine][] for use with Soundstorm. You can use any
-driver supported by Docker, but for this example we'll be using Linode:
+The easiest way to deploy Soundstorm to production is by using a single
+[Docker Machine][] VM. In this example, you'll be creating a Docker
+Machine VM on AWS using their built-in driver, but you can use any
+driver supported by Docker Machine if you wish.
 
 ```bash
 $ docker-machine create soundstorm \
-  --driver linode \
-  --linode-token=$LINODE_API_KEY \
-  --linode-root-password=$LINODE_ROOT_PASSWORD
+  --driver aws \
+  --aws-access-key-id="YOUR AWS ACCESS KEY"
+  --aws-secret-access-key="YOUR AWS SECRET KEY"
 ```
 
-Make sure your new machine is running:
+Make sure the new `soundstorm` machine is running:
 
 ```bash
 $ docker-machine ls
 ```
 
-Then, run the following commands to build the application onto the VM:
+Then, run the following commands to build the application onto the VM
+and set up the database:
 
 ```bash
 $ eval "$(docker-machine env soundstorm)"
-$ ./bin/soundstorm deploy
+$ docker-compose up -d \
+    -f docker-compose.yml
+    -f docker-compose.production.yml
+$ docker-compose run web bin/rails db:update \
+  SOUNDSTORM_ADMIN_USERNAME="your-username" \
+  SOUNDSTORM_ADMIN_PASSWORD="your-password" \
+  SOUNDSTORM_ADMIN_EMAIL="a-valid@email.address" \
+  SOUNDSTORM_HOST="some.host"
 ```
 
-This should also run migrations (or create the database) and start the
-application. You should be able to route to this server as if it was
-just another Rails application server, exposing the port in your `.env`
-file.
+Once this is all completed, route your new VM with DNS to the domain
+specified in `$SOUNDSTORM_HOST`. You'll now be able to view your
+production instance and log in with the `$SOUNDSTORM_ADMIN_USERNAME` and
+`$SOUNDSTORM_ADMIN_PASSWORD` specified in config.
 
 ## Development
 

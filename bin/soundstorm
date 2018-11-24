@@ -6,8 +6,13 @@ case "$1" in
   init)     # build containers and set up the database
     export RAILS_PORT="3$((RANDOM%1000))"
     echo "RAILS_PORT=$RAILS_PORT" > "$PWD"/.env
-    echo "$RAILS_PORT" > "$HOME"/.puma-dev/soundstorm
-    docker-compose run web bin/rails db:setup
+    PUMA_DEV="$HOME/.puma-dev"
+    if [[ -d "$PUMA_DEV" ]]; then
+      if [[ -x "$PUMA_DEV/soundstorm" ]]; then
+        echo "$RAILS_PORT" > "$PUMA_DEV/soundstorm"
+      fi
+    fi
+    docker-compose run web bin/rails tmp:clear log:clear
     ;;
   logs)     # view web application logs
     docker-compose logs -f web
@@ -27,13 +32,9 @@ case "$1" in
   build)    # rebuild the web app image
     docker-compose build web
     ;;
-  deploy)   # build the application on production
-    docker-compose up -d
-      -f docker-compose.yml \
-      -f docker-compose.production.yml \
-      --build-arg RAILS_ENV="production"
-
-    docker-compose run web bin/rails db:update
+  ship)     # build and ship the production image to the registry
+    RAILS_ENV="production" docker-compose build web &&
+      docker-compose push web
     ;;
   *)        # delegate unknown commands to ./bin/rails
     docker-compose run web "./bin/rails $*"
