@@ -3,26 +3,31 @@ class FollowsController < ApplicationController
 
   def create
     @user = User.find_by!(name: params[:user_id])
-    @follow = current_user.follow(@user)
 
-    if current_user.follow(@user)
+    if current_user.follow!(@user)
       flash[:notice] = t('.success', user: @user.name)
     else
       flash[:alert] = t('.failure', user: @user.name)
     end
 
-    redirect_to @user
+    respond_to do |format|
+      format.html { redirect_to @user }
+      format.json { head :created }
+    end
   end
 
   def destroy
     @user = User.find_by!(name: params[:user_id])
 
-    if current_user.stop_following(@user)
+    if current_user.unfollow!(@user)
       flash[:notice] = t('.success', user: @user.name)
     else
       flash[:alert] = t('.failure', user: @user.name)
     end
 
-    redirect_to @user
+    respond_to do |format|
+      format.html { redirect_to @user }
+      format.json { head :ok }
+    end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_23_060855) do
+ActiveRecord::Schema.define(version: 2018_11_24_070020) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -50,17 +50,13 @@ ActiveRecord::Schema.define(version: 2018_11_23_060855) do
   end
 
   create_table "follows", force: :cascade do |t|
-    t.string "followable_type", null: false
-    t.bigint "followable_id", null: false
-    t.string "follower_type", null: false
-    t.bigint "follower_id", null: false
-    t.boolean "blocked", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string "follower_type"
+    t.integer "follower_id"
+    t.string "followable_type"
+    t.integer "followable_id"
+    t.datetime "created_at"
     t.index ["followable_id", "followable_type"], name: "fk_followables"
-    t.index ["followable_type", "followable_id"], name: "index_follows_on_followable_type_and_followable_id"
     t.index ["follower_id", "follower_type"], name: "fk_follows"
-    t.index ["follower_type", "follower_id"], name: "index_follows_on_follower_type_and_follower_id"
   end
 
   create_table "friendly_id_slugs", id: :serial, force: :cascade do |t|
@@ -76,12 +72,23 @@ ActiveRecord::Schema.define(version: 2018_11_23_060855) do
   end
 
   create_table "likes", force: :cascade do |t|
-    t.bigint "user_id"
-    t.bigint "track_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["track_id"], name: "index_likes_on_track_id"
-    t.index ["user_id"], name: "index_likes_on_user_id"
+    t.string "liker_type"
+    t.integer "liker_id"
+    t.string "likeable_type"
+    t.integer "likeable_id"
+    t.datetime "created_at"
+    t.index ["likeable_id", "likeable_type"], name: "fk_likeables"
+    t.index ["liker_id", "liker_type"], name: "fk_likes"
+  end
+
+  create_table "mentions", force: :cascade do |t|
+    t.string "mentioner_type"
+    t.integer "mentioner_id"
+    t.string "mentionable_type"
+    t.integer "mentionable_id"
+    t.datetime "created_at"
+    t.index ["mentionable_id", "mentionable_type"], name: "fk_mentionables"
+    t.index ["mentioner_id", "mentioner_type"], name: "fk_mentions"
   end
 
   create_table "oauth_access_grants", force: :cascade do |t|
@@ -148,6 +155,7 @@ ActiveRecord::Schema.define(version: 2018_11_23_060855) do
     t.integer "comments_count"
     t.integer "likes_count"
     t.integer "listens_count"
+    t.integer "likers", default: 0
     t.index ["slug"], name: "index_tracks_on_slug"
     t.index ["user_id"], name: "index_tracks_on_user_id"
   end
@@ -178,6 +186,9 @@ ActiveRecord::Schema.define(version: 2018_11_23_060855) do
     t.text "key_pem", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "followers", default: 0
+    t.integer "followees", default: 0
+    t.integer "tracks_count", default: 0
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -204,8 +215,6 @@ ActiveRecord::Schema.define(version: 2018_11_23_060855) do
 
   add_foreign_key "comments", "tracks"
   add_foreign_key "comments", "users"
-  add_foreign_key "likes", "tracks"
-  add_foreign_key "likes", "users"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
   add_foreign_key "track_listens", "tracks"

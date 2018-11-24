@@ -1,6 +1,5 @@
 class LikesController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_track, except: :index
   before_action :cache_page, only: :index
 
   def index
@@ -8,17 +7,16 @@ class LikesController < ApplicationController
   end
 
   def create
-    @like = @track.likes.build(user: current_user)
+    @track = Track.find(params[:track_id])
 
     respond_to do |format|
-      if @like.save
+      if current_user.like!(@track)
         flash[:notice] = t('.success', track: @track.name)
 
         format.html { redirect_to @track }
-        format.json { render json: @like, status: :created }
+        format.json { head :created }
       else
-        errors = @like.errors.full_messages.to_sentence
-        flash[:alert] = t('.failure', track: @track.name, errors: errors)
+        flash[:alert] = t('.failure', track: @track.name)
 
         format.html { redirect_to @track }
         format.json { head :unprocessable_entity }
@@ -27,25 +25,20 @@ class LikesController < ApplicationController
   end
 
   def destroy
-    @like = @track.likes.find_by!(user: current_user)
+    @track = Track.find(params[:track_id])
 
     respond_to do |format|
-      if @like.destroy
+      if current_user.unlike!(@track)
         flash[:notice] = t('.success', track: @track.name)
 
         format.html { redirect_to @track }
-        format.json { render json: @like, status: :created }
+        format.json { head :created }
       else
-        errors = @like.errors.full_messages.to_sentence
-        flash[:alert] = t('.failure', track: @track.name, errors: errors)
+        flash[:alert] = t('.failure', track: @track.name)
 
         format.html { redirect_to @track }
         format.json { head :unprocessable_entity }
       end
     end
-  end
-
-  def find_track
-    @track = Track.find(params[:track_id])
   end
 end

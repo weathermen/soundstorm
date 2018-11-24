@@ -17,7 +17,7 @@ class FollowsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'unfollow user' do
-    @follower.follow(@followed)
+    @follower.follow!(@followed)
     delete user_follow_url(@followed)
 
     assert_nil flash[:alert]

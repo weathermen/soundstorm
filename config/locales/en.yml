@@ -108,3 +108,7 @@ en:
     show:
       follow: Follow
       unfollow: Unfollow
+      followers: Followers
+      following: Following
+      tracks: Tracks
+      location: Location

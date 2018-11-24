@@ -1,11 +1,3 @@
-GIT
-  remote: https://github.com/tcocca/acts_as_follower.git
-  revision: c5ac7b9601c4af01eb4d9112330b27be4d694ecc
-  branch: master
-  specs:
-    acts_as_follower (0.2.1)
-      activerecord (>= 4.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -291,6 +283,8 @@ GEM
     sidekiq-logstash (1.0.0)
       logstash-event (~> 1.2)
       sidekiq (>= 3.0, < 6)
+    socialization (1.2.1)
+      activerecord
     spring (2.0.2)
       activesupport (>= 4.2)
     spring-watcher-listen (2.0.1)
@@ -348,7 +342,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  acts_as_follower!
   annotate
   aws-sdk-s3
   bcrypt (~> 3.1.7)
@@ -384,6 +377,7 @@ DEPENDENCIES
   selenium-webdriver
   sidekiq
   sidekiq-logstash
+  socialization
   spring
   spring-watcher-listen (~> 2.0.0)
   turbolinks (~> 5)

@@ -4,15 +4,16 @@ class Track < ApplicationRecord
 
   extend FriendlyId
 
-  belongs_to :user
+  belongs_to :user, counter_cache: true
 
   has_one_attached :audio
   has_many :listens, class_name: 'TrackListen', dependent: :destroy
-  has_many :likes, dependent: :destroy
   has_many :comments, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { scope: :user }
   validates :audio, presence: true
+
+  acts_as_likeable
 
   friendly_id :name, use: %i[slugged finders]
 

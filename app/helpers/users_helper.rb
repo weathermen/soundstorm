@@ -1,7 +1,11 @@
 module UsersHelper
+  def current_user_browsing?(user)
+    user_signed_in? && user == current_user
+  end
+
   def follow_button(user)
     styles = ['profile__follow-button']
-    label = if current_user.following?(user)
+    label = if current_user&.following?(user)
               styles << 'profile__follow-button--clicked'
               t('.unfollow')
             else

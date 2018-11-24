@@ -17,14 +17,14 @@ class User < ApplicationRecord
          :confirmable, :lockable, :timeoutable, :trackable #, :omniauthable
 
   acts_as_follower
+  acts_as_liker
+  acts_as_mentioner
   acts_as_followable
+  acts_as_mentionable
 
   has_one_attached :avatar
 
   has_many :tracks
-  has_many :follows, as: :follower
-  has_many :likes
-  has_many :liked_tracks, through: :likes, source: :track
   has_many :access_grants, class_name: "Doorkeeper::AccessGrant",
                            foreign_key: :resource_owner_id,
                            dependent: :delete_all
@@ -45,6 +45,12 @@ class User < ApplicationRecord
   validates :host, presence: true
   validates :display_name, presence: true
   validates :key_pem, presence: true, uniqueness: true
+
+  alias_attribute :likes_count, :likees_count
+
+  def likes
+    likees(Track)
+  end
 
   # Find a given +User+ record by its Webfinger resource string, and
   # throw an exception when the User cannot be found.

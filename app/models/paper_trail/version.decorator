@@ -3,10 +3,14 @@ module PaperTrail
     decorated do
       after_create :broadcast
 
-      delegate :followers, :actor, to: :user
+      delegate :actor, to: :user
       delegate :activity_id, :as_activity, to: :item
 
       scope :unpublished, -> { where(broadcasted_at: nil) }
+    end
+
+    def followers
+      user.followers(User)
     end
 
     def user

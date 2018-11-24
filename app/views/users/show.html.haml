@@ -5,15 +5,18 @@
     %section.profile__metadata
       %dl
         .profile__field
-          %dt Location:
+          %dt #{t('.location')}:
           %dd= @user.location
         .profile__field
-          %dt Followers:
-          %dd= @user.following_users_count
+          %dt #{t('.followers')}:
+          %dd= @user.followers(User).count
         .profile__field
-          %dt Tracks:
-          %dd= @user.tracks.count
+          %dt #{t('.following')}:
+          %dd= @user.followees(User).count
+        .profile__field
+          %dt #{t('.tracks')}:
+          %dd= @user.tracks_count
     %section.profile__buttons{ data: { controller: 'follow' } }
-      = follow_button @user if user_signed_in? && @user != current_user
+      = follow_button @user unless current_user_browsing?(@user)
   %main.profile__tracks
     = render @user.tracks

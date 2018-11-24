@@ -51,8 +51,8 @@ gem 'logstasher'
 gem 'doorkeeper'
 # Protect the application against malicious clients
 gem 'rack-attack'
-# Followers
-gem 'acts_as_follower', github: 'tcocca/acts_as_follower', branch: 'master'
+# Followers, likes, and mentions
+gem 'socialization'
 
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console
