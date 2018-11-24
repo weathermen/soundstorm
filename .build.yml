@@ -1,14 +1,11 @@
 image: alpine/edge
 packages:
-  - ruby
-  - ruby-dev
-  - nodejs
-  - postgresql
-  - postgresql-dev
-  - zlib
-  - zlib-dev
+  - docker
+  - py-pip
 sources:
   - https://git.sr.ht/~tubbo/soundstorm
 tasks:
-  - install: cd soundstorm && sudo ./bin/setup
-  - test: cd soundstorm && ./bin/rails lint test
+  - compose: pip install docker-compose
+  - init: ./soundstorm/bin/soundstorm init
+  - start: ./soundstorm/bin/soundstorm start
+  - test: ./soundstorm/bin/soundstorm lint test
