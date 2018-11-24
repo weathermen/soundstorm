@@ -1,7 +1,8 @@
-#!/usr/local/bin/zsh
+#!/bin/bash
 #
 # Run commands for the Soundstorm application within a Docker container.
 
+pushd "$(dirname $(dirname "${BASH_SOURCE[0]}"))"
 
 case "$1" in
   init)     # build containers and set up the database
@@ -25,10 +26,12 @@ case "$1" in
     docker-compose restart web
     echo "Soundstorm has restarted"
     ;;
-  build)
+  build)    # rebuild the web app image
     docker-compose build web
     ;;
   *)        # delegate unknown commands to ./bin/rails
     docker-compose run web ./bin/rails $*
     ;;
 esac
+
+popd
