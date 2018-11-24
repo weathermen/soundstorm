@@ -5,9 +5,13 @@ class Comment < ApplicationRecord
   belongs_to :track, counter_cache: true
   belongs_to :parent, class_name: 'Comment', optional: true
 
+  acts_as_mentioner
+
   validates :content, presence: true
 
   scope :roots, -> { where(parent: nil) }
+
+  after_create :notify_mentioned_users
 
   def root?
     parent.blank?
@@ -31,5 +35,17 @@ class Comment < ApplicationRecord
       inReplyTo: parent_activity_id,
       content: content
     )
+  end
+
+  def mentioned_users
+    comment.mentions(User)
+  end
+
+  private
+
+  def notify_mentioned_users
+    mentioned_users.each do |user|
+      UserMailer.mentioned(self, user).deliver_later
+    end
   end
 end

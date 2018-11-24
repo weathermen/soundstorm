@@ -112,3 +112,7 @@ en:
       following: Following
       tracks: Tracks
       location: Location
+  user_mailer:
+    mentioned:
+      subject: '@%{author} mentioned you in a comment'
+      view: View Comment
