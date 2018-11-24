@@ -38,7 +38,7 @@ class Comment < ApplicationRecord
   end
 
   def mentioned_users
-    comment.mentions(User)
+    mentions(User)
   end
 
   private

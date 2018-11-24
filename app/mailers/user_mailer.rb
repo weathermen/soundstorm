@@ -13,6 +13,6 @@ class UserMailer < ApplicationMailer
       author: @comment.user.name
     )
 
-    mail to: user.email subject: @subject
+    mail to: user.email, subject: @subject
   end
 end
