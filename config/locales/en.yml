@@ -50,6 +50,7 @@ en:
       likes: "%{count} likes"
       comments: "%{count} comments"
       listens: "%{count} listens"
+      play: Play
     new:
       title: New Track
       create: Create Track
@@ -105,6 +106,8 @@ en:
     index:
       title: Library
   users:
+    dashboard:
+      welcome: Welcome to Soundstorm!
     show:
       follow: Follow
       unfollow: Unfollow
@@ -116,3 +119,7 @@ en:
     mentioned:
       subject: '@%{author} mentioned you in a comment'
       view: View Comment
+  application:
+    index:
+      slogan: Share your music with the Fediverse.
+      about: Soundstorm is a music sharing platform.
