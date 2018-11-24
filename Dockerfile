@@ -14,15 +14,14 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
 
 # Set up environment
 ENV BUNDLE_PATH=/gems \
-    GEM_HOME=/gems \
     BUNDLE_BIN=/gems/bin \
     APP_PATH=/srv \
-    PATH=/usr/local/bundle/bin:$APP_PATH/bin:$BUNDLE_BIN:$PATH
+    PATH=/usr/local/bundle/bin:/srv/bin:/gems/bin:$PATH
 
 # Copy in application code
 RUN mkdir -p $APP_PATH
 WORKDIR $APP_PATH
 COPY . $APP_PATH
 
-# Install application dependencies before proceeding
+# Install application dependencies.
 ENTRYPOINT ["sh", "bin/entrypoint.sh"]

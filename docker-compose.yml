@@ -1,5 +1,6 @@
 #
-# Services configuration for Soundstorm
+# Base services configuration for Soundstorm. Used in development to
+# represent the bare minimum needed to run an instance of Soundstorm.
 #
 
 version: '3'
@@ -9,11 +10,6 @@ services:
     image: postgres
     volumes:
       - postgresql:/var/lib/postgresql/data
-
-  # Redis is used in production to store the background job queue and
-  # the various cached HTML and data used throughout the application.
-  # redis:
-  #   image: redis
 
   # In development, Mailcatcher is used to receive and process emails.
   # It can be accessed at http://localhost:1080.
@@ -32,7 +28,6 @@ services:
       - "${RAILS_PORT}:3000"
     depends_on:
       - db
-      # - redis
     links:
       - mailcatcher
     volumes:
@@ -42,15 +37,11 @@ services:
       - bundle:/gems
     environment:
       - DOCKER=true
+      - BUNDLE_APP_CONFIG=/srv/.bundle
       - RAILS_ENV
       - SOUNDSTORM_ADMIN_USERNAME
       - SOUNDSTORM_ADMIN_EMAIL
       - SOUNDSTORM_ADMIN_PASSWORD
-
-  # Background job processor for the application
-  # sidekiq:
-  #   <<: *rails
-  #   command: bin/bundle exec sidekiq -C config/sidekiq.yml
 
 volumes:
   postgresql:
