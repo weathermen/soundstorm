@@ -5,7 +5,7 @@ packages:
 sources:
   - https://git.sr.ht/~tubbo/soundstorm
 tasks:
-  - compose: pip install docker-compose --user
+  - compose: sudo pip install docker-compose
   - init: cd soundstorm && ./bin/soundstorm init
   - start: cd soundstorm && ./bin/soundstorm start
   - test: cd soundstorm && ./bin/soundstorm lint test
