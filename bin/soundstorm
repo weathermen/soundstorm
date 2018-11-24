@@ -2,13 +2,13 @@
 #
 # Run commands for the Soundstorm application within a Docker container.
 
-pushd "$(dirname $(dirname "${BASH_SOURCE[0]}"))"
+pushd "$(dirname "$(dirname "${BASH_SOURCE[0]}")")"
 
 case "$1" in
   init)     # build containers and set up the database
-    export RAILS_PORT="3$[${RANDOM}%1000]"
-    echo "RAILS_PORT=$RAILS_PORT" > $PWD/.env
-    echo "$RAILS_PORT" > $HOME/.puma-dev/soundstorm
+    export RAILS_PORT="3$((RANDOM%1000))"
+    echo "RAILS_PORT=$RAILS_PORT" > "$PWD"/.env
+    echo "$RAILS_PORT" > "$HOME"/.puma-dev/soundstorm
     docker-compose run web bin/rails db:setup
     ;;
   logs)     # view web application logs
@@ -29,8 +29,16 @@ case "$1" in
   build)    # rebuild the web app image
     docker-compose build web
     ;;
+  deploy)   # build the application on production
+    docker-compose up -d
+      -f docker-compose.yml \
+      -f docker-compose.production.yml \
+      --build-arg RAILS_ENV="production"
+
+    docker-compose run web bin/rails db:update
+    ;;
   *)        # delegate unknown commands to ./bin/rails
-    docker-compose run web ./bin/rails $*
+    docker-compose run web "./bin/rails $*"
     ;;
 esac
 

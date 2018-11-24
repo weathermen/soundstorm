@@ -12,13 +12,13 @@ The Federated Music Platform.
 ## Installation
 
 Make sure you have [Docker][] installed and run the following command to
-set up the database:
+set up the database and build initial containers:
 
 ```bash
-$ ./bin/sandstorm init
+$ ./bin/soundstorm init
 ```
 
-You'll notice that most directives occur using the `sandstorm` command.
+You'll notice that most directives occur using the `soundstorm` command.
 This is a shell script that lives in the `bin/` directory of this repo,
 and makes it easier to interface with Docker as well as AWS ECS CLI.
 
@@ -43,35 +43,54 @@ View logs at any time by running:
 $ ./bin/soundstorm logs
 ```
 
-You can always turn the server off by running:
+You can always stop the application locally by running:
 
 ```bash
-$ ./bin/sandstorm stop
+$ ./bin/soundstorm stop
 ```
 
 ## Deploying
 
-To build the application for use in production:
+Create a [Docker Machine][] for use with Soundstorm. You can use any
+driver supported by Docker, but for this example we'll be using Linode:
 
 ```bash
-$ ./bin/sandstorm deploy
+$ docker-machine create soundstorm \
+  --driver linode \
+  --linode-token=$LINODE_API_KEY \
+  --linode-root-password=$LINODE_ROOT_PASSWORD
 ```
 
-You can now pull the image down with your deployment tool of choice and
-start the container.
+Make sure your new machine is running:
+
+```bash
+$ docker-machine ls
+```
+
+Then, run the following commands to build the application onto the VM:
+
+```bash
+$ eval "$(docker-machine env soundstorm)"
+$ ./bin/soundstorm deploy
+```
+
+This should also run migrations (or create the database) and start the
+application. You should be able to route to this server as if it was
+just another Rails application server, exposing the port in your `.env`
+file.
 
 ## Development
 
 To run tests:
 
 ```bash
-$ ./bin/sandstorm test [FILES] [OPTIONS]
+$ ./bin/soundstorm test [FILES] [OPTIONS]
 ```
 
 To run ESLint, StyleLint, and RuboCop lint checks:
 
 ```bash
-$ ./bin/sandstorm lint
+$ ./bin/soundstorm lint
 ```
 
 [ActivityPub]: https://www.w3.org/TR/activitypub/
