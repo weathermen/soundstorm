@@ -46,11 +46,17 @@ case "$1" in
     echo "Soundstorm has restarted"
     ;;
   # build and ship the production image to the registry
-  ship)
-    RAILS_ENV="production" docker-compose build web &&
+  release)
+    COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
+      docker-compose build --build-arg RAILS_ENV=production web &&
       docker-compose push web
     ;;
-  "")
+  # run ECS commands
+  production)
+    COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
+      ecs-cli compose "$*"
+    ;;
+  help|"")
     echo "Usage: bin/soundstorm [COMMAND]"
     echo
     echo "Commands:"
@@ -59,7 +65,10 @@ case "$1" in
     echo "  start           Start the application"
     echo "  stop            Stop the application"
     echo "  restart         Restart the web server"
-    echo "  ship            Publish a new version of Soundstorm"
+    echo "  release         Publish a new version of Soundstorm"
+    echo "  deploy          Deploy production services to AWS ECS"
+    echo "  production      Run ECS commands on production"
+    echo "  help            Show this message"
     echo
     echo "If a command is unknown, it is delegated to bin/rails on the web container"
     echo "To deploy to production, prefix commands with RAILS_ENV=production"

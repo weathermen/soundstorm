@@ -13,7 +13,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
     && apt-get install -y build-essential libpq-dev nodejs yarn
 
 # Set the $RAILS_ENV externally, defaults to "development"
-ARG RAILS_ENV="development"
+ARG RAILS_ENV
 
 # Set the $RAILS_MASTER_KEY externally for opening the credentials file
 ARG RAILS_MASTER_KEY
@@ -30,7 +30,7 @@ WORKDIR $APP_PATH
 COPY . $APP_PATH
 
 # Install application dependencies.
-RUN  [ $RAILS_ENV == "production" ] && \
-      ./bin/bundle --path=/gems --quiet && \
-      ./bin/yarn --module-path=/node_modules --silent
+RUN if [ "$RAILS_ENV" = "production" ]; then \
+      ./bin/bundle --path=/gems && ./bin/yarn --module-path=/node_modules; \
+    fi
 ENTRYPOINT ["sh", "bin/entrypoint.sh"]
