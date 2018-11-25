@@ -37,6 +37,6 @@ case "$1" in
       docker-compose push web
     ;;
   *)        # delegate unknown commands to ./bin/rails
-    docker-compose run web "./bin/rails $*"
+    docker-compose run web "bin/rails $*"
     ;;
 esac

@@ -21,7 +21,7 @@ services:
   # The "majestic monolith" that powers Soundstorm, a Rails application
   # serving HTML (for the most part) and containing all of the logic
   # needed to run a Soundstorm instance.
-  web: &rails
+  web:
     build: .
     command: bin/rails server -p 3000 -b '0.0.0.0'
     ports:
