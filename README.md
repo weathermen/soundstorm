@@ -20,7 +20,8 @@ $ ./bin/soundstorm init
 
 You'll notice that most directives occur using the `soundstorm` command.
 This is a shell script that lives in the `bin/` directory of this repo,
-and makes it easier to interface with Docker as well as AWS ECS CLI.
+and makes it easier to interface with [Docker Compose][] as a developer or
+administrator of a Soundstorm instance.
 
 ## Usage
 
@@ -53,14 +54,21 @@ $ ./bin/soundstorm stop
 
 The easiest way to deploy Soundstorm to production is by using a single
 [Docker Machine][] VM. In this example, you'll be creating a Docker
-Machine VM on AWS using their built-in driver, but you can use any
-driver supported by Docker Machine if you wish.
+Machine VM with the built-in **amazonec2** driver, but you can use any
+other driver supported by Docker Machine (and installed onto your
+computer) if you wish.
+
+First, create an AWS user with programmatic access, and enable their
+access to creating EC2 instances. Then, run the following command to
+create the new VM that will act as the remote Docker daemon:
 
 ```bash
 $ docker-machine create soundstorm \
-  --driver aws \
-  --aws-access-key-id="YOUR AWS ACCESS KEY"
-  --aws-secret-access-key="YOUR AWS SECRET KEY"
+  --driver amazonec2 \
+  --amazonec2-access-key "YOUR AWS ACCESS KEY ID" \
+  --amazonec2-secret-key "YOUR AWS SECRET ACCESS KEY" \
+  --amazonec2-ssh-keypath ~/.ssh/id_rsa \
+  --amazonec2-instance-type t3.xlarge
 ```
 
 Make sure the new `soundstorm` machine is running:
@@ -69,8 +77,11 @@ Make sure the new `soundstorm` machine is running:
 $ docker-machine ls
 ```
 
-Then, run the following commands to build the application onto the VM
-and set up the database:
+Then, build the application onto the machine and set up the database.
+The first command in the list below will set the `$DOCKER_HOST` variable
+to the remote server, enabling all future `docker-compose` commands to
+run on the VM you created in the previous step. The rest build the
+application's containers onto the VM and set up the remote database.
 
 ```bash
 $ eval "$(docker-machine env soundstorm)"
@@ -105,3 +116,5 @@ $ ./bin/soundstorm lint
 
 [ActivityPub]: https://www.w3.org/TR/activitypub/
 [Docker]: https://www.docker.com/
+[Docker Compose]: https://docs.docker.com/compose/
+[Docker Machine]: https://docs.docker.com/machine/
