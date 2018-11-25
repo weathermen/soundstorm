@@ -3,7 +3,8 @@
 # Run commands for the Soundstorm application within a Docker container.
 
 case "$1" in
-  init)     # build containers and set up the database
+  # build containers and set up the database
+  init)
     export RAILS_PORT="3$((RANDOM%1000))"
     echo "RAILS_PORT=$RAILS_PORT" > "$PWD"/.env
     PUMA_DEV="$HOME/.puma-dev"
@@ -14,29 +15,57 @@ case "$1" in
     fi
     docker-compose run web bin/rails tmp:clear log:clear
     ;;
-  logs)     # view web application logs
-    docker-compose logs -f web
+  # view logs for a given service, default is "web"
+  logs)
+    if [ -z "$2" ]; then
+      service="web"
+    else
+      service="$2"
+    fi
+
+    docker-compose logs -f "$service"
     ;;
-  start)    # start all containers
+  # start all containers
+  start)
     docker-compose up -d
-    echo "Soundstorm has started at https://soundstorm.test"
+
+    if [[ -f "$PUMA_DEV/soundstorm" ]]; then
+      echo "Soundstorm has started at https://soundstorm.test"
+    else
+      echo "Soundstorm has started at http://localhost.test:$RAILS_PORT"
+    fi
     ;;
-  stop)     # stop and remove running containers
+  # stop and remove running containers
+  stop)
     docker-compose down
     echo "Soundstorm has shut down"
     ;;
-  restart)  # restart the web container
+  # restart the web container
+  restart)
     docker-compose restart web
     echo "Soundstorm has restarted"
     ;;
-  build)    # rebuild the web app image
-    docker-compose build web
-    ;;
-  ship)     # build and ship the production image to the registry
+  # build and ship the production image to the registry
+  ship)
     RAILS_ENV="production" docker-compose build web &&
       docker-compose push web
     ;;
-  *)        # delegate unknown commands to ./bin/rails
+  "")
+    echo "Usage: bin/soundstorm [COMMAND]"
+    echo
+    echo "Commands:"
+    echo "  init            Initialize your local environment to run Soundstorm"
+    echo "  logs [SERVICE]  View logs for a given service. (default: web)"
+    echo "  start           Start the application"
+    echo "  stop            Stop the application"
+    echo "  restart         Restart the web server"
+    echo "  ship            Publish a new version of Soundstorm"
+    echo
+    echo "If a command is unknown, it is delegated to bin/rails on the web container"
+    echo "To deploy to production, prefix commands with RAILS_ENV=production"
+    ;;
+  # delegate task commands to ./bin/rails
+  *)
     docker-compose run web bin/rails "$*"
     ;;
 esac
