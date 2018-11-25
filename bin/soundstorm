@@ -52,7 +52,9 @@ case "$1" in
     ;;
   # release the production image to Docker Hub
   release)
-    soundstorm build && docker-compose push web
+    COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
+      docker-compose build --build-arg RAILS_ENV=production web &&
+      docker-compose push web
     ;;
   # run ECS commands
   production)
@@ -74,7 +76,6 @@ case "$1" in
     echo "  help            Show this message"
     echo
     echo "If a command is unknown, it is delegated to bin/rails on the web container"
-    echo "To deploy to production, prefix commands with RAILS_ENV=production"
     ;;
   # delegate task commands to ./bin/rails
   *)

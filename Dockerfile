@@ -15,13 +15,11 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
 # Set the $RAILS_ENV externally, defaults to "development"
 ARG RAILS_ENV
 
-# Set the $RAILS_MASTER_KEY externally for opening the credentials file
-ARG RAILS_MASTER_KEY
-
 # Set up environment
 ENV BUNDLE_PATH=/gems \
     BUNDLE_BIN=/gems/bin \
     APP_PATH=/srv \
+    RAILS_ENV=$RAILS_ENV \
     PATH=/usr/local/bundle/bin:/srv/bin:/gems/bin:$PATH
 
 # Copy in application code

@@ -23,8 +23,11 @@ services:
   # ENTRYPOINT, however, so as not to depend the entire app on the
   # database being fully up.
   web:
+    build:
+      context: .
+      args:
+        - RAILS_ENV=production
     image: tubbo/soundstorm
-    command: bin/rails server -p 3000 -b '0.0.0.0'
     volumes: []
     ports:
       - "3000:3000"
@@ -35,7 +38,10 @@ services:
       - .env.production
       - .env.secrets
 
-  # Background job processor for the application
+  # Background job processor for the application, running background
+  # jobs within the Rails context. This container will always use the
+  # same image as +web+, ensuring that both services are launched with
+  # the same codebase.
   sidekiq:
     image: tubbo/soundstorm
     command: bin/bundle exec sidekiq -C config/sidekiq.yml
