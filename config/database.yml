@@ -82,6 +82,4 @@ test:
 #
 production:
   <<: *default
-  database: soundstorm_production
-  username: soundstorm
-  password: <%= Rails.application.credentials.database_password %>
+  url: <%= ENV["DATABASE_URL"] %>

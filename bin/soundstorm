@@ -45,11 +45,14 @@ case "$1" in
     docker-compose restart web
     echo "Soundstorm has restarted"
     ;;
-  # build and ship the production image to the registry
-  release)
+  # build a production image of Soundstorm
+  build)
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
-      docker-compose build --build-arg RAILS_ENV=production web &&
-      docker-compose push web
+      docker-compose build --build-arg RAILS_ENV=production web
+    ;;
+  # release the production image to Docker Hub
+  release)
+    soundstorm build && docker-compose push web
     ;;
   # run ECS commands
   production)

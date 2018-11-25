@@ -6,6 +6,16 @@
 
 version: '3'
 services:
+  # Redis stores the ephemeral Rails/HTTP cache and Sidekiq job queue
+  redis:
+    image: redis
+    volumes:
+      - redis:/data
+
+  # Disable Mailcatcher in production
+  mailcatcher:
+    command: echo "Mailcatcher is disabled in production"
+
   # Speed up application deployment by launching an image rather than
   # building a full container, such as in development. Dependencies are
   # also preloaded onto the image and the entrypoint script for
@@ -14,36 +24,28 @@ services:
   # database being fully up.
   web:
     image: tubbo/soundstorm
-    env_file: .env.production
+    command: bin/rails server -p 3000 -b '0.0.0.0'
     volumes: []
     ports:
       - "3000:3000"
     depends_on:
       - db
       - redis
-    environment:
-      - RAILS_MASTER_KEY
-
-  # Redis stores the ephemeral Rails/HTTP cache and Sidekiq job queue
-  redis:
-    image: redis
-    volumes:
-      - redis:/data
+    env_file:
+      - .env.production
+      - .env.secrets
 
   # Background job processor for the application
   sidekiq:
     image: tubbo/soundstorm
-    env_file: .env.production
-    command: bin/sidekiq -C config/sidekiq.yml
+    command: bin/bundle exec sidekiq -C config/sidekiq.yml
     depends_on:
       - db
       - redis
       - web
-    environment:
-      - RAILS_MASTER_KEY
+    env_file:
+      - .env.production
+      - .env.secrets
 
-  # Disable Mailcatcher in production
-  mailcatcher:
-    command: echo "Mailcatcher is disabled in production"
 volumes:
   redis:
