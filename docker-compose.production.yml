@@ -57,10 +57,8 @@ services:
       - "80:80"
     volumes:
       - code:/srv
+      - ./config/nginx.conf:/etc/nginx/sites.d/soundstorm.conf
       - ./config/ssl:/etc/ssl
-    configs:
-      - source: config/nginx.conf
-        target: /etc/nginx/sites.d/soundstorm.conf
 
 volumes:
   redis:
