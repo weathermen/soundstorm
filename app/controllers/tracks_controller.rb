@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TracksController < ApplicationController
   before_action :authenticate_user!, except: %i[index show listen]
   before_action :cache_page, only: :show

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class UpdateActivityJobTest < ActiveJob::TestCase
@@ -17,7 +19,7 @@ class UpdateActivityJobTest < ActiveJob::TestCase
       user = User.find_or_create_by_actor_id(actor.id)
       track = tracks(:one_untitled)
       activity = ActivityPub::Activity.new(
-        id: "https://test.host/one/untitled/comments/123",
+        id: 'https://test.host/one/untitled/comments/123',
         type: 'Note',
         actor: actor.id,
         object: {

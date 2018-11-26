@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module UsersHelper
   def current_user_browsing?(user)
     user_signed_in? && user == current_user
@@ -24,7 +26,7 @@ module UsersHelper
   end
 
   def devise_form_for(model, path, **options)
-    options.merge!(class: 'form')
+    options[:class] = 'form'
     url = send("#{path}_path", model)
     form_for(model, as: resource_name, url: url, **options) do |form|
       yield form

@@ -83,6 +83,7 @@ case "$1" in
     ;;
   # delegate task commands to ./bin/rails
   *)
-    docker-compose run web bin/rails "$*"
+    COMPOSE_FILE="docker-compose.yml:docker-compose.development.yml" \
+      docker-compose run web bin/rails "$*"
     ;;
 esac

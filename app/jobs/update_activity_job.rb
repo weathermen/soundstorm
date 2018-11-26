@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class UpdateActivityJob < ApplicationJob
   queue_as :federation
 

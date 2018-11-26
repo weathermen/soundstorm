@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActivityPub
   # Signed String for ActivityPub traffic.
   class Signature

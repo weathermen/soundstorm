@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActivityPub
   # Represents the entity that creates activity messages.
   class Actor

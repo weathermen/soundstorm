@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Authentication object for the application. Also holds personal details
 # like display name and private key information for identifying over
 # ActivityPub/Webfinger.
@@ -14,7 +16,7 @@ class User < ApplicationRecord
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :confirmable, :lockable, :timeoutable, :trackable #, :omniauthable
+         :confirmable, :lockable, :timeoutable, :trackable # , :omniauthable
 
   acts_as_follower
   acts_as_liker
@@ -24,11 +26,11 @@ class User < ApplicationRecord
   has_one_attached :avatar
 
   has_many :tracks
-  has_many :access_grants, class_name: "Doorkeeper::AccessGrant",
+  has_many :access_grants, class_name: 'Doorkeeper::AccessGrant',
                            foreign_key: :resource_owner_id,
                            dependent: :delete_all
 
-  has_many :access_tokens, class_name: "Doorkeeper::AccessToken",
+  has_many :access_tokens, class_name: 'Doorkeeper::AccessToken',
                            foreign_key: :resource_owner_id,
                            dependent: :delete_all
 

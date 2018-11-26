@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Create initial admin user
 User.create!(
   name: ENV.fetch('SOUNDSTORM_ADMIN_USERNAME', 'admin'),

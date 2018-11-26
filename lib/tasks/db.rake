@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 namespace :db do
   desc 'If the database does not exist, set it up. Otherwise, migrate it'
   task update: :environment do

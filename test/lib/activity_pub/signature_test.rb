@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 module ActivityPub
@@ -25,7 +27,7 @@ module ActivityPub
     test 'unsigned string' do
       assert_includes @signature.to_unsigned_s, "host: https://#{@host}"
       assert_includes @signature.to_unsigned_s, "date: #{@date.httpdate}"
-      assert_includes @signature.to_unsigned_s, "(request-target): post /inbox"
+      assert_includes @signature.to_unsigned_s, '(request-target): post /inbox'
     end
 
     test 'signed string' do
@@ -49,7 +51,7 @@ module ActivityPub
     test 'http header' do
       assert_includes @signature.header, %(keyId="#{@signature.id}")
       assert_includes @signature.header, %(headers="#{Signature::DEFAULT_HEADERS}")
-      assert_includes @signature.header, %(signature="#{@signature.to_s}")
+      assert_includes @signature.header, %(signature="#{@signature}")
     end
   end
 end

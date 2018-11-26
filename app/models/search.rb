@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Search
   include Enumerable
 
@@ -6,7 +8,7 @@ class Search
   delegate :each, to: :results
   delegate_missing_to :results
 
-  def initialize(query: , **filters)
+  def initialize(query:, **filters)
     @query = query
     @filters = filters
   end

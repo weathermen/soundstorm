@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ApplicationHelper
   def title_tag
     content_tag :title, title_text
@@ -11,7 +13,7 @@ module ApplicationHelper
 
   def page_title?
     page_title !~ /translation missing/
-  rescue
+  rescue StandardError
     false
   end
 

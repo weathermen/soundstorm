@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CommentsController < ApplicationController
   before_action :authenticate_user!
   before_action :find_track
@@ -64,7 +66,6 @@ class CommentsController < ApplicationController
       end
     end
   end
-
 
   private
 

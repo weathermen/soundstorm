@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # Allow web console in Docker
 if Rails.env.development?
   docker_ips = Socket.ip_address_list.reduce([]) do |res, addrinfo|

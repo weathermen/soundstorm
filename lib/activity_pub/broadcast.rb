@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActivityPub
   # Sends a +Message+ over the ActivityPub protocol using HTTPS.
   class Broadcast

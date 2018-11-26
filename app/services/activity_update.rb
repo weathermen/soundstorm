@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class ActivityUpdate
   attr_reader :user, :activity
 

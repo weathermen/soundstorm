@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActivityPub
   # Incoming activity from another federated instance.
   class Activity
@@ -8,7 +10,7 @@ module ActivityPub
     delegate :to_json, to: :as_json
     delegate :id, to: :actor, prefix: true
 
-    def initialize(id:, type:, actor:, object:, host: nil, **options)
+    def initialize(id:, type:, actor:, object:, host: nil, **_options)
       @activity_id = id
       @type = type
       @actor = case actor

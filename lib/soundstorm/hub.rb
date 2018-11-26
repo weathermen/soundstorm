@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Soundstorm
   # Methods for pinging the Soundstorm Hub
   module Hub

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Soundstorm
   # The current version of Soundstorm. Using semantic versioning,
   # Soundstorm is versioned as both an application and an API spec, and

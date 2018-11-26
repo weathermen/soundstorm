@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 module ActivityPub
@@ -21,7 +23,7 @@ module ActivityPub
     end
 
     test 'id' do
-      assert_equal "https://test.host/actor", @actor.id
+      assert_equal 'https://test.host/actor', @actor.id
     end
 
     test 'type' do

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateMentions < ActiveRecord::Migration[5.2]
   def change
     create_table :mentions do |t|
@@ -8,7 +10,7 @@ class CreateMentions < ActiveRecord::Migration[5.2]
       t.datetime :created_at
     end
 
-    add_index :mentions, ["mentioner_id", "mentioner_type"],   :name => "fk_mentions"
-    add_index :mentions, ["mentionable_id", "mentionable_type"], :name => "fk_mentionables"
+    add_index :mentions, %w[mentioner_id mentioner_type], name: 'fk_mentions'
+    add_index :mentions, %w[mentionable_id mentionable_type], name: 'fk_mentionables'
   end
 end

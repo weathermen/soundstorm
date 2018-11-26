@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rubocop/rake_task'
 require 'haml_lint/rake_task'
 

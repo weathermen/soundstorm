@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActivityPub
   # Represents a message object on the +ActivityPub+ protocol, used for
   # encapsulating activity updates for transmission to other peers.
@@ -6,7 +8,7 @@ module ActivityPub
 
     delegate :id, :private_key, to: :actor, prefix: true
 
-    def initialize(id:, type:, published: nil, actor:, payload: )
+    def initialize(id:, type:, published: nil, actor:, payload:)
       @id = id
       @type = type
       @published = published || Time.current

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ActivityPub
   # Verifies a request by passing a Signature header and checking it
   # against a real-life Actor.

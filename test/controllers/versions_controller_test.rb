@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class VersionsControllerTest < ActionDispatch::IntegrationTest
@@ -29,22 +31,22 @@ class VersionsControllerTest < ActionDispatch::IntegrationTest
 
     ActivityPub::Actor.stub :find, actor do
       post inbox_path, \
-        params: {
-          '@context': ActivityPub::ACTIVITYSTREAMS_NAMESPACE,
-          id: 'https://test.host/one/untitled/comments/12345',
-          type: 'Create',
-          actor: actor.as_json,
-          object: {
-            type: 'Note',
-            id: 'https://test.host/one/untitled/comments/12345',
-            content: 'hello world'
-          }
-        },
-        headers: {
-          'Signature': signature.header,
-          'Date': date.httpdate,
-          'Host': "https://#{actor.host}"
-        }
+           params: {
+             '@context': ActivityPub::ACTIVITYSTREAMS_NAMESPACE,
+             id: 'https://test.host/one/untitled/comments/12345',
+             type: 'Create',
+             actor: actor.as_json,
+             object: {
+               type: 'Note',
+               id: 'https://test.host/one/untitled/comments/12345',
+               content: 'hello world'
+             }
+           },
+           headers: {
+             'Signature': signature.header,
+             'Date': date.httpdate,
+             'Host': "https://#{actor.host}"
+           }
 
       assert_response :ok
       refute_empty queue.enqueued_jobs

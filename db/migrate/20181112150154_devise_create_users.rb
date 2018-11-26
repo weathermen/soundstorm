@@ -5,11 +5,11 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
     enable_extension :citext
     create_table :users do |t|
       ## Database authenticatable
-      t.citext :name,               null: false, default: ""
-      t.citext :slug,               null: false, default: "", index: true
-      t.citext :host,               null: false, default: ""
-      t.citext :email,              null: false, default: ""
-      t.string :encrypted_password, null: false, default: ""
+      t.citext :name,               null: false, default: ''
+      t.citext :slug,               null: false, default: '', index: true
+      t.citext :host,               null: false, default: ''
+      t.citext :email,              null: false, default: ''
+      t.string :encrypted_password, null: false, default: ''
 
       ## Recoverable
       t.string   :reset_password_token

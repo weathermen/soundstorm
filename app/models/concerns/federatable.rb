@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Federatable
   extend ActiveSupport::Concern
 
@@ -10,7 +12,7 @@ module Federatable
   end
 
   def actor_id
-    if self.is_a? User
+    if is_a? User
       actor.id
     else
       user.actor_id

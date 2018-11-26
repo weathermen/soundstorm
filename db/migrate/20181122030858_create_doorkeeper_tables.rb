@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateDoorkeeperTables < ActiveRecord::Migration[5.2]
   def change
     create_table :oauth_applications do |t|
@@ -40,12 +42,12 @@ class CreateDoorkeeperTables < ActiveRecord::Migration[5.2]
       # https://github.com/doorkeeper-gem/doorkeeper/tree/v3.0.0.rc1#custom-access-token-generator
       #
       # t.text     :token,             null: false
-      t.string   :token,                  null: false
+      t.string   :token, null: false
 
       t.string   :refresh_token
       t.integer  :expires_in
       t.datetime :revoked_at
-      t.datetime :created_at,             null: false
+      t.datetime :created_at, null: false
       t.string   :scopes
 
       # If there is a previous_refresh_token column,
@@ -54,7 +56,7 @@ class CreateDoorkeeperTables < ActiveRecord::Migration[5.2]
       # previous tokens are revoked as soon as a new access token is created.
       # Comment out this line if you'd rather have refresh tokens
       # instantly revoked.
-      t.string   :previous_refresh_token, null: false, default: ""
+      t.string   :previous_refresh_token, null: false, default: ''
     end
 
     add_index :oauth_access_tokens, :token, unique: true

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class VersionsController < ApplicationController
   before_action :verify_signature
 
@@ -34,14 +36,14 @@ class VersionsController < ApplicationController
       :preferredUsername,
       :name,
       :summary,
-      publicKey: [:id, :owner, :publicKeyPem]
+      publicKey: %i[id owner publicKeyPem]
     )
   end
 
   def param_keys_for(type)
     case type
     when 'Note'
-      [:id, :content]
+      %i[id content]
     else
       [:id]
     end
