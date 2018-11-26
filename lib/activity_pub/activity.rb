@@ -18,7 +18,7 @@ module ActivityPub
                  Actor.find(actor)
                when Hash
                  Actor.from(actor, host: host)
-               end
+      end
       @payload = object
     end
 

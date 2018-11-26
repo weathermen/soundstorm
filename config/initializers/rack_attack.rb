@@ -9,7 +9,7 @@ class Rack::Attack
 
   # Always allow requests from admins
   safelist('ignore/admins') do |req|
-    !!req.cookie[:admin]
+    req.cookie[:admin]
   end
 
   # Block non-XHR requests to the /:user/:track/listen endpoint.

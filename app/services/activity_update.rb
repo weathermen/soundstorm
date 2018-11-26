@@ -13,7 +13,7 @@ class ActivityUpdate
                when 'Audio' then Track
                when 'Profile' then User
                when 'Note' then Comment
-               end
+    end
   end
 
   def model_id
