@@ -1,0 +1,32 @@
+#
+# Development services configuration. Installs various external services
+# used to aid developers and sets up build caches for application
+# dependencies.
+#
+version: '3'
+services:
+  # In development, Mailcatcher is used to receive and process emails.
+  # It can be accessed at http://localhost:1080.
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - '1080:1080'
+
+  # Cache application dependencies and use the local database in
+  # development
+  web:
+    build: .
+    ports:
+      - "${RAILS_PORT}:3000"
+    links:
+      - mailcatcher
+    volumes:
+      - .:/srv
+      - node_modules:/node_modules
+      - bundle:/gems
+    environment:
+      - DATABASE_HOST=db
+
+volumes:
+  bundle:
+  node_modules:

@@ -12,10 +12,6 @@ services:
     volumes:
       - redis:/data
 
-  # Disable Mailcatcher in production
-  mailcatcher:
-    command: echo "Mailcatcher is disabled in production"
-
   # Speed up application deployment by launching an image rather than
   # building a full container, such as in development. Dependencies are
   # also preloaded onto the image and the entrypoint script for
@@ -28,9 +24,10 @@ services:
       args:
         - RAILS_ENV=production
     image: tubbo/soundstorm
-    volumes: []
-    ports:
-      - "3000:3000"
+    volumes:
+      - code:/srv
+    expose:
+      - 3000
     depends_on:
       - db
       - redis
@@ -53,5 +50,18 @@ services:
       - .env.production
       - .env.secrets
 
+  nginx:
+    image: nginx
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - code:/srv
+      - ./config/ssl:/etc/ssl
+    configs:
+      - source: config/nginx.conf
+        target: /etc/nginx/sites.d/soundstorm.conf
+
 volumes:
   redis:
+  code:

@@ -2,6 +2,7 @@
 #
 # Run commands for the Soundstorm application within a Docker container.
 
+
 case "$1" in
   # build containers and set up the database
   init)
@@ -27,7 +28,8 @@ case "$1" in
     ;;
   # start all containers
   start)
-    docker-compose up -d
+    COMPOSE_FILE="docker-compose.yml:docker-compose.development.yml" \
+      docker-compose up -d
 
     if [[ -f "$PUMA_DEV/soundstorm" ]]; then
       echo "Soundstorm has started at https://soundstorm.test"
@@ -37,12 +39,14 @@ case "$1" in
     ;;
   # stop and remove running containers
   stop)
-    docker-compose down
+    COMPOSE_FILE="docker-compose.yml:docker-compose.development.yml" \
+      docker-compose down
     echo "Soundstorm has shut down"
     ;;
   # restart the web container
   restart)
-    docker-compose restart web
+    COMPOSE_FILE="docker-compose.yml:docker-compose.development.yml" \
+      docker-compose restart web
     echo "Soundstorm has restarted"
     ;;
   # build a production image of Soundstorm

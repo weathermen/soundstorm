@@ -1,6 +1,7 @@
 #
-# Base services configuration for Soundstorm. Used in development to
-# represent the bare minimum needed to run an instance of Soundstorm.
+# Base services configuration for Soundstorm. This describes the bare
+# minimum containers that are used to construct any Soundstorm
+# environment.
 #
 
 version: '3'
@@ -11,40 +12,21 @@ services:
     volumes:
       - postgresql:/var/lib/postgresql/data
 
-  # In development, Mailcatcher is used to receive and process emails.
-  # It can be accessed at http://localhost:1080.
-  mailcatcher:
-    image: schickling/mailcatcher
-    ports:
-      - '1080:1080'
-
   # The "majestic monolith" that powers Soundstorm, a Rails application
   # serving HTML (for the most part) and containing all of the logic
   # needed to run a Soundstorm instance.
   web:
-    build: .
     command: bin/rails server -p 3000 -b '0.0.0.0'
-    ports:
-      - "${RAILS_PORT}:3000"
     depends_on:
       - db
-    links:
-      - mailcatcher
     volumes:
-      - .:/srv
-      - node_modules:/node_modules
       - yarn_cache:/root/.yarn
-      - bundle:/gems
     environment:
-      - DOCKER=true
       - BUNDLE_APP_CONFIG=/srv/.bundle
-      - RAILS_ENV
       - SOUNDSTORM_ADMIN_USERNAME
       - SOUNDSTORM_ADMIN_EMAIL
       - SOUNDSTORM_ADMIN_PASSWORD
 
 volumes:
   postgresql:
-  bundle:
-  node_modules:
   yarn_cache:
