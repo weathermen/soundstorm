@@ -35,6 +35,17 @@ services:
       - .env.production
       - .env.secrets
 
+  # Set up the database asynchronously to the main production container.
+  migrations:
+    image: tubbo/soundstorm
+    command: bin/rails db:update
+    depends_on:
+      - db
+      - web
+    env_file:
+      - .env.production
+      - .env.secrets
+
   # Background job processor for the application, running background
   # jobs within the Rails context. This container will always use the
   # same image as +web+, ensuring that both services are launched with

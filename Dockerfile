@@ -31,4 +31,3 @@ COPY . $APP_PATH
 RUN if [ "$RAILS_ENV" = "production" ]; then \
       ./bin/bundle --path=/gems && ./bin/yarn --module-path=/node_modules; \
     fi
-ENTRYPOINT ["sh", "bin/entrypoint.sh"]

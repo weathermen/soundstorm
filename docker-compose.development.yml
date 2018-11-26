@@ -16,6 +16,9 @@ services:
   # development
   web:
     build: .
+    entrypoint:
+      - sh
+      - /srv/bin/entrypoint.sh
     ports:
       - "${RAILS_PORT}:3000"
     links:

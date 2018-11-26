@@ -23,9 +23,7 @@ services:
       - yarn_cache:/root/.yarn
     environment:
       - BUNDLE_APP_CONFIG=/srv/.bundle
-      - SOUNDSTORM_ADMIN_USERNAME
-      - SOUNDSTORM_ADMIN_EMAIL
-      - SOUNDSTORM_ADMIN_PASSWORD
+      - SOUNDSTORM_HOST
 
 volumes:
   postgresql:

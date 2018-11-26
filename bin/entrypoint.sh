@@ -10,8 +10,5 @@ if [ "$RAILS_ENV" != "production" ]; then
   ./bin/yarn --module-path=/node_modules --silent
 fi
 
-echo "Updating database schema..."
-./bin/rails db:update
-
 echo "Running command \`$*\`..."
 exec "$@"

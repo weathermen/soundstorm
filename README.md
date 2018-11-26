@@ -18,10 +18,14 @@ set up the database and build initial containers:
 $ ./bin/soundstorm init
 ```
 
-You'll notice that most directives occur using the `soundstorm` command.
-This is a shell script that lives in the `bin/` directory of this repo,
-and makes it easier to interface with [Docker Compose][] as a developer or
-administrator of a Soundstorm instance.
+This will generate the database and an initial User account for
+administration purposes. By default, this user has the name of
+**admin**, with password **Password1!**. You can change this by
+configuring the `$SOUNDSTORM_ADMIN_*` variables like so:
+
+```bash
+$ SOUNDSTORM_ADMIN_USERNAME=myuser SOUNDSTORM_ADMIN_PASSWORD=mypass SOUNDSTORM_ADMIN_EMAIL=totally@valid.email.com ./bin/soundstorm init
+```
 
 ## Usage
 
@@ -34,9 +38,8 @@ $ ./bin/soundstorm start
 If you're running [puma-dev][], the application will be available at
 <https://soundstorm.test>. Otherwise, browse to <http://localhost:3000>
 
-Then, browse to <http://localhost:3000> and log in with
-`$SOUNDSTORM_ADMIN_USERNAME` and `$SOUNDSTORM_ADMIN_PASSWORD`, which
-defaults to **admin** and **Password1!**.
+Then, browse to <http://localhost:3000> and log in with the admin
+credentials specified when running `soundstorm init`.
 
 View logs at any time by running:
 
@@ -48,6 +51,16 @@ You can always stop the application locally by running:
 
 ```bash
 $ ./bin/soundstorm stop
+```
+
+Any command that should be run using `./bin/rails` should be replaced by
+`./bin/soundstorm`. For example, if you get an error saying "Migrations
+are pending, run bin/rails db:migrate", you can run the following
+command to migrate the database schema within your container
+environment:
+
+```bash
+$ ./bin/soundstorm db:migrate
 ```
 
 ## Deploying
