@@ -5,6 +5,7 @@ packages:
 sources:
   - https://git.sr.ht/~tubbo/soundstorm
 tasks:
+  - start: systemd start docker
   - init: |
       cd soundstorm
       ./bin/soundstorm init
