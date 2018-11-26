@@ -22,11 +22,11 @@ Rails.application.configure do
 
   # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
   # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
-  config.require_master_key = true
+  config.require_master_key = false
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.public_file_server.enabled = Soundstorm::SERVE_STATIC_FILES
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
@@ -38,7 +38,7 @@ Rails.application.configure do
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
   # Enable serving of images, stylesheets, and JavaScripts from a CDN
-  config.action_controller.asset_host = ENV['SANDSTORM_CDN_URL']
+  config.action_controller.asset_host = Soundstorm::CDN_URL
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
@@ -63,10 +63,10 @@ Rails.application.configure do
   config.log_tags = [:request_id]
 
   # Use Redis to store the cache in production
-  config.cache_store = :redis_cache_store, credentials.redis.merge(database: 0)
+  config.cache_store = :redis_cache_store, Soundstorm::REDIS_CONFIG.merge(database: 0)
   config.action_dispatch.rack_cache = {
-    metastore: credentials.redis.merge(database: 1, namespace: 'metastore'),
-    entitystore: credentials.redis.merge(database: 1, namespace: 'entitystore')
+    metastore: Soundstorm::REDIS_CONFIG.merge(database: 1, namespace: 'metastore'),
+    entitystore: Soundstorm::REDIS_CONFIG.merge(database: 1, namespace: 'entitystore')
   }
 
   # Use Sidekiq for background jobs

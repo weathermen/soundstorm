@@ -9,8 +9,7 @@ require 'rails/all'
 Bundler.require(*Rails.groups)
 
 require 'activity_pub'
-require 'soundstorm/hub'
-require 'soundstorm/version'
+require 'soundstorm'
 
 module Soundstorm
   class Application < Rails::Application
@@ -28,7 +27,7 @@ module Soundstorm
     # Set the host from the $HOST environment variable. Use this
     # configuration for other settings like the GlobalID app name and
     # ActionMailer base URL host
-    config.host = ENV.fetch('HOST', 'soundstorm.test')
+    config.host = Soundstorm::HOST
     config.action_mailer.default_url_options = { host: config.host }
     config.global_id.app = config.host
 

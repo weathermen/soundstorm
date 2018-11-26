@@ -2,9 +2,9 @@
 
 # Create initial admin user
 User.create!(
-  name: ENV.fetch('SOUNDSTORM_ADMIN_USERNAME', 'admin'),
-  email: ENV.fetch('SOUNDSTORM_ADMIN_EMAIL', 'admin@example.com'),
-  password: ENV.fetch('SOUNDSTORM_ADMIN_PASSWORD', 'Password1!'),
+  name: Soundstorm::ADMIN_USERNAME,
+  email: Soundstorm::ADMIN_EMAIL,
+  password: Soundstorm::ADMIN_PASSWORD,
   display_name: 'Soundstorm Administrator',
   confirmed_at: Time.current
 )
