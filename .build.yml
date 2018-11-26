@@ -1,11 +1,16 @@
-image: alpine/edge
+image: archlinux
 packages:
   - docker
-  - py-pip
+  - docker-compose
 sources:
   - https://git.sr.ht/~tubbo/soundstorm
 tasks:
-  - compose: sudo pip install docker-compose
   - init: cd soundstorm && ./bin/soundstorm init
   - start: cd soundstorm && ./bin/soundstorm start
   - test: cd soundstorm && ./bin/soundstorm lint test
+triggers:
+  - action: cd soundstorm && ./bin/soundstorm release
+    condition: success
+  - action: email
+    condition: failure
+    to: srht@psychedeli.ca
