@@ -12,14 +12,17 @@ case "$1" in
   # build containers and set up the database. generate a puma-dev
   # configuration file if it does not exist and is in use
   init)
+    RAILS_PORT="3$((RANDOM%1000))"
+
+    if [ ! -f "$PWD/.env" ]; then
+      echo "RAILS_PORT=$RAILS_PORT" > "$PWD"/.env
+    fi
+
     if [ "$RAILS_ENV" == "development" ] && \
        [ -d "$PUMA_DEV" ] && \
        [ ! -f "$PUMA_DEV/soundstorm" ]; then
 
-      RAILS_PORT="3$((RANDOM%1000))"
-
       echo "Generating soundstorm.test puma-dev configuration..."
-      echo "RAILS_PORT=$RAILS_PORT" > "$PWD"/.env
       echo "$RAILS_PORT" > "$PUMA_DEV/soundstorm"
     fi
 
