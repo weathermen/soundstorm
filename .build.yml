@@ -8,9 +8,3 @@ tasks:
   - init: cd soundstorm && ./bin/soundstorm init
   - start: cd soundstorm && ./bin/soundstorm start
   - test: cd soundstorm && ./bin/soundstorm lint test
-triggers:
-  - action: cd soundstorm && ./bin/soundstorm release
-    condition: success
-  - action: email
-    condition: failure
-    to: srht@psychedeli.ca
