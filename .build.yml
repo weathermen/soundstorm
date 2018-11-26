@@ -5,6 +5,13 @@ packages:
 sources:
   - https://git.sr.ht/~tubbo/soundstorm
 tasks:
-  - init: cd soundstorm && ./bin/soundstorm init
-  - start: cd soundstorm && ./bin/soundstorm start
-  - test: cd soundstorm && ./bin/soundstorm lint test
+  - init: |
+      cd soundstorm
+      ./bin/soundstorm init
+  - test: |
+      cd soundstorm
+      ./bin/soundstorm lint test
+  - release: |
+      cd soundstorm
+      git describe --exact-match HEAD
+      [ $? == 0 ] && ./bin/soundstorm release
