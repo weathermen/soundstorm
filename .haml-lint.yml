@@ -1,7 +1,4 @@
 exclude:
   - vendor/bundle/**/*
   - node_modules
-linters:
-  LineLength:
-    exclude:
-      - app/views/devise/**/*
+  - app/views/devise/**/*
