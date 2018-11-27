@@ -28,7 +28,7 @@ case "$1" in
 
     echo "Initializing Soundstorm $RAILS_ENV environment..."
     export COMPOSE_FILE="docker-compose.yml:docker-compose.$RAILS_ENV.yml"
-    SECRET_KEY_BASE=$(docker-compose run web bin/rails tmp:clear log:clear db:setup secret | tail -n 1)
+    SECRET_KEY_BASE=$(docker-compose run --rm web bin/rails tmp:clear log:clear db:setup secret | tail -n 1)
 
     if [ ! -f "$PWD/.env" ]; then
       echo "Generating .env configuration in local directory"
@@ -83,18 +83,24 @@ case "$1" in
   # build a production image of Soundstorm
   build)
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
-      docker-compose build --build-arg RAILS_ENV=production web
+      docker-compose build --build-arg RAILS_ENV=production web &&
+      docker image tag tubbo/soundstorm:latest "tubbo/soundstorm:$(soundstorm version)"
     ;;
-  # release the production image to Docker Hub
+  # release the production image(s) to Docker Hub
   release)
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
       docker-compose build --build-arg RAILS_ENV=production web &&
-      docker-compose push web
+      docker-compose push web &&
+      docker image push "tubbo/soundstorm:$(soundstorm version)"
     ;;
   # run ECS commands
   production)
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
       ecs-cli compose "$*"
+    ;;
+  # print version
+  version)
+    ruby -r./lib/soundstorm/version.rb -e 'puts Soundstorm::VERSION'
     ;;
   help|"")
     echo "Usage: bin/soundstorm [COMMAND]"

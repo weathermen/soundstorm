@@ -24,9 +24,8 @@ services:
       args:
         - RAILS_ENV=production
     image: tubbo/soundstorm
-    command: bin/rails server -p 3000 -b '0.0.0.0'
     volumes:
-      - code:/srv
+      - static:/srv/public
     expose:
       - 3000
     depends_on:
@@ -37,7 +36,7 @@ services:
       - .env.secrets
 
   # Set up the database asynchronously to the main production container.
-  migrations:
+  migrations: &task
     image: tubbo/soundstorm
     command: bin/rails db:update
     depends_on:
@@ -46,6 +45,13 @@ services:
     env_file:
       - .env.production
       - .env.secrets
+
+  # Precompile static assets
+  assets:
+    <<: *task
+    command: bin/rails assets:precompile
+    volumes:
+      - static:/srv/public
 
   # Background job processor for the application, running background
   # jobs within the Rails context. This container will always use the
@@ -68,10 +74,10 @@ services:
       - "443:443"
       - "80:80"
     volumes:
-      - code:/srv
+      - static:/www
       - ./config/nginx.conf:/etc/nginx/sites.d/soundstorm.conf
       - ./config/ssl:/etc/ssl
 
 volumes:
   redis:
-  code:
+  static:

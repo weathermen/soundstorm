@@ -12,7 +12,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
     && apt-get update -qq \
     && apt-get install -y build-essential libpq-dev nodejs yarn
 
-# Set the $RAILS_ENV externally, defaults to "development"
+# Define build arguments and their defaults
 ARG RAILS_ENV
 
 # Set up environment
@@ -29,5 +29,8 @@ COPY . $APP_PATH
 
 # Install application dependencies.
 RUN if [ "$RAILS_ENV" = "production" ]; then \
-      ./bin/bundle --path=/gems && ./bin/yarn --module-path=/node_modules; \
+      ./bin/bundle --path=/gems --jobs=20 && ./bin/yarn --module-path=/node_modules; \
     fi
+
+# Precompile assets in production, install dependencies in development
+ENTRYPOINT ["sh", "bin/entrypoint.sh"]
