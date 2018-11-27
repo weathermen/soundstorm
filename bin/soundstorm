@@ -27,7 +27,7 @@ case "$1" in
     fi
 
     echo "Initializing Soundstorm $RAILS_ENV environment..."
-    COMPOSE_FILE="docker-compose.yml:docker-compose.$RAILS_ENV.yml"
+    export COMPOSE_FILE="docker-compose.yml:docker-compose.$RAILS_ENV.yml"
     SECRET_KEY_BASE=$(docker-compose run web bin/rails tmp:clear log:clear db:setup secret | tail -n 1)
 
     if [ ! -f "$PWD/.env" ]; then
