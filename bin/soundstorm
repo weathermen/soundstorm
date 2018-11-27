@@ -115,6 +115,6 @@ case "$1" in
   # delegate task commands to ./bin/rails, entrypoint command is not run
   *)
     COMPOSE_FILE="docker-compose.yml:docker-compose.development.yml" \
-      docker-compose run --rm web bin/rails "$*"
+      docker-compose run --rm --entrypoint='' web bin/rails "$*"
     ;;
 esac
