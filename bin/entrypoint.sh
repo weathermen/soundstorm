@@ -8,6 +8,8 @@ if [ "$RAILS_ENV" != "production" ]; then
   echo "Reconciling dependencies..."
   ./bin/bundle --path=/gems --quiet
   ./bin/yarn --module-path=/node_modules --silent
+else
+  ./bin/rails assets:precompile
 fi
 
 echo "Running command \`$*\`..."

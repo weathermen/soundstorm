@@ -12,10 +12,10 @@ case "$1" in
   # build containers and set up the database. generate a puma-dev
   # configuration file if it does not exist and is in use
   init)
-    RAILS_PORT="3$((RANDOM%1000))"
-
-    if [ ! -f "$PWD/.env" ]; then
-      echo "RAILS_PORT=$RAILS_PORT" > "$PWD"/.env
+    if [ -d "$PUMA_DEV" ]; then
+      RAILS_PORT="3$((RANDOM%1000))"
+    else
+      RAILS_PORT=3000
     fi
 
     if [ "$RAILS_ENV" == "development" ] && \
@@ -27,8 +27,20 @@ case "$1" in
     fi
 
     echo "Initializing Soundstorm $RAILS_ENV environment..."
-    COMPOSE_FILE="docker-compose.yml:docker-compose.$RAILS_ENV.yml" \
-      docker-compose run web bin/rails tmp:clear log:clear db:setup
+    COMPOSE_FILE="docker-compose.yml:docker-compose.$RAILS_ENV.yml"
+    SECRET_KEY_BASE=$(docker-compose run web bin/rails tmp:clear log:clear db:setup secret | tail -n 1)
+
+    if [ ! -f "$PWD/.env" ]; then
+      echo "Generating .env configuration in local directory"
+      echo "RAILS_PORT=$RAILS_PORT" > "$PWD"/.env
+      echo "SECRET_KEY_BASE=$SECRET_KEY_BASE" >> "$PWD"/.env
+    fi
+
+    if [ ! -f "$PWD/.env.secrets" ]; then
+      echo "Edit .env.secrets to configure production credentials"
+      cp "$PWD/.env.secrets.example" "$PWD/.env.secrets"
+    fi
+
     ;;
   # view logs for a given service, default is "web"
   logs)
@@ -100,9 +112,9 @@ case "$1" in
     echo
     echo "If a command is unknown, it is delegated to bin/rails on the web container"
     ;;
-  # delegate task commands to ./bin/rails
+  # delegate task commands to ./bin/rails, entrypoint command is not run
   *)
     COMPOSE_FILE="docker-compose.yml:docker-compose.development.yml" \
-      docker-compose --rm run web bin/rails "$*"
+      docker-compose run --rm web bin/rails "$*"
     ;;
 esac
