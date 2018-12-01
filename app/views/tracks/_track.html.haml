@@ -1,17 +1,6 @@
-= player_for track do
-  %main
-    .player__transport
-      .player__button
-        = track_player_button track.audio
-      .player__duration
-        .player__elapsed{ data: { target: 'elapsed' } } 00:00
-        .player__left= track.duration
-    .player__waveform
-      -# TODO: = image_tag track.waveform.url
-  %footer
-    .player__comments
-      = link_to user_track_url(track.user, track, anchor: 'comments') do
-        = t('.comments', count: track.comments_count)
-    .player__likes
-      = like_button(track) do
-        = t('.likes', count: track.likes_count)
+.track-summary
+  .track-summary__title.track-title
+    %h2.track-title__name= track.name
+    %h3.track-title__artist by #{track.user.name}
+  .track-summary__player
+    = render 'tracks/player', track: track

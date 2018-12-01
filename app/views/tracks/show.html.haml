@@ -1,7 +1,10 @@
 %article.track
-  %header.track__player
-    = render 'tracks/track', track: @track
+  %header.track__title.track-title
+    %h1= @track.name
+    %h2 by #{@track.user.name}
   %main
+    %section.track__player
+      = render 'player', track: @track
     %section.track__description
       %p= @track.description
     %section.track__comments

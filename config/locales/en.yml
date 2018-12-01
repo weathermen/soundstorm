@@ -46,11 +46,12 @@ en:
         login: Log in
         signup: Sign up
   tracks:
-    track:
+    player:
       likes: "%{count} likes"
       comments: "%{count} comments"
       listens: "%{count} listens"
       play: Play
+      pause: Pause
     new:
       title: New Track
       submit: Upload New Track
@@ -125,6 +126,7 @@ en:
       location: Location
       empty: No tracks to show.
       upload: Upload one!
+      biography: Biography
   user_mailer:
     mentioned:
       subject: '@%{author} mentioned you in a comment'

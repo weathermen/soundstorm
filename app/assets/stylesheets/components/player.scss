@@ -1,0 +1,12 @@
+.player {}
+.player__transport {}
+.player__button {}
+.player__duration {}
+.player__elapsed {}
+.player__left {}
+.player__waveform {}
+.player__links {
+  a, button {
+    margin-right: 15px;
+  }
+}

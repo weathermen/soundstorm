@@ -9,6 +9,11 @@
             #{t('.location')}:
           %dd
             = @user.location
+        .profile__field
+          %dt
+            #{t('.biography')}:
+          %dd
+            = @user.biography
       %dl.profile__numbers
         .profile__number
           %dd= @user.followers_count

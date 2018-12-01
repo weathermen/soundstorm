@@ -5,10 +5,17 @@
   display: grid;
   grid-template-columns: 5fr 1fr;
 }
-.profile__fields {}
+.profile__fields {
+}
 .profile__field {
+  dt, dd {
+    display: inline-block;
+  }
+
   dt {
     font-weight: bold;
+    min-width: 5vw;
+    text-align: right;
   }
 }
 
