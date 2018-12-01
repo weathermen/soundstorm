@@ -10,11 +10,8 @@
       -# TODO: = image_tag track.waveform.url
   %footer
     .player__comments
-      = link_to [track.user, track] do
+      = link_to user_track_url(track.user, track, anchor: 'comments') do
         = t('.comments', count: track.comments_count)
     .player__likes
-      = link_to [track.user, track] do
+      = like_button(track) do
         = t('.likes', count: track.likes_count)
-    .player__listens
-      = link_to [track.user, track] do
-        = t('.listens', count: track.listens_count)

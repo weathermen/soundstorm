@@ -65,10 +65,10 @@ en:
   likes:
     create:
       success: "You have liked %{track}"
-      failure: "Error liking %{track}: %{errors}"
+      failure: "Error liking %{track}"
     destroy:
       success: "You have unliked %{track}"
-      failure: "Error unliking %{track}: %{errors}"
+      failure: "Error unliking %{track}"
   comments:
     create:
       success: 'Comment on "%{track}" has been added'

@@ -152,9 +152,9 @@ ActiveRecord::Schema.define(version: 2018_12_01_231130) do
     t.integer "duration"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "comments_count"
-    t.integer "likes_count"
-    t.integer "listens_count"
+    t.integer "comments_count", default: 0
+    t.integer "likes_count", default: 0
+    t.integer "listens_count", default: 0
     t.integer "likers", default: 0
     t.string "description"
     t.index ["slug"], name: "index_tracks_on_slug"

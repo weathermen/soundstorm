@@ -5,7 +5,7 @@ import { Howl } from "howler"
  * Controls playback of uploaded tracks
  */
 export default class Player extends Controller {
-  static targets = ["button", "elapsed"]
+  static targets = ["button", "elapsed", "like"]
 
   /**
    * Create the sound with Howl
@@ -83,5 +83,8 @@ export default class Player extends Controller {
     const url = `${this.url}/listen`
 
     fetch(url, { method })
+  }
+
+  like() {
   }
 }

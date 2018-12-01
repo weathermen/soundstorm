@@ -17,4 +17,14 @@ module TracksHelper
 
     content_tag :section, class: 'player', data: data, &block
   end
+
+  def like_button(track)
+    data = {
+      action: 'ajax:success->player#like',
+      target: 'like'
+    }
+    button_to [track.user, track, :like], method: :post, data: data do
+      yield
+    end
+  end
 end
