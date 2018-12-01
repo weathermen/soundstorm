@@ -1,5 +1,16 @@
 %article.track
-  %header.track__player= render 'tracks/track', track: @track
-  %main.track__comments
-    - @track.comments.each do |comment|
-      = render 'comments/comment', comment: comment
+  %header.track__player
+    = render 'tracks/track', track: @track
+  %main
+    %section.track__description
+      %p= @track.description
+    %section.track__comments
+      - if @track.comments.any?
+        %p.empty No comments.
+      - else
+        - @track.comments.each do |comment|
+          = render 'comments/comment', comment: comment
+  - if @track.user == current_user
+    %footer.track__controls
+      = link_to 'Edit', [:edit, @track]
+      = link_to 'Delete', @track, method: :delete

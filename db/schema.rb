@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_11_24_070020) do
+ActiveRecord::Schema.define(version: 2018_12_01_231130) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -156,6 +156,7 @@ ActiveRecord::Schema.define(version: 2018_11_24_070020) do
     t.integer "likes_count"
     t.integer "listens_count"
     t.integer "likers", default: 0
+    t.string "description"
     t.index ["slug"], name: "index_tracks_on_slug"
     t.index ["user_id"], name: "index_tracks_on_user_id"
   end

@@ -5,7 +5,7 @@ class TracksController < ApplicationController
   before_action :cache_page, only: :show
 
   def show
-    @user = User.find(params[:user_id])
+    @user = User.find_by(name: params[:user_id])
     @track = @user.tracks.find(params[:id])
     @title = "#{@track.name} by #{@user.name}"
   end
@@ -25,7 +25,7 @@ class TracksController < ApplicationController
       if @track.save
         flash[:notice] = t('.success', name: @track.name)
 
-        format.html { redirect_to @track }
+        format.html { redirect_to [@track.user, @track] }
         format.json { render json: @track, status: :created }
       else
         errors = @track.errors.full_messages.to_sentence
@@ -87,10 +87,10 @@ class TracksController < ApplicationController
   private
 
   def new_track_params
-    params.require(:track).permit(:name, :audio)
+    params.require(:track).permit(:name, :audio, :description)
   end
 
   def edit_track_params
-    params.require(:track).permit(:name)
+    params.require(:track).permit(:name, :description)
   end
 end

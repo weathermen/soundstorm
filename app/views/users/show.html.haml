@@ -3,20 +3,28 @@
     %section.profile__name
       %h1= @user.display_name
     %section.profile__metadata
-      %dl
+      %dl.profile__fields
         .profile__field
-          %dt #{t('.location')}:
-          %dd= @user.location
-        .profile__field
-          %dt #{t('.followers')}:
-          %dd= @user.followers(User).count
-        .profile__field
-          %dt #{t('.following')}:
-          %dd= @user.followees(User).count
-        .profile__field
-          %dt #{t('.tracks')}:
+          %dt
+            #{t('.location')}:
+          %dd
+            = @user.location
+      %dl.profile__numbers
+        .profile__number
+          %dd= @user.followers_count
+          %dt= t('.followers')
+        .profile__number
+          %dd= @user.following_count
+          %dt= t('.following')
+        .profile__number
           %dd= @user.tracks_count
+          %dt= t('.tracks')
     %section.profile__buttons{ data: { controller: 'follow' } }
       = follow_button @user unless current_user_browsing?(@user)
   %main.profile__tracks
-    = render @user.tracks
+    - if @user.tracks.any?
+      = render @user.tracks
+    - else
+      %p.profile__empty
+        = t('.empty')
+        = link_to t('.upload'), new_track_path

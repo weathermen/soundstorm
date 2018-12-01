@@ -5,7 +5,7 @@ class LikesController < ApplicationController
   before_action :cache_page, only: :index
 
   def index
-    @likes = current_user.liked_tracks
+    @likes = current_user.likes
   end
 
   def create

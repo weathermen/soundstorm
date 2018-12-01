@@ -17,6 +17,10 @@ port        ENV.fetch('PORT') { 3000 }
 #
 environment ENV.fetch('RAILS_ENV') { 'development' }
 
+# Specifies the pidfile location of Puma, which is typically in
+# `tmp/pids/server.pid`, but this causes problems in Docker containers.
+pidfile ENV.fetch('PUMA_PIDFILE_PATH', 'tmp/pids/server.pid')
+
 # Specifies the number of `workers` to boot in clustered mode.
 # Workers are forked webserver processes. If using threads and workers together
 # the concurrency of the application would be max `threads` * `workers`.

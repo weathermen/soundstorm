@@ -6,7 +6,7 @@ module TracksHelper
 
     return unless audio.attached?
 
-    button_to t('.play'), audio.url, data: bindings
+    button_to t('.play'), url_for(audio), data: bindings
   end
 
   def player_for(track, &block)

@@ -140,11 +140,27 @@ class User < ApplicationRecord
   #
   # @return [ActiveRecord::Relation]
   def activities
-    PaperTrail::Version.where(whodunnit: followings.map(&:to_global_id))
+    PaperTrail::Version.where(whodunnit: following.map(&:to_global_id))
   end
 
   def to_param
     name
+  end
+
+  def following_users
+    followees(User)
+  end
+
+  def follower_users
+    followers(User)
+  end
+
+  def followers_count
+    follower_users.count
+  end
+
+  def following_count
+    following_users.count
   end
 
   private

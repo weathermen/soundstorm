@@ -1,0 +1,23 @@
+.profile {}
+.profile__cover {}
+.profile__name {}
+.profile__metadata {
+  display: grid;
+  grid-template-columns: 5fr 1fr;
+}
+.profile__fields {}
+.profile__field {
+  dt {
+    font-weight: bold;
+  }
+}
+
+.profile__numbers {
+  display: flex;
+  flex: 1
+}
+.profile__number {
+  flex: 1;
+  margin: 0 15px;
+  text-align: right;
+}

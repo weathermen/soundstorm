@@ -15,8 +15,8 @@
       .header__logo
         = link_to app_title, root_path
       .header__search
-        = form_with url: search_path, method: :get do |f|
-          = f.search_field :q, placeholder: 'Search...', autocomplete: 'off'
+        = search_form do |f|
+          = f.search_field :q, search_field_options
       .header__navigation
         %nav.navigation
           - if user_signed_in?

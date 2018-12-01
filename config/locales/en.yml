@@ -53,7 +53,15 @@ en:
       play: Play
     new:
       title: New Track
-      create: Create Track
+      submit: Upload New Track
+    edit:
+      submit: Save Track
+    destroy:
+      success: "Deleted Track '%{name}'"
+      failure: "Error Deleting Track: %{errors}"
+    create:
+      success: "Uploaded Track '%{name}'"
+      failure: "Error Uploading Track: %{errors}"
   likes:
     create:
       success: "You have liked %{track}"
@@ -115,6 +123,8 @@ en:
       following: Following
       tracks: Tracks
       location: Location
+      empty: No tracks to show.
+      upload: Upload one!
   user_mailer:
     mentioned:
       subject: '@%{author} mentioned you in a comment'

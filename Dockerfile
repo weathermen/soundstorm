@@ -18,8 +18,10 @@ ARG RAILS_ENV
 # Set up environment
 ENV BUNDLE_PATH=/gems \
     BUNDLE_BIN=/gems/bin \
+    BUNDLE_JOBS=8 \
     APP_PATH=/srv \
     RAILS_ENV=$RAILS_ENV \
+    PUMA_PIDFILE_PATH=/tmp/pids \
     PATH=/usr/local/bundle/bin:/srv/bin:/gems/bin:$PATH
 
 # Copy in application code
@@ -29,7 +31,7 @@ COPY . $APP_PATH
 
 # Install application dependencies.
 RUN if [ "$RAILS_ENV" = "production" ]; then \
-      ./bin/bundle --path=/gems --jobs=20 && ./bin/yarn --module-path=/node_modules; \
+      ./bin/bundle && ./bin/yarn --module-path=/node_modules; \
     fi
 
 # Precompile assets in production, install dependencies in development
