@@ -18,12 +18,37 @@ module TracksHelper
     content_tag :section, class: 'player', data: data, &block
   end
 
+  def like_button_for(track, &block)
+    if track.user == current_user
+      player_link(&block)
+    else
+      like_button(track, &block)
+    end
+  end
+
+  def track_comments_url(track)
+    user_track_url(track.user, track, anchor: 'comments')
+  end
+
+  private
+
+  def player_link(&block)
+    content_tag :span, class: 'player__link' do
+      yield
+    end
+  end
+
   def like_button(track)
-    data = {
-      action: 'ajax:success->player#like',
-      target: 'like'
+    options = {
+      method: :post,
+      class: 'player__link',
+      data: {
+        action: 'ajax:success->player#like',
+        target: 'like'
+      }
     }
-    button_to [track.user, track, :like], method: :post, data: data, class: 'player__link' do
+
+    button_to [track.user, track, :like], options do
       yield
     end
   end

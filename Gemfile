@@ -55,6 +55,9 @@ gem 'doorkeeper'
 gem 'rack-attack'
 # Followers, likes, and mentions
 gem 'socialization'
+# Track waveform generation
+gem 'waveform'
+gem 'oily_png'
 
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console

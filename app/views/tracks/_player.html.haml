@@ -7,14 +7,12 @@
         .player__elapsed{ data: { target: 'player.elapsed' } } 00:00
         .player__left= track.duration
     .player__waveform
-      -# TODO: = image_tag track.waveform.url
+      = image_tag track.waveform
   %footer
     %nav.player__links
-      = link_to user_track_url(track.user, track, anchor: 'comments'), class: 'player__link' do
+      = link_to track_comments_url(track), class: 'player__link' do
         = t('.comments', count: track.comments_count)
-      - if track.user == current_user
-        %span.player__link= t('.likes', count: track.likers_count)
-      - else
-        = like_button(track) do
-          = t('.likes', count: track.likers_count)
-      %span.player__link= t('.listens', count: track.listens_count)
+      = like_button_for track do
+        = t('.likes', count: track.likers_count)
+      = player_link do
+        = t('.listens', count: track.listens_count)

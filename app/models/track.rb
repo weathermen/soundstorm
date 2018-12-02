@@ -9,6 +9,8 @@ class Track < ApplicationRecord
   belongs_to :user, counter_cache: true
 
   has_one_attached :audio
+  has_one_attached :waveform
+
   has_many :listens, class_name: 'TrackListen', dependent: :destroy
   has_many :comments, dependent: :destroy
 
@@ -18,6 +20,8 @@ class Track < ApplicationRecord
   acts_as_likeable
 
   friendly_id :name, use: %i[slugged finders]
+
+  after_create :generate_waveform
 
   def audio_url
     Rails.application.routes.url_helpers.rails_blob_path(audio, host: user.host)
@@ -40,5 +44,9 @@ class Track < ApplicationRecord
         mediaType: audio.content_type
       }
     )
+  end
+
+  def generate_waveform
+    GenerateWaveformJob.perform_later(self) if audio.attached?
   end
 end
