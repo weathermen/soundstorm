@@ -10,10 +10,12 @@ module PaperTrail
     end
 
     def followers
+      return [] if user.blank?
       user.followers(User)
     end
 
     def user
+      return if whodunnit.blank?
       GlobalID::Locator.locate(whodunnit)
     end
 

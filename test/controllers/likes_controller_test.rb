@@ -15,7 +15,7 @@ class LikesControllerTest < ActionDispatch::IntegrationTest
 
     assert_nil flash[:alert]
     refute_nil flash[:notice]
-    assert_redirected_to @track
+    assert_redirected_to [@track.user, @track]
     assert_includes @user.likes, @track
   end
 
@@ -25,7 +25,7 @@ class LikesControllerTest < ActionDispatch::IntegrationTest
 
     assert_nil flash[:alert]
     refute_nil flash[:notice]
-    assert_redirected_to @track
+    assert_redirected_to [@track.user, @track]
     refute_includes @user.likes, @track
   end
 end

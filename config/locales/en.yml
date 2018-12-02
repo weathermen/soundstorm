@@ -64,6 +64,11 @@ en:
     create:
       success: "Uploaded Track '%{name}'"
       failure: "Error Uploading Track: %{errors}"
+      submit: Upload Track
+    update:
+      success: "Successfully edited Track '%{name}'"
+      failure: "Error uploading Track: %{errors}"
+      submit: Save Track
   likes:
     create:
       success: "You have liked %{track}"
@@ -136,3 +141,10 @@ en:
     index:
       slogan: Share your music with the Fediverse.
       about: Soundstorm is a music sharing platform.
+  notification_mailer:
+    reply:
+      subject: '%{user} has replied to your comment on "%{track}"'
+    like:
+      subject: '%{user} has liked your track "%{track}"'
+    mention:
+      subject: '%{user} mentioned you in a comment'

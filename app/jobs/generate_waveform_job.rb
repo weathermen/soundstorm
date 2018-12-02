@@ -17,8 +17,7 @@ class GenerateWaveformJob < ApplicationJob
 
       convert(audio_path) &&
         generate(audio_path, waveform.path) &&
-        attach(track, waveform, filename) &&
-        cleanup(waveform)
+        attach(track, waveform, filename)
     end
   end
 
@@ -41,6 +40,6 @@ class GenerateWaveformJob < ApplicationJob
   end
 
   def cleanup(waveform)
-    waveform.delete
+    true # waveform.delete
   end
 end

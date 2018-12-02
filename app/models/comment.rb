@@ -14,9 +14,14 @@ class Comment < ApplicationRecord
   scope :roots, -> { where(parent: nil) }
 
   after_create :notify_mentioned_users
+  after_create :notify_replied_user, if: :reply?
 
   def root?
     parent.blank?
+  end
+
+  def reply?
+    !root?
   end
 
   def leaf?
@@ -47,7 +52,11 @@ class Comment < ApplicationRecord
 
   def notify_mentioned_users
     mentioned_users.each do |user|
-      UserMailer.mentioned(self, user).deliver_later
+      NotificationMailer.mention(self, user).deliver_later
     end
+  end
+
+  def notify_replied_user
+    NotificationMailer.reply(self, user).deliver_later
   end
 end

@@ -28,7 +28,7 @@
       = follow_button @user unless current_user_browsing?(@user)
   %main.profile__tracks
     - if @user.tracks.any?
-      = render @user.tracks
+      = render @user.tracks.with_attached_waveform.with_attached_audio
     - else
       %p.profile__empty
         = t('.empty')

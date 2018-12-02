@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  before_action :set_paper_trail_whodunnit, if: :user_signed_in?
   before_action :cache_page, only: :index
   before_action :doorkeeper_authorize!, if: :api?
   before_action :configure_permitted_parameters, if: :devise_controller?
+
+  append_before_action :set_paper_trail_whodunnit, if: :user_signed_in?
 
   after_action :set_headers
 
@@ -45,5 +46,9 @@ class ApplicationController < ActionController::Base
     %i[sign_up account_update].each do |action|
       devise_parameter_sanitizer.permit(action, keys: keys)
     end
+  end
+
+  def user_for_paper_trail
+    current_user
   end
 end

@@ -6,7 +6,7 @@ class UsersController < ApplicationController
   skip_before_action :doorkeeper_authorize!, only: :show
 
   def show
-    @user = User.find_by!(name: params[:id])
+    @user = User.includes(:tracks).find_by!(name: params[:id])
 
     respond_to do |format|
       format.html # show.html.haml

@@ -46,7 +46,9 @@ class Track < ApplicationRecord
     )
   end
 
+  private
+
   def generate_waveform
-    GenerateWaveformJob.perform_later(self) if audio.attached?
+    GenerateWaveformJob.perform_later(self)
   end
 end
