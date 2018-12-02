@@ -7,6 +7,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.includes(:tracks).find_by!(name: params[:id])
+    @title = t('.title', user: @user.name)
 
     respond_to do |format|
       format.html # show.html.haml
