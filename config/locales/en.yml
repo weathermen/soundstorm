@@ -149,3 +149,6 @@ en:
       subject: '%{user} has liked your track "%{track}"'
     mention:
       subject: '%{user} mentioned you in a comment'
+  registrations:
+    edit:
+      title: Settings

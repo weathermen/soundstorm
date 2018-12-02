@@ -1,7 +1,7 @@
 = devise_form_for(resource, :registration, html: { method: :put }) do |f|
   %header.form__header
     %section.form__title
-      %h1 Edit #{resource_name.to_s.humanize}
+      %h1= page_title
     %section.form__errors
       = devise_error_messages!
   %main.form__fields

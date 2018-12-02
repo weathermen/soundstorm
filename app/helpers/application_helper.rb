@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  PAGE_TITLE_SEPARATOR = ' - '
+
   def title_tag
     content_tag :title, title_text
   end
@@ -8,12 +10,13 @@ module ApplicationHelper
   def title_text
     return app_title unless page_title?
 
-    [page_title, app_title].join(' - ')
+    [page_title, app_title].join(PAGE_TITLE_SEPARATOR)
   end
 
   def page_title?
     page_title !~ /translation missing/
-  rescue StandardError
+  rescue StandardError => error
+    Rails.logger.debug(error)
     false
   end
 
