@@ -16,6 +16,7 @@ class TracksController < ApplicationController
 
   def edit
     @track = current_user.tracks.find(params[:id])
+    @title = t('.title', track: @track.name)
   end
 
   def create
@@ -55,7 +56,7 @@ class TracksController < ApplicationController
       if @track.update(edit_track_params)
         flash[:notice] = t('.success', name: @track.name)
 
-        format.html { redirect_to @track }
+        format.html { redirect_to [current_user, @track] }
         format.json { render json: @track }
       else
         flash[:notice] = t('.failure', errors: @track.errors.full_messages.to_sentence)

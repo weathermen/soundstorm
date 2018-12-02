@@ -3,9 +3,10 @@
     .form__field
       = f.label :name
       = f.text_field :name, required: true
-    .form__field
-      = f.label :audio
-      = f.file_field :audio, required: true
+    - if f.object.new_record?
+      .form__field
+        = f.label :audio
+        = f.file_field :audio, required: true
     .form__field
       = f.label :description
       = f.text_area :description

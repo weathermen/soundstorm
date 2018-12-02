@@ -23,7 +23,7 @@ module TracksHelper
       action: 'ajax:success->player#like',
       target: 'like'
     }
-    button_to [track.user, track, :like], method: :post, data: data do
+    button_to [track.user, track, :like], method: :post, data: data, class: 'player__link' do
       yield
     end
   end

@@ -57,6 +57,7 @@ en:
       submit: Upload New Track
     edit:
       submit: Save Track
+      title: 'Edit "%{track}"'
     destroy:
       success: "Deleted Track '%{name}'"
       failure: "Error Deleting Track: %{errors}"

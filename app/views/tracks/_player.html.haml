@@ -10,11 +10,11 @@
       -# TODO: = image_tag track.waveform.url
   %footer
     %nav.player__links
-      = link_to user_track_url(track.user, track, anchor: 'comments') do
+      = link_to user_track_url(track.user, track, anchor: 'comments'), class: 'player__link' do
         = t('.comments', count: track.comments_count)
       - if track.user == current_user
-        = link_to user_track_url(track.user, track) do
-          = t('.likes', count: track.likes_count)
+        %span.player__link= t('.likes', count: track.likers_count)
       - else
         = like_button(track) do
-          = t('.likes', count: track.likes_count)
+          = t('.likes', count: track.likers_count)
+      %span.player__link= t('.listens', count: track.listens_count)
