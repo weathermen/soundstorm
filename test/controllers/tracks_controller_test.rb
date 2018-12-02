@@ -5,7 +5,9 @@ require 'test_helper'
 class TracksControllerTest < ActionDispatch::IntegrationTest
   setup do
     @track = tracks(:one_untitled)
-    sign_in users(:one)
+    @user = users(:one)
+
+    sign_in @user
   end
 
   test 'view track' do
@@ -27,7 +29,7 @@ class TracksControllerTest < ActionDispatch::IntegrationTest
     post tracks_url, params: { track: attributes }
     track = Track.last
 
-    assert_redirected_to track
+    assert_redirected_to [@user, track]
     assert_equal attributes[:name], track.name
   end
 
@@ -38,7 +40,7 @@ class TracksControllerTest < ActionDispatch::IntegrationTest
 
     patch track_url(@track), params: { track: { name: 'New Name' } }
 
-    assert_redirected_to @track
+    assert_redirected_to [@user, @track]
     assert @track.reload
     assert_equal 'New Name', @track.name
   end

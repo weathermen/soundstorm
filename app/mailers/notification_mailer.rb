@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Send email notifications to users.
 class NotificationMailer < ApplicationMailer
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:
@@ -9,8 +10,9 @@ class NotificationMailer < ApplicationMailer
   def mention(comment, user)
     @comment = comment
     @user = user
+    @subject = t('.subject', user: @comment.user.name)
 
-    mail to: @user.email, subject: t('.subject', user: @comment.user.name)
+    mail to: @user.email, subject: @subject
   end
 
   # Subject can be set in your I18n file at config/locales/en.yml

@@ -7,14 +7,18 @@ class Comment < ApplicationRecord
   belongs_to :track, counter_cache: true
   belongs_to :parent, class_name: 'Comment', optional: true
 
+  has_many :children, foreign_key: :parent_id, class_name: 'Comment'
+
   acts_as_mentioner
+
+  before_validation :assign_parent_track, unless: :root?
 
   validates :content, presence: true
 
   scope :roots, -> { where(parent: nil) }
 
-  after_create :notify_mentioned_users
   after_create :notify_replied_user, if: :reply?
+  after_save :mention_users
 
   def root?
     parent.blank?
@@ -28,12 +32,14 @@ class Comment < ApplicationRecord
     children.none?
   end
 
-  def children
-    Comment.where(parent: self)
+  def parent_activity_id
+    root? ? track.activity_id : parent.activity_id
   end
 
-  def parent_activity_id
-    parent&.activity_id || commentable.activity_id
+  def activity_id
+    Rails.application.routes.url_helpers.user_track_comment_url(
+      track.user, track, self, host: track.user.host
+    )
   end
 
   def as_activity
@@ -45,14 +51,21 @@ class Comment < ApplicationRecord
   end
 
   def mentioned_users
-    mentions(User)
+    mentionees(User)
   end
 
   private
 
-  def notify_mentioned_users
-    mentioned_users.each do |user|
-      NotificationMailer.mention(self, user).deliver_later
+  def assign_parent_track
+    self.track = parent.track
+  end
+
+  def mention_users
+    content.scan(Mention::SYNTAX) do |mention|
+      username = mention.gsub(Mention::DEFIX, '')
+      user = User.find_by(name: username)
+      next unless user.present?
+      mention!(user)
     end
   end
 

@@ -1,28 +1,50 @@
+# frozen_string_literal: true
+
 require 'test_helper'
 
 class NotificationMailerTest < ActionMailer::TestCase
-  test "mention" do
-    mail = NotificationMailer.mention
-    assert_equal "Mention", mail.subject
-    assert_equal ["to@example.org"], mail.to
-    assert_equal ["from@example.com"], mail.from
-    assert_match "Hi", mail.body.encoded
+  setup do
+    @from = ['no-reply@soundstorm.test']
   end
 
-  test "like" do
-    mail = NotificationMailer.like
-    assert_equal "Like", mail.subject
-    assert_equal ["to@example.org"], mail.to
-    assert_equal ["from@example.com"], mail.from
-    assert_match "Hi", mail.body.encoded
+  test 'mention' do
+    user = users(:two)
+    track = tracks(:one_untitled)
+    comment = comments(:one_untitled_praise)
+    reply = comment.children.build(
+      content: "@#{track.user} hi",
+      user: user,
+      track: track
+    )
+    mail = NotificationMailer.mention(reply, track.user)
+
+    assert_includes mail.subject, comment.user.name
+    assert_equal [track.user.email], mail.to
+    assert_equal @from, mail.from
+    assert_includes mail.body.encoded, mail.subject
   end
 
-  test "reply" do
-    mail = NotificationMailer.reply
-    assert_equal "Reply", mail.subject
-    assert_equal ["to@example.org"], mail.to
-    assert_equal ["from@example.com"], mail.from
-    assert_match "Hi", mail.body.encoded
+  test 'like' do
+    user = users(:two)
+    track = tracks(:one_untitled)
+    mail = NotificationMailer.like(user, track)
+
+    assert_includes mail.subject, user.name
+    assert_equal [track.user.email], mail.to
+    assert_equal @from, mail.from
+    assert_includes mail.body.encoded, 'has liked your track'
   end
 
+  test 'reply' do
+    user = users(:one)
+    track = tracks(:one_untitled)
+    comment = comments(:one_untitled_praise)
+    reply = comment.children.build(content: 'test', user: user, track: track)
+    mail = NotificationMailer.reply(reply, user)
+
+    assert_equal [user.email], mail.to
+    assert_equal @from, mail.from
+    assert_includes mail.subject, user.name
+    assert_includes mail.body.encoded, reply.content
+  end
 end
