@@ -153,9 +153,8 @@ ActiveRecord::Schema.define(version: 2018_12_01_234731) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "comments_count", default: 0
-    t.integer "likes_count", default: 0
     t.integer "listens_count", default: 0
-    t.integer "likers", default: 0
+    t.integer "likers_count", default: 0
     t.string "description"
     t.index ["slug"], name: "index_tracks_on_slug"
     t.index ["user_id"], name: "index_tracks_on_user_id"
@@ -187,9 +186,10 @@ ActiveRecord::Schema.define(version: 2018_12_01_234731) do
     t.text "key_pem", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "followers", default: 0
-    t.integer "followees", default: 0
+    t.integer "followers_count", default: 0
+    t.integer "followees_count", default: 0
     t.integer "tracks_count", default: 0
+    t.integer "likees_count", default: 0
     t.string "biography"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
