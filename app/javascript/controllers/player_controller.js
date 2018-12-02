@@ -1,5 +1,9 @@
 import { Controller } from "stimulus"
 import { Howl } from "howler"
+import moment from "moment"
+import momentDurationFormatSetup from "moment-duration-format"
+
+momentDurationFormatSetup(moment)
 
 /**
  * Controls playback of uploaded tracks
@@ -7,14 +11,20 @@ import { Howl } from "howler"
 export default class Player extends Controller {
   static targets = ["button", "elapsed", "like"]
 
+  initialize() {
+    this.updateElapsedTime = this.updateElapsedTime.bind(this)
+  }
+
   /**
    * Create the sound with Howl
    */
   connect() {
-    const href = this.buttonTarget.current.getAttribute("href")
+    const href = this.buttonTarget.closest("form").getAttribute("action")
     const src = [href]
 
     this.sound = new Howl({ src })
+    this.playing = false
+    this.secondsElapsed = 0
   }
 
   /**
@@ -29,14 +39,16 @@ export default class Player extends Controller {
    * Update the elapsed time on the player
    */
   updateElapsedTime() {
-    this.elapsedTarget.current.innerText = this.sound.duration()
-  }
+    this.secondsElapsed++
 
-  /**
-   * Test if a track is currently playing
-   */
-  get playing() {
-    return typeof this.elapsedTimeInterval !== "undefined"
+    let elapsedTime = moment.duration(this.secondsElapsed, "seconds")
+                            .format("mm:ss")
+
+    if (elapsedTime.length == 2) {
+      elapsedTime = `00:${elapsedTime}`
+    }
+
+    this.elapsedTarget.innerText = elapsedTime
   }
 
   get url() {
@@ -60,8 +72,9 @@ export default class Player extends Controller {
    * Pause the currently-playing track
    */
   pause() {
-    this.buttonTarget.current.innerText = "Play"
+    this.buttonTarget.value = "Play"
     this.sound.pause()
+    this.playing = false
     clearInterval(this.elapsedTimeInterval)
   }
 
@@ -69,8 +82,9 @@ export default class Player extends Controller {
    * Play the track defined by this player
    */
   play() {
-    this.buttonTarget.current.innerText = "Pause"
+    this.buttonTarget.value = "Pause"
     this.sound.play()
+    this.playing = true
     this.elapsedTimeInterval = setInterval(this.updateElapsedTime, 1000)
     this.track()
   }
