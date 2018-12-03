@@ -21,9 +21,10 @@
         %nav.navigation
           - if user_signed_in?
             = nav_link_to current_user do
-              - if current_user.avatar.attached?
-                = image_tag current_user.avatar.variant(resize: '50x50')
-              = t('.nav.profile', name: current_user.name)
+              .profile-link
+                - if current_user.avatar.attached?
+                  = image_tag current_user.avatar.variant(resize: '25x25')
+                = t('.nav.profile', name: current_user.name)
             = nav_link_to :timeline, root_path
             = nav_link_to :library, likes_path
             = nav_link_to :settings, edit_user_registration_path

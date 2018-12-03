@@ -2,7 +2,7 @@
   %header.profile__cover
     %section.profile__title
       - if @user.avatar.attached?
-        = image_tag @user.avatar, class: 'profile__avatar'
+        = image_tag @user.avatar.variant(resize: '150x150'), class: 'profile__avatar'
       %h1.profile__name
         = @user.display_name
     %section.profile__metadata
@@ -33,6 +33,6 @@
     - if @user.tracks.any?
       = render @user.tracks.with_attached_waveform.with_attached_audio
     - else
-      %p.profile__empty
-        = t('.empty')
-        = link_to t('.upload'), new_track_path
+      %p.profile__empty= t('.empty')
+  %footer.profile__controls
+    = link_to t('.upload'), new_track_path

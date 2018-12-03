@@ -1,10 +1,21 @@
 .player {}
-.player__transport {}
-.player__button {}
+.player__interface {
+  display: grid;
+  grid-template-columns: 1fr 12fr;
+}
+.player__transport {
+  text-align: center;
+}
+.player__button {
+  margin-bottom: 1vh;
+}
 .player__duration {}
 .player__elapsed {}
 .player__left {}
 .player__waveform {}
+.player__bar {
+  text-align: right;
+}
 .player__links {}
 .player__link {
   margin-right: 15px;

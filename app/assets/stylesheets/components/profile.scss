@@ -1,8 +1,13 @@
 .profile {}
 .profile__cover {}
-.profile__title {}
+.profile__title {
+  display: flex;
+  align-items: center;
+}
 .profile__avatar {}
-.profile__name {}
+.profile__name {
+  margin-left: 10px;
+}
 .profile__metadata {
   display: grid;
   grid-template-columns: 5fr 1fr;
@@ -29,4 +34,8 @@
   flex: 1;
   margin: 0 15px;
   text-align: right;
+}
+
+.profile__tracks {
+  margin-bottom: 2vh;
 }

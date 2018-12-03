@@ -1,7 +1,19 @@
 .navigation {}
 .navigation__link {
-  text-decoration: none
+  display: inline-block;
+  margin-right: 5px;
+  text-decoration: none;
 }
   .navigation__link--current {
-    color: black
+    color: black;
   }
+
+.profile-link {
+  img {
+    vertical-align: middle;
+  }
+}
+
+.profile-link {
+  display: flex;
+}

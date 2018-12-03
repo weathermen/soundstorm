@@ -1,5 +1,5 @@
 = player_for track do
-  %main
+  %main.player__interface
     .player__transport
       .player__button
         = track_player_button track.audio
@@ -8,7 +8,7 @@
         .player__left= track.duration
     .player__waveform
       = image_tag track.waveform if track.waveform.attached?
-  %footer
+  %footer.player__bar
     %nav.player__links
       = link_to track_comments_url(track), class: 'player__link' do
         = t('.comments', count: track.comments_count)

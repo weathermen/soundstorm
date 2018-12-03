@@ -131,7 +131,7 @@ en:
       tracks: Tracks
       location: Location
       empty: No tracks to show.
-      upload: Upload one!
+      upload: Upload New Track
       biography: Biography
       title: "%{user}'s Profile"
   user_mailer:
