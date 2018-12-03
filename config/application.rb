@@ -10,6 +10,8 @@ Bundler.require(*Rails.groups)
 
 require 'activity_pub'
 require 'soundstorm'
+require 'elasticsearch/rails/instrumentation'
+# require 'elasticsearch/rails/lograge'
 
 module Soundstorm
   class Application < Rails::Application

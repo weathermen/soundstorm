@@ -10,11 +10,14 @@ require 'vcr'
 VCR.configure do |config|
   config.cassette_library_dir = 'test/cassettes'
   config.hook_into :webmock
+  config.ignore_hosts('localhost', '127.0.0.1')
 end
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
+
+  setup :index_existing_models
 
   # Turn on versioning for the duration of the block.
   def with_versioning
@@ -31,8 +34,15 @@ class ActiveSupport::TestCase
   def users(id)
     super(id).tap do |user|
       key = Rails.root.join('test', 'fixtures', 'files', "#{id}.pem")
-      user.update!(key_pem: key.read)
+      user.update_column(:key_pem, key.read)
     end
+  end
+
+  private
+
+  def index_existing_models
+    User.import
+    Track.import
   end
 end
 

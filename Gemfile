@@ -58,6 +58,9 @@ gem 'socialization'
 # Track waveform generation
 gem 'waveform'
 gem 'oily_png'
+# Search users and tracks with Elasticsearch
+gem 'elasticsearch-rails', '~> 5', require: 'elasticsearch/rails'
+gem 'elasticsearch-model', '~> 5', require: 'elasticsearch/model'
 
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console

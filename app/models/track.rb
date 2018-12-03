@@ -3,8 +3,12 @@
 class Track < ApplicationRecord
   include Commentable
   include Federatable
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
 
   extend FriendlyId
+
+  index_name "soundstorm_#{Rails.env}"
 
   belongs_to :user, counter_cache: true
 
@@ -22,6 +26,15 @@ class Track < ApplicationRecord
   friendly_id :name, use: %i[slugged finders]
 
   after_create :generate_waveform
+
+  delegate :name, to: :user, prefix: true
+
+  settings index: { number_of_shards: 1 } do
+    mappings dynamic: 'false' do
+      indexes :name
+      indexes :user_name, analyzer: 'english'
+    end
+  end
 
   def audio_url
     Rails.application.routes.url_helpers.rails_blob_path(audio, host: user.host)

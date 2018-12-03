@@ -7,6 +7,10 @@ class User < ApplicationRecord
   extend FriendlyId
 
   include Federatable
+  include Elasticsearch::Model
+  include Elasticsearch::Model::Callbacks
+
+  index_name "soundstorm_#{Rails.env}"
 
   # Generate 2048-bit keys
   KEY_LENGTH = 2048
@@ -48,6 +52,13 @@ class User < ApplicationRecord
   validates :key_pem, presence: true, uniqueness: true
 
   alias_attribute :likes_count, :likees_count
+
+  settings index: { number_of_shards: 1 } do
+    mappings dynamic: 'false' do
+      indexes :name
+      indexes :display_name, analyzer: 'english'
+    end
+  end
 
   def likes
     likees(Track)
