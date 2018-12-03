@@ -7,7 +7,7 @@ class Search
 
   def initialize(query:, **filters)
     @query = query
-    @filters = filters
+    @filters = filters.compact
   end
 
   def types
@@ -30,6 +30,30 @@ class Search
     response['hits']['total']
   end
 
+  def as_json
+    json = {
+      query: {
+        bool: {
+          must: [
+            {
+              query_string: {
+                query: query
+              }
+            }
+          ]
+        }
+      }
+    }
+
+    json[:query][:bool][:must] << {
+      type: {
+        value: filters[:type]
+      }
+    } if filters[:type].present?
+
+    json
+  end
+
   private
 
   def record_for(result)
@@ -46,13 +70,7 @@ class Search
   def response
     @response ||= Elasticsearch::Model.client.search(
       index: "soundstorm_#{Rails.env}",
-      body: {
-        query: {
-          query_string: {
-            query: query
-          }
-        }
-      }
+      body: as_json
     )
   end
 end

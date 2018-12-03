@@ -4,7 +4,7 @@
       #{@search.count} results for "#{@search.query}"
     %nav.search__filters
       - @search.types.each do |type, results|
-        = link_to search_filter_url(type), class: 'search-filter' do
+        = search_filter_link type do
           .search-filter__count= results.count
           .search-filter__name= type.titleize.pluralize
   %main.search__listing
