@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
   end
 
   def configure_permitted_parameters
-    keys = %i[email display_name location]
+    keys = %i[email display_name location avatar]
 
     %i[sign_up account_update].each do |action|
       devise_parameter_sanitizer.permit(action, keys: keys)

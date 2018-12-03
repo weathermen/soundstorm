@@ -26,6 +26,9 @@
       = f.label :location
       = f.text_field :location
     .form__field
+      = f.label :avatar
+      = f.file_field :avatar
+    .form__field
       = f.label :current_password
       %em.form__hint (we need your current password to confirm your changes)
       = f.password_field :current_password, autocomplete: "current-password"

@@ -1,7 +1,10 @@
 %article.profile
   %header.profile__cover
-    %section.profile__name
-      %h1= @user.display_name
+    %section.profile__title
+      - if @user.avatar.attached?
+        = image_tag @user.avatar, class: 'profile__avatar'
+      %h1.profile__name
+        = @user.display_name
     %section.profile__metadata
       %dl.profile__fields
         .profile__field

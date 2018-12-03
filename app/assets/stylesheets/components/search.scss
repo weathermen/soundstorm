@@ -22,7 +22,12 @@
 }
 
 .search-result {}
+.search-result__link {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+}
   .search-result--user {}
   .search-result--track {}
 
+.search-result__image {}
 .search-result__name {}

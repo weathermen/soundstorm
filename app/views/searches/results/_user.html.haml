@@ -1,1 +1,4 @@
-%p.search-result__name= result.name
+.search-result__image
+  = image_tag result.avatar.variant(resize: '300x300') if result.avatar.attached?
+.search-result__name
+  %p= result.name
