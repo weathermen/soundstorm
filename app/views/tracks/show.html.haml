@@ -8,11 +8,15 @@
     %section.track__description
       %p= @track.description
     %section.track__comments
-      - if @track.comments.any?
+      %h3= t('.comments')
+      - if @track.comments.none?
         %p.empty No comments.
       - else
         - @track.comments.each do |comment|
           = render 'comments/comment', comment: comment
+    - if user_signed_in?
+      %section.track__new-comment
+        = render 'comments/form', comment: @track.comments.build(user: current_user)
   - if @track.user == current_user
     %footer.track__controls
       = link_to 'Edit', [:edit, @track]

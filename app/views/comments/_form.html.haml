@@ -1,6 +1,10 @@
-= form_with model: [comment.user, comment.track, comment], class: 'form' do |f|
-  %main.form__fields
-    .form__field
-      = f.text_area :content
-  %footer.form__controls
-    = f.submit t('.save')
+= form_with model: [comment.user, comment.track, comment], class: 'form comment-form' do |f|
+  %main.comment-form__content
+    %aside.comment-form__sidebar
+      = image_tag comment.user.avatar.variant(resize: '50x50')
+    %fieldset.comment-form__fieldset
+      .form__fields
+        .form__field
+          = f.text_area :content, class: 'comment-form__content-editor'
+  %footer.form__controls.comment-form__controls
+    = f.submit t('.save', action: f.object.new_record? ? 'Add' : 'Edit')

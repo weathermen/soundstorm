@@ -1,0 +1,23 @@
+.comment-form {}
+.comment-form__content {
+  display: grid;
+  grid-template-columns: 1fr 16fr;
+}
+.comment-form__sidebar {
+  display: flex;
+  align-items: baseline;
+  padding-top: 10px;
+}
+.comment-form__fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+.comment-form__controls {
+  text-align: right;
+  padding: 15px 0 15px;
+}
+.comment-form__content-editor {
+  width: 100%;
+  min-height: 15vh;
+}

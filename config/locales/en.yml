@@ -69,6 +69,8 @@ en:
       success: "Successfully edited Track '%{name}'"
       failure: "Error uploading Track: %{errors}"
       submit: Save Track
+    show:
+      comments: Comments
   likes:
     create:
       success: "You have liked %{track}"
@@ -89,6 +91,8 @@ en:
     comment:
       edit: Edit
       delete: Delete
+    form:
+      save: "%{action} Comment"
   versions:
     unauthorized: Request signature could not be verified.
   errors:

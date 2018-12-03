@@ -15,4 +15,5 @@
       = like_button_for track do
         = t('.likes', count: track.likers_count)
       = player_link do
-        = t('.listens', count: track.listens_count)
+        %span.player__listens{ data: { target: 'player.listens' } }
+          = t('.listens', count: track.listens_count)

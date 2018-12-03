@@ -16,7 +16,7 @@ class LikesController < ApplicationController
         flash[:notice] = t('.success', track: @track.name)
 
         format.html { redirect_to [@track.user, @track] }
-        format.json { head :created }
+        format.json { render json: { likes: @track.likees_count } }
       else
         flash[:alert] = t('.failure', track: @track.name)
 
@@ -34,7 +34,7 @@ class LikesController < ApplicationController
         flash[:notice] = t('.success', track: @track.name)
 
         format.html { redirect_to [@track.user, @track] }
-        format.json { head :created }
+        format.json { render json: { likes: @track.likees_count } }
       else
         flash[:alert] = t('.failure', track: @track.name)
 

@@ -39,14 +39,18 @@ class TracksController < ApplicationController
   end
 
   def listen
-    @user = User.find(params[:user_id])
+    @user = User.find_by(name: params[:user_id])
     @track = @user.tracks.find(params[:id])
-    @track.listens.create(
-      ip_address: request.ip_address,
+    @listen = @track.listens.create(
+      ip_address: request.ip,
       user: current_user
     )
 
-    head :ok
+    if @listen.persisted?
+      head :created
+    else
+      head :ok
+    end
   end
 
   def update

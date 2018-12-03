@@ -12,7 +12,8 @@ module TracksHelper
   def player_for(track, &block)
     data = {
       controller: 'player',
-      track: url_for([track.user, track])
+      track: url_for([track.user, track]),
+      liked: current_user.likes?(track)
     }
 
     content_tag :section, class: 'player', data: data, &block

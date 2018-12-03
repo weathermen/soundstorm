@@ -9,7 +9,7 @@ momentDurationFormatSetup(moment)
  * Controls playback of uploaded tracks
  */
 export default class Player extends Controller {
-  static targets = ["button", "elapsed", "like"]
+  static targets = ["button", "elapsed", "like", "listens"]
 
   initialize() {
     this.updateElapsedTime = this.updateElapsedTime.bind(this)
@@ -25,6 +25,8 @@ export default class Player extends Controller {
     this.sound = new Howl({ src })
     this.playing = false
     this.secondsElapsed = 0
+    this.listens = parseInt(this.element.getAttribute("data-listens"))
+    this.liked = this.element.getAttribute("data-liked")
   }
 
   /**
@@ -65,8 +67,28 @@ export default class Player extends Controller {
       this.pause()
     } else {
       this.play()
+      this.listened()
     }
   }
+
+  /**
+   * Like or unlike the track
+   */
+  async like(event) {
+    event.preventDefault()
+
+    const url = `${this.url}/like.json`
+    const method = this.liked ? "DELETE" : "POST"
+    const response = await fetch(url, { method })
+
+    if (response.status === 200) {
+      const { likes } = await response.json()
+      this.liked = method === "POST"
+
+      this.likesTarget.innerText = `${likes} likes`
+    }
+  }
+
 
   /**
    * Pause the currently-playing track
@@ -86,19 +108,24 @@ export default class Player extends Controller {
     this.sound.play()
     this.playing = true
     this.elapsedTimeInterval = setInterval(this.updateElapsedTime, 1000)
-    this.track()
   }
 
   /**
    * Track playback by a given client.
    */
-  track() {
+  async listened() {
+    const authenticityToken = this.element.querySelector(
+      "input[name=\"authenticity_token\"]"
+    ).value
     const method = "POST"
-    const url = `${this.url}/listen`
+    const url = `${this.url}/listen.json`
+    const headers = { "X-CSRF-Token": authenticityToken }
+    const response = await fetch(url, { method, headers })
 
-    fetch(url, { method })
-  }
+    if (response.status === 201) {
+      const { listens } = await response.json()
 
-  like() {
+      this.listensTarget.innerText = `${listens} listens`
+    }
   }
 }
