@@ -1,0 +1,28 @@
+.search {}
+.search__summary {}
+.search__title {}
+.search__filters {}
+.search__listing {}
+.search__results {
+  list-style: none;
+}
+
+.search-filter {
+  display: inline-block;
+  padding: 5px;
+  margin-right: 15px;
+  text-decoration: none;
+  border: 1px solid black;
+  border-radius: 8px;
+}
+.search-filter__count {
+  font-size: 1.5em;
+}
+.search-filter__name {
+}
+
+.search-result {}
+  .search-result--user {}
+  .search-result--track {}
+
+.search-result__name {}

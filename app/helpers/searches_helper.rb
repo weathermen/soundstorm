@@ -34,6 +34,10 @@ module SearchesHelper
     end
   end
 
+  def search_filter_url(type)
+    url_for(q: params[:q], utf8: params[:utf8], type: type)
+  end
+
   def search_result_template(result)
     "searches/results/#{result.class.name.downcase}"
   end
