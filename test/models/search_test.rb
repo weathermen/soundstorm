@@ -8,7 +8,7 @@ class SearchTest < ActiveSupport::TestCase
   end
 
   test 'count' do
-    assert_equal Track.count + User.count, @search.count
+    assert_equal 11, @search.count
   end
 
   test 'find track' do

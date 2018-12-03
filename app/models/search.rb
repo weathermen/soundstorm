@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Search
+  include Enumerable
+
   attr_reader :query, :filters
 
   def initialize(query:, **filters)
