@@ -2,8 +2,8 @@
 
 require 'test_helper'
 
-class GenerateWaveformJobTest < ActiveJob::TestCase
-  test 'generate waveform from track audio' do
+class AnalyzeTrackJobTest < ActiveJob::TestCase
+  test 'generate waveform from track audio and find duration' do
     user = users(:one)
     track = user.tracks.build(
       name: 'audio one',
@@ -15,8 +15,9 @@ class GenerateWaveformJobTest < ActiveJob::TestCase
     )
     track.save!
 
-    GenerateWaveformJob.perform_now(track)
+    AnalyzeTrackJob.perform_now(track)
 
     assert track.waveform.attached?
+    assert_equal 42, track.duration
   end
 end

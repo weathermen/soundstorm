@@ -25,7 +25,7 @@ class Track < ApplicationRecord
 
   friendly_id :name, use: %i[slugged finders]
 
-  after_create :generate_waveform
+  after_create :analyze
 
   delegate :name, to: :user, prefix: true
 
@@ -61,7 +61,7 @@ class Track < ApplicationRecord
 
   private
 
-  def generate_waveform
-    GenerateWaveformJob.perform_later(self)
+  def analyze
+    AnalyzeTrackJob.perform_later(self)
   end
 end
