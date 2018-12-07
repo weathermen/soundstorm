@@ -1,6 +1,10 @@
 import { Controller } from "stimulus"
-import Template from "../templates/flash_message.html.haml"
+import FlashMessage from "../templates/flash_message.html.haml"
 
+/**
+ * Render flash messages from the `X-Flash-Messages` header on Ajax
+ * requests.
+ */
 export default class Flash extends Controller {
   /**
    * Bind event that parses flash headers into data
@@ -21,9 +25,9 @@ export default class Flash extends Controller {
       xhr.getResponseHeader("X-Flash-Messages")
     )
 
-    console.log(flash)
-
-    flash.forEach(this.render)
+    if (flash) {
+      flash.forEach(this.render)
+    }
   }
 
   /**
@@ -32,7 +36,7 @@ export default class Flash extends Controller {
    */
   render(type, message) {
     this.element.append(
-      Template({ type, message })
+      FlashMessage({ type, message })
     )
   }
 }
