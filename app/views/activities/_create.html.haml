@@ -1,0 +1,6 @@
+- if create.item.present?
+  .activity
+    .activity__event
+      = t(:activity, scope: [create.item_type.tableize, create.event], user: create.user.name, track: create.item.name)
+    .activity__content
+      = render 'tracks/player', track: create.item

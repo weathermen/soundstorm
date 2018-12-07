@@ -1,0 +1,5 @@
+.activity
+  .activity__event
+    = t(:activity, scope: [update.item_type.tableize, update.event], user: update.user.name, track: update.object['name'])
+  .activity__content
+    = render 'tracks/player', track: update.item if update.item.present?

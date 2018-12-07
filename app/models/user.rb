@@ -147,11 +147,19 @@ class User < ApplicationRecord
     devise_mailer.send(notification, self, *args).deliver_later
   end
 
+  def timeline_user_ids
+    following_users.map(&:to_global_id) + [to_global_id.to_s]
+  end
+
   # All activity by users this user follows.
   #
   # @return [ActiveRecord::Relation]
   def activities
-    PaperTrail::Version.where(whodunnit: following_users.map(&:to_global_id))
+    PaperTrail::Version.where(
+      event: %w(create),
+      item_type: 'Track',
+      whodunnit: timeline_user_ids
+    )
   end
 
   def to_param

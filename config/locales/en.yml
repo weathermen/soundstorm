@@ -65,10 +65,12 @@ en:
       success: "Uploaded Track '%{name}'"
       failure: "Error Uploading Track: %{errors}"
       submit: Upload Track
+      activity: '%{user} uploaded a new track "%{track}"'
     update:
       success: "Successfully edited Track '%{name}'"
       failure: "Error uploading Track: %{errors}"
       submit: Save Track
+      activity: "%{user} updated track %{track}"
     show:
       comments: Comments
   likes:
