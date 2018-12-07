@@ -160,3 +160,7 @@ en:
       title: Settings
     new:
       title: Sign Up
+  devise:
+    registrations:
+      edit:
+        submit: Update

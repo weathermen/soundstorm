@@ -27,13 +27,13 @@
       = f.text_field :location
     .form__field
       = f.label :avatar
-      = f.file_field :avatar
+      = f.file_field :avatar, direct_upload: true
     .form__field
       = f.label :current_password
       %em.form__hint (we need your current password to confirm your changes)
       = f.password_field :current_password, autocomplete: "current-password"
   %footer.form__actions
-    = f.submit "Update"
+    = f.submit t('.submit'), data: { disable_with: 'Please wait...' }
 
 .cancel
   %h3.cancel__title= t('.cancel.title') #Cancel my account
