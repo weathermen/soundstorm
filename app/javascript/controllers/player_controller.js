@@ -13,6 +13,7 @@ export default class Player extends Controller {
 
   initialize() {
     this.updateElapsedTime = this.updateElapsedTime.bind(this)
+    this.updateProgress = this.updateProgress.bind(this)
   }
 
   /**
@@ -21,13 +22,17 @@ export default class Player extends Controller {
   connect() {
     const href = this.buttonTarget.getAttribute("href")
     const src = [href]
+    const onplay = this.start.bind(this)
+    const onpause = this.stop.bind(this)
 
-    this.sound = new Howl({ src })
+    this.sound = new Howl({ src, onplay, onpause })
     this.playing = false
     this.secondsElapsed = 0
     this.listens = parseInt(this.element.getAttribute("data-listens"))
     this.totalDuration = parseInt(this.element.getAttribute("data-duration"))
     this.liked = this.element.getAttribute("data-liked")
+    this.ticks = 0
+    this.totalTicks = this.totalDuration * 1000
   }
 
   /**
@@ -51,8 +56,18 @@ export default class Player extends Controller {
       elapsedTime = `00:${elapsedTime}`
     }
 
+    // const percent = (this.secondsElapsed / this.totalDuration) * 100
+
     this.elapsedTarget.innerText = elapsedTime
-    this.notchTarget.style.left = `${this.secondsElapsed * 2}px`
+    // this.notchTarget.style.left = `${percent}%`
+  }
+
+  updateProgress() {
+    this.ticks++
+
+    const percent = (this.ticks / this.totalTicks) * 100
+
+    this.notchTarget.style.left = `${percent}%`
   }
 
   get url() {
@@ -96,39 +111,43 @@ export default class Player extends Controller {
    * Pause the currently-playing track
    */
   pause() {
-    this.buttonTarget.value = "Play"
     this.sound.pause()
     this.playing = false
 
     this.buttonTarget.classList.remove("player__icon--playing")
     this.buttonTarget.classList.add("player__icon--paused")
-
-    clearInterval(this.elapsedTimeInterval)
   }
 
   /**
    * Play the track defined by this player
    */
   play() {
-    this.buttonTarget.value = "Pause"
     this.sound.play()
     this.playing = true
-    this.elapsedTimeInterval = setInterval(this.updateElapsedTime, 1000)
 
     this.buttonTarget.classList.remove("player__icon--paused")
     this.buttonTarget.classList.add("player__icon--playing")
+  }
+
+  start() {
+    this.elapsedTimeInterval = setInterval(this.updateElapsedTime, 1000)
+    this.progressInterval = setInterval(this.updateProgress, 1)
+  }
+
+  stop() {
+    clearInterval(this.elapsedTimeInterval)
+    clearInterval(this.progressInterval)
   }
 
   /**
    * Track playback by a given client.
    */
   async listened() {
-    const authenticityToken = this.element.querySelector(
-      "input[name=\"authenticity_token\"]"
-    ).value
+    const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")
+                              .getAttribute("content")
     const method = "POST"
     const url = `${this.url}/listen.json`
-    const headers = { "X-CSRF-Token": authenticityToken }
+    const headers = { "X-CSRF-Token": csrfToken }
     const response = await fetch(url, { method, headers })
 
     if (response.status === 201) {

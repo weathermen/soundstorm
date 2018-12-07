@@ -1,12 +1,23 @@
 # frozen_string_literal: true
 
 module TracksHelper
-  def track_player_button(audio)
-    return unless audio.attached?
+  def track_player_button(track)
+    return unless track.audio.attached?
 
-    bindings = { target: 'player.button', action: 'click->player#toggle' }
+    options = {
+      data: {
+        target: 'player.button',
+        action: 'click->player#toggle'
+      },
+      title: t('.play'),
+      class: %w(
+        player__icon
+        player__icon--paused
+      )
+    }
+    href = user_track_url(track.user, track, format: :mp3)
 
-    link_to '&nbsp'.html_safe, url_for(audio), data: bindings, title: t('.play'), class: %w(player__icon player__icon--paused)
+    link_to '&nbsp'.html_safe, href, options
   end
 
   def player_for(track, &block)

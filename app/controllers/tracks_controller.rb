@@ -8,6 +8,17 @@ class TracksController < ApplicationController
     @user = User.find_by(name: params[:user_id])
     @track = @user.tracks.find(params[:id])
     @title = "#{@track.name} by #{@user.name}"
+
+    respond_to do |format|
+      format.html # show.html.haml
+      format.mp3 do
+        send_data @track.audio.download,
+          content_type: :mp3,
+          filename: @track.filename,
+          disposition: params[:download] ? 'attachment' : 'inline'
+      end
+      format.m3u8 # show.m3u8.erb
+    end
   end
 
   def new

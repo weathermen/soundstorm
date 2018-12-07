@@ -2,10 +2,12 @@
   %main.player__interface
     .player__transport
       .player__button
-        = track_player_button track.audio
+        = track_player_button track
       .player__duration
         .player__elapsed{ data: { target: 'player.elapsed' } } 00:00
-        .player__left= Time.at(track.duration).utc.strftime('%M:%S') unless track.duration.blank?
+        - unless track.duration.blank?
+          .player__left
+            = track.formatted_duration
     .player__waveform
       = image_tag track.waveform if track.waveform.attached?
       %span.player__notch{ data: { target: 'player.notch' } }

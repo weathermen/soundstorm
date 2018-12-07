@@ -36,6 +36,15 @@ class Track < ApplicationRecord
     end
   end
 
+  def filename
+    "#{user.display_name} - #{name}.mp3"
+  end
+
+  def formatted_duration
+    return '00:00' if duration.blank?
+    Time.at(duration).utc.strftime('%M:%S')
+  end
+
   def audio_url
     Rails.application.routes.url_helpers.rails_blob_path(audio, host: user.host)
   end

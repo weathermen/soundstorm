@@ -36,6 +36,7 @@
     %main.page
       %section.page__flash.flash-messages{ data: { controller: 'flash' } }
         - flash.each do |type, message|
-          = render 'flash_message', type: type, message: message
+          - unless type.to_sym == :timedout
+            = render 'flash_message', type: type, message: message
       %section.page__content
         = yield
