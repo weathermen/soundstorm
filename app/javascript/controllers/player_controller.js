@@ -118,10 +118,19 @@ export default class Player extends Controller {
     this.buttonTarget.classList.add("player__icon--paused")
   }
 
+  stopAllOtherSounds() {
+    const player = document.querySelector(".player__icon--playing")
+
+    if (player) {
+      player.dispatchEvent(new Event("click"))
+    }
+  }
+
   /**
    * Play the track defined by this player
    */
   play() {
+    this.stopAllOtherSounds()
     this.sound.play()
     this.playing = true
 
