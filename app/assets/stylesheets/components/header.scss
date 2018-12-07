@@ -1,11 +1,18 @@
 .header {
   display: grid;
   grid-template-columns: 1fr 3fr 2fr;
+  background: black;
 }
 
   .header__logo {
     a {
       text-decoration: none;
+      font-family: $logo-font;
+      letter-spacing: 0.098em;
+
+      &:hover {
+        color: white;
+      }
     }
     font-size: 1.1em;
     padding: 5px;
@@ -14,6 +21,11 @@
   .header__search {
     input {
       width: 100%;
+      background: #111;
+      border: 0;
+      color: #FFF;
+      height: 100%;
+      padding: 5px;
     }
   }
 

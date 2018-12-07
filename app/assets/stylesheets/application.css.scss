@@ -7,6 +7,8 @@ $fa-font-path: '@fortawesome/fontawesome-free/webfonts';
 $background-color: #666;
 $foreground-color: #FFF;
 $link-color: #00CCFF;
+$base-font: 'PT Sans', Arial, sans-serif;
+$logo-font: 'Fredoka One', sans-serif;
 
 @import '@fortawesome/fontawesome-free/scss/fontawesome';
 @import '@fortawesome/fontawesome-free/scss/solid';
@@ -15,6 +17,7 @@ $link-color: #00CCFF;
 body {
   background: $background-color;
   color: $foreground-color;
+  font-family: $base-font;
 }
 
 a {

@@ -7,10 +7,11 @@
     = csp_meta_tag
     = turbolinks_stylesheet_tag 'application', media: 'all'
     = turblinks_javascript_tag 'application'
+    = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Fredoka+One|PT+Sans'
   %body
-    - if Rails.env.development?
-      %section.developer-toolbar
-        = query_diet_widget
+    -# - if Rails.env.development?
+    -#   %section.developer-toolbar
+    -#     = query_diet_widget
     %header.header
       .header__logo
         = link_to app_title, root_path
@@ -33,7 +34,7 @@
             = nav_link_to :login, new_user_session_path
             = nav_link_to :signup, new_user_registration_path
     %main.page
-      %section.page__flash.flash-messages
+      %section.page__flash.flash-messages{ data: { controller: 'flash' } }
         - flash.each do |type, message|
           = render 'flash_message', type: type, message: message
       %section.page__content
