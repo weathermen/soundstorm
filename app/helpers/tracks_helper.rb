@@ -2,11 +2,11 @@
 
 module TracksHelper
   def track_player_button(audio)
-    bindings = { target: 'player.button', action: 'click->player#toggle' }
-
     return unless audio.attached?
 
-    button_to t('.play'), url_for(audio), data: bindings
+    bindings = { target: 'player.button', action: 'click->player#toggle' }
+
+    link_to '&nbsp'.html_safe, url_for(audio), data: bindings, title: t('.play'), class: %w(player__icon player__icon--paused)
   end
 
   def player_for(track, &block)

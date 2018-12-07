@@ -19,7 +19,7 @@ export default class Player extends Controller {
    * Create the sound with Howl
    */
   connect() {
-    const href = this.buttonTarget.closest("form").getAttribute("action")
+    const href = this.buttonTarget.getAttribute("href")
     const src = [href]
 
     this.sound = new Howl({ src })
@@ -99,6 +99,10 @@ export default class Player extends Controller {
     this.buttonTarget.value = "Play"
     this.sound.pause()
     this.playing = false
+
+    this.buttonTarget.classList.remove("player__icon--playing")
+    this.buttonTarget.classList.add("player__icon--paused")
+
     clearInterval(this.elapsedTimeInterval)
   }
 
@@ -110,6 +114,9 @@ export default class Player extends Controller {
     this.sound.play()
     this.playing = true
     this.elapsedTimeInterval = setInterval(this.updateElapsedTime, 1000)
+
+    this.buttonTarget.classList.remove("player__icon--paused")
+    this.buttonTarget.classList.add("player__icon--playing")
   }
 
   /**

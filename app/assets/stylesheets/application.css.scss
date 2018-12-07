@@ -3,4 +3,20 @@
  *= require_self
  */
 
-@import 'components/*'
+$fa-font-path: '@fortawesome/fontawesome-free/webfonts';
+$background-color: #666;
+$foreground-color: #FFF;
+$link-color: #00CCFF;
+
+@import '@fortawesome/fontawesome-free/scss/fontawesome';
+@import '@fortawesome/fontawesome-free/scss/solid';
+@import 'components/*';
+
+body {
+  background: $background-color;
+  color: $foreground-color;
+}
+
+a {
+  color: $link-color;
+}

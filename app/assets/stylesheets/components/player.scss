@@ -5,13 +5,40 @@
 }
 .player__transport {
   text-align: center;
+  background: black;
 }
 .player__button {
   margin-bottom: 1vh;
+  text-align: center;
+  padding: 15px;
 }
-.player__duration {}
-.player__elapsed {}
-.player__left {}
+.player__icon {
+  @extend %fa-icon;
+  @extend .fas;
+  text-decoration: none;
+  font-size: 2em;
+}
+  .player__icon--paused {
+    &:before {
+      content: fa-content($fa-var-play);
+    }
+  }
+  .player__icon--playing {
+    &:before {
+      content: fa-content($fa-var-pause);
+    }
+  }
+.player__duration {
+  font-size: .8em;
+  text-align: center;
+}
+.player__elapsed {
+  display: inline-block;
+}
+.player__left {
+  display: inline-block;
+  margin-left: 5px;
+}
 .player__waveform {
   position: relative;
 
@@ -23,7 +50,7 @@
   position: absolute;
   left: 0;
   top: 0;
-  background-color: red;
+  background-color: #FFF;
   height: 100%;
   width: 1px;
 }

@@ -3,6 +3,14 @@
   grid-template-columns: 1fr 3fr 2fr;
 }
 
+  .header__logo {
+    a {
+      text-decoration: none;
+    }
+    font-size: 1.1em;
+    padding: 5px;
+  }
+
   .header__search {
     input {
       width: 100%;
