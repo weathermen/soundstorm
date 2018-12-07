@@ -1,6 +1,7 @@
 module PaperTrail
   decorate Version do
     decorated do
+      before_validation :prevent_broadcast, if: :local?
       after_create :broadcast
 
       delegate :actor, to: :user
@@ -21,6 +22,11 @@ module PaperTrail
 
     def upload?
       item.is_a?(Track) && event == 'create'
+    end
+
+    def local?
+      return true unless user.present?
+      user&.host == ::Rails.configuration.host
     end
 
     def verb
@@ -48,6 +54,10 @@ module PaperTrail
 
     def broadcast
       BroadcastMessageJob.perform_later(self) unless broadcasted?
+    end
+
+    def prevent_broadcast
+      self.broadcasted_at ||= Time.current
     end
   end
 end
