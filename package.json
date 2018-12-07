@@ -2,6 +2,7 @@
   "name": "soundstorm",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.5.0",
     "@rails/webpacker": "3.5",
     "activestorage": "^5.2.1",
     "howler": "^2.0.15",
