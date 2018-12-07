@@ -9,7 +9,7 @@ momentDurationFormatSetup(moment)
  * Controls playback of uploaded tracks
  */
 export default class Player extends Controller {
-  static targets = ["button", "elapsed", "like", "listens"]
+  static targets = ["button", "elapsed", "like", "listens", "notch"]
 
   initialize() {
     this.updateElapsedTime = this.updateElapsedTime.bind(this)
@@ -26,6 +26,7 @@ export default class Player extends Controller {
     this.playing = false
     this.secondsElapsed = 0
     this.listens = parseInt(this.element.getAttribute("data-listens"))
+    this.totalDuration = parseInt(this.element.getAttribute("data-duration"))
     this.liked = this.element.getAttribute("data-liked")
   }
 
@@ -51,6 +52,7 @@ export default class Player extends Controller {
     }
 
     this.elapsedTarget.innerText = elapsedTime
+    this.notchTarget.style.left = `${this.secondsElapsed * 2}px`
   }
 
   get url() {

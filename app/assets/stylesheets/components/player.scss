@@ -12,7 +12,21 @@
 .player__duration {}
 .player__elapsed {}
 .player__left {}
-.player__waveform {}
+.player__waveform {
+  position: relative;
+
+  img {
+    max-width: 100%;
+  }
+}
+.player__notch {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: red;
+  height: 100%;
+  width: 1px;
+}
 .player__bar {
   text-align: right;
 }

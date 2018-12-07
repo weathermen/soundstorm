@@ -5,9 +5,10 @@
         = track_player_button track.audio
       .player__duration
         .player__elapsed{ data: { target: 'player.elapsed' } } 00:00
-        .player__left= track.duration
+        .player__left= Time.at(track.duration).utc.strftime('%M:%S') unless track.duration.blank?
     .player__waveform
       = image_tag track.waveform if track.waveform.attached?
+      %span.player__notch{ data: { target: 'player.notch' } }
   %footer.player__bar
     %nav.player__links
       = link_to track_comments_url(track), class: 'player__link' do
