@@ -50,6 +50,11 @@ class User < ApplicationRecord
   validates :host, presence: true
   validates :display_name, presence: true
   validates :key_pem, presence: true, uniqueness: true
+  validates :avatar, content_type: %w(
+    image/jpeg
+    image/png
+    image/gif
+  )
 
   alias_attribute :likes_count, :likees_count
 

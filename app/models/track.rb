@@ -19,7 +19,7 @@ class Track < ApplicationRecord
   has_many :comments, dependent: :destroy
 
   validates :name, presence: true, uniqueness: { scope: :user }
-  validates :audio, presence: true
+  validates :audio, presence: true, content_type: %w(audio/mpeg)
 
   acts_as_likeable
 

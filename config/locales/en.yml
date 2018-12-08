@@ -52,6 +52,7 @@ en:
       listens: "%{count} listens"
       play: Play
       pause: Pause
+      download: Download
     new:
       title: New Track
       submit: Upload New Track
@@ -65,12 +66,15 @@ en:
       success: "Uploaded Track '%{name}'"
       failure: "Error Uploading Track: %{errors}"
       submit: Upload Track
-      activity: '%{user} uploaded a new track "%{track}"'
+      action: uploaded
+      object: a new track
     update:
       success: "Successfully edited Track '%{name}'"
       failure: "Error uploading Track: %{errors}"
       submit: Save Track
       activity: "%{user} updated track %{track}"
+      action: edited
+      object: 'track "%{name}"'
     show:
       comments: Comments
   likes:

@@ -67,5 +67,9 @@ module PaperTrail
     def prevent_broadcast
       self.broadcasted_at ||= Time.current
     end
+
+    def i18n_scope
+      [item_type.tableize, event]
+    end
   end
 end

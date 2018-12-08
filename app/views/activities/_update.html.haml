@@ -1,5 +1,8 @@
-.activity
-  .activity__event
-    = t(:activity, scope: [update.item_type.tableize, update.event], user: update.user.name, track: update.object['name'])
-  .activity__content
-    = render 'tracks/player', track: update.item if update.item.present?
+- if update.item.present?
+  .activity
+    %header.activity__event
+      %span.activity__subject= update.user.name
+      %span.activity__action= t(:action, scope: update.i18n_scope)
+      %span.activity__object= t(:object, name: update.item.name, scope: update.i18n_scope)
+    .activity__content
+      = render update.item

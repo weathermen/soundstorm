@@ -1,12 +1,7 @@
 .activity {}
-.activity__user {
-  display: inline;
+.activity__event {}
+.activity__subject {
   font-weight: bold;
 }
-.activity__verb {
-  display: inline;
-}
-.activity__item {
-  display: inline;
-  font-weight: bold;
-}
+.activity__action {}
+.activity__object {}
