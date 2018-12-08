@@ -31,6 +31,12 @@
 
 en:
   activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            avatar:
+              content_type: must be a valid content type
     attributes:
       user:
         name: Username
@@ -165,6 +171,8 @@ en:
     update:
       title: Settings
     new:
+      title: Sign Up
+    create:
       title: Sign Up
   devise:
     registrations:

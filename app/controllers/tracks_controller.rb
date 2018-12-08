@@ -2,6 +2,7 @@
 
 class TracksController < ApplicationController
   before_action :authenticate_user!, except: %i[index show listen]
+  skip_before_action :doorkeeper_authorize!, only: %i[listen]
   before_action :cache_page, only: :show
 
   def show
@@ -58,9 +59,9 @@ class TracksController < ApplicationController
     )
 
     if @listen.persisted?
-      head :created
+      render json: @track.listens_count, status: :created
     else
-      head :ok
+      render json: @track.listens_count
     end
   end
 

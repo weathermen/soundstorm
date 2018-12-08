@@ -48,14 +48,16 @@ module ApplicationHelper
 
   def nav_link_to(*args, &block)
     if block_given?
-      path = *args
+      path, options = *args
+      options ||= {}
 
-      link_to path, class: nav_class(path), &block
+      link_to path, options.merge(class: nav_class(path)), &block
     else
-      label, path = *args
+      label, path, options = *args
+      options ||= {}
       text = t(label, scope: %i[layouts application nav])
 
-      link_to text, path, class: nav_class(path)
+      link_to text, path, options.merge(class: nav_class(path))
     end
   end
 end

@@ -50,11 +50,14 @@ class User < ApplicationRecord
   validates :host, presence: true
   validates :display_name, presence: true
   validates :key_pem, presence: true, uniqueness: true
-  validates :avatar, content_type: %w(
-    image/jpeg
-    image/png
-    image/gif
-  )
+  validates :avatar, content_type: {
+    allow_blank: true,
+    in: %w(
+      image/jpeg
+      image/png
+      image/gif
+    )
+  }
 
   alias_attribute :likes_count, :likees_count
 
@@ -153,7 +156,7 @@ class User < ApplicationRecord
   end
 
   def timeline_user_ids
-    following_users.map(&:to_global_id) + [to_global_id.to_s]
+    following_users.map(&:to_global_id).map(&:to_s) + [to_global_id.to_s]
   end
 
   # All activity by users this user follows.

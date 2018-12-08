@@ -29,7 +29,7 @@
             = nav_link_to :timeline, root_path
             = nav_link_to :library, likes_path
             = nav_link_to :settings, edit_user_registration_path
-            = nav_link_to :logout, destroy_user_session_path
+            = nav_link_to :logout, destroy_user_session_path, method: :delete
           - else
             = nav_link_to :login, new_user_session_path
             = nav_link_to :signup, new_user_registration_path

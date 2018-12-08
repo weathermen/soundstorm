@@ -20,5 +20,6 @@
       = player_link do
         %span.player__listens{ data: { target: 'player.listens' } }
           = t('.listens', count: track.listens_count)
-      = link_to user_track_url(track.user, track, format: :mp3, download: true), class: 'player__link' do
-        = t('.download')
+      - if track.downloadable?
+        = link_to user_track_url(track.user, track, format: :mp3, download: true), class: 'player__link' do
+          = t('.download')

@@ -55,13 +55,13 @@ class CommentsController < ApplicationController
       if @comment.destroy
         flash[:notice] = t('.success', track: @track.name)
 
-        format.html { redirect_to @track }
+        format.html { redirect_to [@track.user, @track] }
         format.json { head :ok }
       else
         errors = @comment.errors.full_messages.to_sentence
         flash[:alert] = t('.failure', track: @track.name, errors: errors)
 
-        format.html { redirect_to @track }
+        format.html { redirect_to [@track.user, @track] }
         format.json { render json: @comment, status: :unprocessable_entity }
       end
     end
@@ -75,6 +75,7 @@ class CommentsController < ApplicationController
 
   def find_track
     @track = Track.find(params[:track_id])
+    @user = @track.user
     @comments = @track.comments
   end
 end

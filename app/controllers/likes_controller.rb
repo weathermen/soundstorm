@@ -15,12 +15,12 @@ class LikesController < ApplicationController
       if current_user.like!(@track)
         flash[:notice] = t('.success', track: @track.name)
 
-        format.html { redirect_to [@track.user, @track] }
+        format.html { redirect_back fallback_location: [@track.user, @track] }
         format.json { render json: { likes: @track.likees_count } }
       else
         flash[:alert] = t('.failure', track: @track.name)
 
-        format.html { redirect_to [@track.user, @track] }
+        format.html { redirect_back fallback_location: [@track.user, @track] }
         format.json { head :unprocessable_entity }
       end
     end
@@ -33,12 +33,12 @@ class LikesController < ApplicationController
       if current_user.unlike!(@track)
         flash[:notice] = t('.success', track: @track.name)
 
-        format.html { redirect_to [@track.user, @track] }
+        format.html { redirect_back fallback_location: [@track.user, @track] }
         format.json { render json: { likes: @track.likees_count } }
       else
         flash[:alert] = t('.failure', track: @track.name)
 
-        format.html { redirect_to [@track.user, @track] }
+        format.html { redirect_back fallback_location: [@track.user, @track] }
         format.json { head :unprocessable_entity }
       end
     end
