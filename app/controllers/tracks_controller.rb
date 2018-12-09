@@ -12,17 +12,17 @@ class TracksController < ApplicationController
 
     respond_to do |format|
       format.html # show.html.haml
+      format.m3u8 # show.m3u8.erb
       format.mp3 do
         if @track.downloadable?
           send_data @track.audio.download,
             content_type: :mp3,
             filename: @track.filename,
-            disposition: params[:download] ? 'attachment' : 'inline'
+            disposition: 'attachment'
         else
           head :unauthorized
         end
       end
-      format.m3u8 # show.m3u8.erb
     end
   end
 

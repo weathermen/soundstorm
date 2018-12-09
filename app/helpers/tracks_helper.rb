@@ -15,7 +15,7 @@ module TracksHelper
         player__icon--paused
       )
     }
-    href = user_track_url(track.user, track, format: :mp3)
+    href = user_track_url(track.user, track, format: :m3u8)
 
     link_to '&nbsp'.html_safe, href, options
   end
@@ -44,7 +44,7 @@ module TracksHelper
   end
 
   def track_download_url(track)
-    user_track_url(track.user, track, format: :mp3, download: true)
+    user_track_url(track.user, track, format: :mp3)
   end
 
   private
