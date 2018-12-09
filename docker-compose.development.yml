@@ -12,6 +12,12 @@ services:
     ports:
       - '1080:1080'
 
+  # Expose Elasticsearch port 9200 to all users in development for
+  # debugging purposes.
+  search:
+    ports:
+      - '9200:9200'
+
   # Cache application dependencies and use the local database in
   # development
   web:

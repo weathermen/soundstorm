@@ -8,6 +8,7 @@ AllCops:
     - 'vendor/**/*'
     - 'node_modules/**/*'
     - 'db/schema.rb'
+    - 'db/migrate/**/*.rb'
 
 Performance:
   Exclude:

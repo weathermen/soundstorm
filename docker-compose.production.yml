@@ -35,6 +35,10 @@ services:
       - .env.production
       - .env.secrets
 
+  # Lock down Elasticsearch clients to other Docker hosts
+  search:
+    expose: 9200
+
   # Set up the database asynchronously to the main production container.
   migrations: &task
     image: tubbo/soundstorm
