@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   resource :search, only: %i[show]
   resources :tracks, except: %i[index show]
   resources :likes, only: %i[index]
+  resources :users, except: %i[show]
   resources :users, path: '', only: %i[show] do
     member do
       post :inbox, to: 'versions#create'

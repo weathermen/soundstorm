@@ -18,6 +18,8 @@ class User < ApplicationRecord
   # Use the `des-ede3-cbc` cipher
   KEY_CIPHER = 'des3'
 
+  FIELDS = %w(name display_name email)
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
          :confirmable, :lockable, :timeoutable, :trackable # , :omniauthable
@@ -155,6 +157,8 @@ class User < ApplicationRecord
     devise_mailer.send(notification, self, *args).deliver_later
   end
 
+  # All GlobalIDs, including this one, for users which should appear in the
+  # timeline
   def timeline_user_ids
     following_users.map(&:to_global_id).map(&:to_s) + [to_global_id.to_s]
   end

@@ -142,6 +142,11 @@ en:
   users:
     dashboard:
       welcome: Welcome to Soundstorm!
+    index:
+      title: Users
+      new: New User
+      edit: Edit User
+      delete: Delete Account
     show:
       follow: Follow
       unfollow: Unfollow

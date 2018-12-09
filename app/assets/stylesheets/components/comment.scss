@@ -4,8 +4,14 @@
   font-weight: bold;
   text-decoration: none;
 }
-.comment__date {}
+.comment__date {
+  text-decoration: none;
+}
 .comment__content {}
+.comment__avatar {
+  vertical-align: middle;
+  margin-right: 10px;
+}
 .comment__links {
   text-align: right;
 }

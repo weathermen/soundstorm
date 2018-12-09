@@ -1,13 +1,15 @@
 .comment
   %header.comment__metadata
-    %strong.comment__user= comment.user.name
-    commented on
-    = link_to [comment.track.user, comment.track, comment] do
-      = comment.created_at.to_s(:long)
+    = link_to comment.user.name, comment.user, class: 'comment__user'
+    = link_to comment_path(comment), class: 'comment__date' do
+      = comment_date(comment)
   %main.comment__content
-    = comment.content
+    %p
+      = image_tag comment.user.avatar.variant(resize: 50), class: 'comment__avatar'
+      = comment.content
   %footer.comment__links
-    = link_to [:edit, comment.track.user, comment.track, comment] do
+    %nav.navigation
+    = link_to [:edit, comment.track.user, comment.track, comment], class: 'navigation__link' do
       = t('.edit')
-    = link_to [comment.track.user, comment.track, comment], method: :delete do
+    = link_to [comment.track.user, comment.track, comment], method: :delete, class: 'navigation__link' do
       = t('.delete')

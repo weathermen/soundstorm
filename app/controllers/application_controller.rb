@@ -51,4 +51,8 @@ class ApplicationController < ActionController::Base
   def user_for_paper_trail
     current_user
   end
+
+  def authorize_admin!
+    return unless current_user&.admin?
+  end
 end
