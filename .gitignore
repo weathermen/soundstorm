@@ -31,3 +31,6 @@ yarn-debug.log*
 .yarn-integrity
 .env.secrets
 config/ssl
+
+ecs-params.yml
+task-execution-assume-role.json

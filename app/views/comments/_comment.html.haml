@@ -5,11 +5,14 @@
       = comment_date(comment)
   %main.comment__content
     %p
-      = image_tag comment.user.avatar.variant(resize: 50), class: 'comment__avatar'
+      - avatar = comment.user.avatar.variant(resize: 50)
+      = image_tag avatar, class: 'comment__avatar'
       = comment.content
   %footer.comment__links
     %nav.navigation
-    = link_to [:edit, comment.track.user, comment.track, comment], class: 'navigation__link' do
-      = t('.edit')
-    = link_to [comment.track.user, comment.track, comment], method: :delete, class: 'navigation__link' do
-      = t('.delete')
+      - edit_comment = [:edit, comment.track.user, comment.track, comment]
+      = link_to edit_comment, class: 'navigation__link' do
+        = t('.edit')
+      - delete_comment = [comment.track.user, comment.track, comment]
+      = link_to delete_comment, method: :delete, class: 'navigation__link' do
+        = t('.delete')

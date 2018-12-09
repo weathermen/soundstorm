@@ -1,4 +1,9 @@
+require:
+  - './lib/haml_lint/linter/i18n_linter.rb'
 exclude:
   - vendor/bundle/**/*
-  - node_modules
+  - node_modules/**/*
   - app/views/devise/**/*
+linters:
+  I18n:
+    enabled: true

@@ -1,7 +1,9 @@
-= form_with model: [comment.user, comment.track, comment], class: 'form comment-form' do |f|
+- comment_model = [comment.user, comment.track, comment]
+= form_with model: comment_model, class: 'form comment-form' do |f|
   %main.comment-form__content
     %aside.comment-form__sidebar
-      = image_tag comment.user.avatar.variant(resize: '50x50') if comment.user.avatar.attached?
+      - if comment.user.avatar.attached?
+        = image_tag comment.user.avatar.variant(resize: '50x50')
     %fieldset.comment-form__fieldset
       .form__fields
         .form__field
