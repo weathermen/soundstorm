@@ -1,7 +1,7 @@
-.flash-message{ class: "flash-message--#{type}", data: { controller: 'flash_message', type: type } }
+.flash-message{ class: "flash-message--#{type}", data: { controller: 'flash-message', type: type } }
   .flash-message__text
     %p= message
   .flash-message__close
     %p
-      %a{ href: '#close', data: { action: 'click->flash#close' } }
+      %a{ href: '#close', data: { action: 'click->flash-message#close' } }
         %i.flash-message__icon
