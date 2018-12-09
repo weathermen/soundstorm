@@ -30,8 +30,6 @@ services:
       - .:/srv
       - node_modules:/node_modules
       - bundle:/gems
-    environment:
-      - DATABASE_HOST=db
 
 volumes:
   bundle:
