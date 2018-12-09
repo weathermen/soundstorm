@@ -43,6 +43,10 @@ module TracksHelper
     user_track_url(track.user, track, anchor: 'comments')
   end
 
+  def track_download_url(track)
+    user_track_url(track.user, track, format: :mp3, download: true)
+  end
+
   private
 
   def player_link(&block)

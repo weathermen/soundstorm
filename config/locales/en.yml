@@ -83,6 +83,8 @@ en:
       object: 'track "%{name}"'
     show:
       comments: Comments
+      edit: Edit Track
+      delete: Delete Track
   likes:
     create:
       success: "You have liked %{track}"
@@ -103,6 +105,7 @@ en:
     comment:
       edit: Edit
       delete: Delete
+      commented: "commented %{date} ago"
     form:
       save: "%{action} Comment"
   versions:

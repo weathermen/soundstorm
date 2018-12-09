@@ -8,8 +8,9 @@
         - unless track.duration.blank?
           .player__left
             = track.formatted_duration
-    .player__waveform
-      = image_tag track.waveform if track.waveform.attached?
+    .player__waveform{ data: { action: 'click->player#cue' } }
+      - if track.waveform.attached?
+        = image_tag track.waveform
       %span.player__notch{ data: { target: 'player.notch' } }
   %footer.player__bar
     %nav.player__links
@@ -21,5 +22,5 @@
         %span.player__listens{ data: { target: 'player.listens' } }
           = t('.listens', count: track.listens_count)
       - if track.downloadable?
-        = link_to user_track_url(track.user, track, format: :mp3, download: true), class: 'player__link' do
+        = link_to track_download_url(track), class: 'player__link' do
           = t('.download')

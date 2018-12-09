@@ -9,7 +9,7 @@ momentDurationFormatSetup(moment)
  * Controls playback of uploaded tracks
  */
 export default class Player extends Controller {
-  static targets = ["button", "elapsed", "like", "listens", "notch"]
+  static targets = ["button", "elapsed", "like", "listens", "notch", "waveform"]
 
   initialize() {
     this.updateElapsedTime = this.updateElapsedTime.bind(this)
@@ -56,18 +56,41 @@ export default class Player extends Controller {
       elapsedTime = `00:${elapsedTime}`
     }
 
-    // const percent = (this.secondsElapsed / this.totalDuration) * 100
-
     this.elapsedTarget.innerText = elapsedTime
-    // this.notchTarget.style.left = `${percent}%`
   }
 
   updateProgress() {
     this.ticks++
 
-    const percent = (this.ticks / this.totalTicks) * 100
+    const percent = (this.ticks / this.totalTicks) * 120
 
     this.notchTarget.style.left = `${percent}%`
+  }
+
+  getPosition(el) {
+    var xPos = 0
+    var yPos = 0
+
+    while (el) {
+      if (el.tagName == "BODY") {
+        // deal with browser quirks with body/window/document and page scroll
+        var xScroll = el.scrollLeft || document.documentElement.scrollLeft
+        var yScroll = el.scrollTop || document.documentElement.scrollTop
+
+        xPos += (el.offsetLeft - xScroll + el.clientLeft)
+        yPos += (el.offsetTop - yScroll + el.clientTop)
+      } else {
+        // for all other non-BODY elements
+        xPos += (el.offsetLeft - el.scrollLeft + el.clientLeft)
+        yPos += (el.offsetTop - el.scrollTop + el.clientTop)
+      }
+
+      el = el.offsetParent
+    }
+    return {
+      x: xPos,
+      y: yPos
+    }
   }
 
   get url() {
@@ -106,12 +129,20 @@ export default class Player extends Controller {
     }
   }
 
+  cue(event) {
+    const parentPosition = this.getPosition(event.currentTarget)
+    const xPosition = event.clientX - parentPosition.x
+    const percent = (xPosition / event.currentTarget.clientWidth) * 100
+
+    this.notchTarget.style.left = `${percent}%`
+  }
 
   /**
    * Pause the currently-playing track
    */
   pause() {
     this.sound.pause()
+    this.stop()
     this.playing = false
 
     this.buttonTarget.classList.remove("player__icon--playing")

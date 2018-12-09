@@ -19,5 +19,6 @@
         = render 'comments/form', comment: @track.comments.build(user: current_user)
   - if @track.user == current_user
     %footer.track__controls
-      = link_to 'Edit', [:edit, @track]
-      = link_to 'Delete', @track, method: :delete
+      %nav.navigation
+        = link_to t('.edit'), [:edit, @track]
+        = link_to t('.delete'), @track, method: :delete

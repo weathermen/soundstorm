@@ -34,7 +34,7 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       if @comment.update(comment_params)
-        flash[:notice] = t('.success')
+        flash[:notice] = t('.success', track: @track.name)
 
         format.html { redirect_to [@user, @track] }
         format.json { render json: @comment }
