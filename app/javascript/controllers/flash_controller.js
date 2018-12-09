@@ -1,4 +1,5 @@
 import { Controller } from "stimulus"
+import { isEmpty } from "lodash"
 import FlashMessage from "../templates/flash_message.html.haml"
 
 /**
@@ -6,6 +7,10 @@ import FlashMessage from "../templates/flash_message.html.haml"
  * requests.
  */
 export default class Flash extends Controller {
+  initialize() {
+    this.parse = this.parse.bind(this)
+  }
+
   /**
    * Bind event that parses flash headers into data
    */
@@ -20,12 +25,13 @@ export default class Flash extends Controller {
   /**
    * Parse flash messages header and render each message
    */
-  parse(xhr) {
+  parse(event) {
+    const xhr = event.detail[0]
     const flash = JSON.parse(
       xhr.getResponseHeader("X-Flash-Messages")
     )
 
-    if (flash) {
+    if (!isEmpty(flash)) {
       flash.forEach(this.render)
     }
   }

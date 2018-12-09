@@ -53,6 +53,14 @@ class ApplicationController < ActionController::Base
   end
 
   def authorize_admin!
-    return unless current_user&.admin?
+    unless current_user&.admin?
+      respond_to do |format|
+        flash[:alert] = t(:unauthorized, scope: %i[devise failure])
+
+        format.html { redirect_back fallback_location: root_path }
+        format.json { render json: { error: flash[:alert] }, status: :unauthorized }
+      end
+      nil
+    end
   end
 end

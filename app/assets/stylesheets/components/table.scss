@@ -1,3 +1,26 @@
 .table {
   width: 100%;
 }
+
+.table__fields {
+  background: darken($background-color, 10%);
+}
+
+.table__search {
+  input {
+    width: 100%;
+    background: darken($background-color, 20%);
+    border: 0;
+    color: white;
+    padding: 10px;
+  }
+}
+
+.table__field {
+  text-align: left;
+  padding: 5px;
+}
+
+.users__controls {
+  text-align: center;
+}

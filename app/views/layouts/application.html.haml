@@ -16,7 +16,7 @@
       .header__logo
         = link_to app_title, root_path
       .header__search
-        = search_form do |f|
+        = search_form(search_path) do |f|
           = f.search_field :q, search_field_options
       .header__navigation
         %nav.navigation

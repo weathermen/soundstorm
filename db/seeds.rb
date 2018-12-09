@@ -6,5 +6,6 @@ User.create!(
   email: Soundstorm::ADMIN_EMAIL,
   password: Soundstorm::ADMIN_PASSWORD,
   display_name: 'Soundstorm Administrator',
-  confirmed_at: Time.current
+  confirmed_at: Time.current,
+  admin: true
 )

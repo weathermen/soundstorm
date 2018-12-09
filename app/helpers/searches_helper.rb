@@ -1,17 +1,19 @@
 # frozen_string_literal: true
 
 module SearchesHelper
-  def search_field_options
+  def search_field_options(placeholder = 'Search...')
     {
-      placeholder: 'Search...',
+      placeholder: placeholder,
       autocomplete: 'off',
       value: params[:q]
     }
   end
 
-  def search_form
+  def search_form(url = nil)
+    url ||= url_for
+
     options = {
-      url: search_path,
+      url: url,
       method: :get,
       remote: false,
       data: {

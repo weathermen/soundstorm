@@ -1,21 +1,21 @@
 %table.table.users
   %thead.table__header
     %tr.table__title
-      %td{ colspan: User::FIELDS.size }
+      %td{ colspan: User::FIELDS.size + 1 }
         %h1= page_title
     %tr.table__search
-      %td{ colspan: User::FIELDS.size }
-        = form_with url: url_for, method: :get do |f|
-          = f.search_field :q, placeholder: 'Search Users...'
+      %td{ colspan: User::FIELDS.size + 1 }
+        = search_form do |f|
+          = f.search_field :q, search_field_options('Search users...')
     %tr.table__fields
       - User::FIELDS.each do |column|
-        %th
+        %th.table__field
           = User.human_attribute_name(column)
       %th
         = link_to t('.new'), new_user_path
   %tbody.table__results
     - @users.each do |user|
-      %tr.users__row{ id: "user-#{id}" }
+      %tr.users__row{ id: "user-#{user.id}" }
         %td.users__name
           = user.name
         %td.users__display-name

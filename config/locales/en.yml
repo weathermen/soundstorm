@@ -158,6 +158,12 @@ en:
       upload: Upload New Track
       biography: Biography
       title: "%{user}'s Profile"
+    create:
+      success: 'Successfully created new user account "%{user}"'
+      failure: 'Error creating user account: %{errors}'
+    update:
+      success: 'Updated user account "%{user}"'
+      failure: 'Error updating user account: %{errors}'
   user_mailer:
     mentioned:
       subject: '@%{author} mentioned you in a comment'
