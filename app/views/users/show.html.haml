@@ -35,5 +35,6 @@
       = render @user.tracks.with_attached_waveform.with_attached_audio
     - else
       %p.profile__empty= t('.empty')
-  %footer.profile__controls
-    = link_to t('.upload'), new_track_path
+  - if user_signed_in? && @user == current_user
+    %footer.profile__controls
+      = link_to t('.upload'), new_track_path
