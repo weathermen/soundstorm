@@ -88,27 +88,25 @@ case "$1" in
     ;;
   # release the production image(s) to Docker Hub
   release)
-    COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
-      soundstorm build &&
-      docker-compose push web &&
-      docker image push "tubbo/soundstorm:$(soundstorm version)"
-    ;;
+    docker image push "tubbo/soundstorm:$(soundstorm version)"
+    docker image push "tubbo/soundstorm:latest"
+  ;;
   # run ECS commands
   production)
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
       ecs-cli compose "$*"
-    ;;
+  ;;
   deploy)
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
       ecs-cli compose \
         --project-name soundstorm up \
         --create-log-groups \
         --cluster-config soundstorm
-      ;;
+  ;;
   # print version
   version)
     ruby -r./lib/soundstorm/version.rb -e 'puts Soundstorm::VERSION'
-    ;;
+  ;;
   help|"")
     echo "Usage: bin/soundstorm [COMMAND]"
     echo
@@ -124,10 +122,10 @@ case "$1" in
     echo "  help            Show this message"
     echo
     echo "If a command is unknown, it is delegated to bin/rails on the web container"
-    ;;
+  ;;
   # delegate task commands to ./bin/rails, entrypoint command is not run
   *)
     COMPOSE_FILE="docker-compose.yml:docker-compose.development.yml" \
-      docker-compose run --rm --entrypoint='' web bin/rails "$*"
-    ;;
+      docker-compose run --rm --entrypoint='' web "bin/rails" "$*"
+  ;;
 esac
