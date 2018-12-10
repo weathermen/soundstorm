@@ -1,5 +1,6 @@
 import { Controller } from "stimulus"
-import { Howl } from "howler"
+// import { Howl } from "howler"
+import HLS from "hls.js"
 import moment from "moment"
 import momentDurationFormatSetup from "moment-duration-format"
 
@@ -9,7 +10,7 @@ momentDurationFormatSetup(moment)
  * Controls playback of uploaded tracks
  */
 export default class Player extends Controller {
-  static targets = ["button", "elapsed", "like", "listens", "notch", "waveform"]
+  static targets = ["button", "elapsed", "like", "listens", "notch", "waveform", "video"]
 
   initialize() {
     this.updateElapsedTime = this.updateElapsedTime.bind(this)
@@ -20,12 +21,6 @@ export default class Player extends Controller {
    * Create the sound with Howl
    */
   connect() {
-    const href = this.buttonTarget.getAttribute("href")
-    const src = [href]
-    const onplay = this.start.bind(this)
-    const onpause = this.stop.bind(this)
-
-    this.sound = new Howl({ src, onplay, onpause })
     this.playing = false
     this.secondsElapsed = 0
     this.listens = parseInt(this.element.getAttribute("data-listens"))
@@ -33,14 +28,24 @@ export default class Player extends Controller {
     this.liked = this.element.getAttribute("data-liked")
     this.ticks = 0
     this.totalTicks = this.totalDuration * 1000
+    this.streamURL = this.buttonTarget.getAttribute("href")
+
+    if (HLS.isSupported()) {
+      this.sound = new HLS()
+      this.sound.loadSource(this.streamURL)
+      this.sound.attachMedia(this.videoTarget)
+    } else if (this.videoTarget.canPlayType("application/vnd.apple.mpegurl")) {
+      this.sound = this.videoTarget
+      this.sound.src = this.streamURL
+    }
   }
 
   /**
-   * Clean up existing Howl sounds from the environment when
+   * TODO Clean up existing Howl sounds from the environment when
    * disconnected from the DOM
    */
   disconnect() {
-    this.sound.unload()
+    // this.sound.unload()
   }
 
   /**
@@ -141,7 +146,7 @@ export default class Player extends Controller {
    * Pause the currently-playing track
    */
   pause() {
-    this.sound.pause()
+    this.videoTarget.pause()
     this.stop()
     this.playing = false
 
@@ -162,7 +167,7 @@ export default class Player extends Controller {
    */
   play() {
     this.stopAllOtherSounds()
-    this.sound.play()
+    this.videoTarget.play()
     this.playing = true
 
     this.buttonTarget.classList.remove("player__icon--paused")

@@ -3,6 +3,9 @@
   display: grid;
   grid-template-columns: 1fr 12fr;
 }
+.player__media {
+  display: none;
+}
 .player__transport {
   text-align: center;
   background: black;

@@ -1,5 +1,7 @@
 = player_for track do
   %main.player__interface
+    %video.player__media{ data: { target: 'player.video' } }
+      / this is where the media goes
     .player__transport
       .player__button
         = track_player_button track
