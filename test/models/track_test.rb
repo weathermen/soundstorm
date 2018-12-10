@@ -28,7 +28,7 @@ class TrackTest < ActiveSupport::TestCase
     assert_equal @track.audio.content_type, @track.as_activity[:url][:mediaType]
   end
 
-  test 'waveform generated after create' do
-    assert_enqueued_jobs 1, only: GenerateWaveformJob
+  test 'analyze after create' do
+    assert_enqueued_jobs 1, only: AnalyzeTrackJob
   end
 end

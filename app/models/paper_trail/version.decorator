@@ -1,7 +1,6 @@
 module PaperTrail
   decorate Version do
     decorated do
-      before_validation :prevent_broadcast, if: :local?
       after_create :broadcast
 
       delegate :actor, to: :user
@@ -61,11 +60,7 @@ module PaperTrail
     end
 
     def broadcast
-      # BroadcastMessageJob.perform_later(self) unless broadcasted?
-    end
-
-    def prevent_broadcast
-      self.broadcasted_at ||= Time.current
+      BroadcastMessageJob.perform_later(self) unless broadcasted?
     end
 
     def i18n_scope

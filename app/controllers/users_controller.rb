@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   before_action :cache_page
   before_action :authenticate_user!, only: %i[follow]
   before_action :authorize_admin!, except: %i[show webfinger dashboard]
-  skip_before_action :doorkeeper_authorize!, only: :show
+  skip_before_action :doorkeeper_authorize!, only: %i[show webfinger]
 
   def index
     @query = params[:q] || '*'

@@ -33,10 +33,14 @@ en:
   activerecord:
     errors:
       models:
+        track:
+          attributes:
+            audio:
+              content_type: file type not supported
         user:
           attributes:
             avatar:
-              content_type: must be a valid content type
+              content_type: must be an image
     attributes:
       user:
         name: Username

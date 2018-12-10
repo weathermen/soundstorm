@@ -12,7 +12,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
   test 'post comment on track' do
     post user_track_comments_url(@user, @track), params: { comment: { content: 'foo' } }
 
-    assert_redirected_to @track
+    assert_redirected_to [@user, @track]
     assert_nil flash[:alert]
     refute_nil flash[:notice]
     assert_equal 'foo', @track.comments.last.content
@@ -26,7 +26,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
 
     patch user_track_comment_url(@user, @track, comment), params: { comment: { content: 'edited' } }
 
-    assert_redirected_to @track
+    assert_redirected_to [@user, @track]
     assert_equal 'edited', comment.reload.content
   end
 
@@ -35,7 +35,7 @@ class CommentsControllerTest < ActionDispatch::IntegrationTest
 
     delete user_track_comment_url(@user, @track, comment)
 
-    assert_redirected_to @track
+    assert_redirected_to [@user, @track]
     assert_empty @track.comments
   end
 end

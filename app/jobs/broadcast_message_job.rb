@@ -6,6 +6,8 @@ class BroadcastMessageJob < ApplicationJob
 
   def perform(version)
     version.followers.each do |follower|
+      next if follower.host == Rails.configuration.host
+
       ActivityPub.deliver(version.message, to: follower.host)
     end
 

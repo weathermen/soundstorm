@@ -11,6 +11,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
   test 'view user profile' do
     get user_url(@user)
 
+    assert_nil flash[:alert]
+    assert_nil flash[:notice]
     assert_response :success
   end
 

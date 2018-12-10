@@ -17,9 +17,10 @@ class TracksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'create new track' do
+    audio = fixture_file_upload('files/one.mp3', 'audio/mpeg')
     attributes = {
       name: 'New Track',
-      audio: nil
+      audio: audio
     }
 
     get new_track_url
@@ -29,18 +30,20 @@ class TracksControllerTest < ActionDispatch::IntegrationTest
     post tracks_url, params: { track: attributes }
     track = Track.last
 
-    assert_redirected_to [@user, track]
+    assert_redirected_to [@user, track], flash[:alert]
     assert_equal attributes[:name], track.name
   end
 
   test 'update existing track' do
+    audio = fixture_file_upload('files/one.mp3', 'audio/mpeg')
+    @track.audio.attach(io: audio, filename: 'one.mp3')
     get edit_track_url(@track)
 
     assert_response :success
 
     patch track_url(@track), params: { track: { name: 'New Name' } }
 
-    assert_redirected_to [@user, @track]
+    assert_redirected_to [@user, @track], flash[:alert]
     assert @track.reload
     assert_equal 'New Name', @track.name
   end

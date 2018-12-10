@@ -2,6 +2,6 @@
 
 # Configure Elasticsearch with $ELASTICSEARCH_URL
 Elasticsearch::Model.client = Elasticsearch::Client.new(
-  log: true,
+  log: !Rails.env.test?,
   url: ENV.fetch('ELASTICSEARCH_URL', 'localhost:9200')
 )
