@@ -38,7 +38,7 @@ class Track::Analysis
   end
 
   def segmentize
-    tmp_path.mkdir && create_segments && attach_segments && tmp_path.rm_rf
+    tmp_path.mkdir && create_segments && attach_segments && FileUtils.rm_rf(tmp_path)
   end
 
   def create_segments
