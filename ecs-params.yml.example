@@ -1,0 +1,22 @@
+version: 1
+task_definition:
+  task_execution_role: ecsTaskExecutionRole
+  ecs_network_mode: awsvpc
+  task_size:
+    mem_limit: 8GB
+    cpu_limit: 2048
+run_params:
+  network_configuration:
+    awsvpc_configuration:
+      subnets:
+        #
+        # your subnet IDs from `ecs-cli up`
+        #
+      security_groups:
+        # your security group IDs from:
+        # `aws ec2 create-security-group --group-name "soundstorm-sg" --description "Soundstorm security group" --vpc-id "your-vpc-id-from-ecs-cli-up"`
+        #
+        # don't forget to authorize port 80...
+        # `aws ec2 authorize-security-group-ingress --group-id "security_group_id" --protocol tcp --port 80 --cidr 0.0.0.0/0`
+        #
+      assign_public_ip: ENABLED

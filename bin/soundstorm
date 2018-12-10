@@ -94,12 +94,17 @@ case "$1" in
   # run ECS commands
   production)
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
-      ecs-cli compose "$*"
+      ecs-cli compose \
+        --project-name soundstorm \
+        "$*" \
+        --cluster-config soundstorm
   ;;
+  # deploy to ECS
   deploy)
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
       ecs-cli compose \
-        --project-name soundstorm up \
+        --project-name soundstorm \
+        up \
         --create-log-groups \
         --cluster-config soundstorm
   ;;
