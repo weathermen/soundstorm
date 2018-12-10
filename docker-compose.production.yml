@@ -6,11 +6,27 @@
 
 version: '3'
 services:
+  # Use CloudWatch logs in the database
+  db:
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: soundstorm_db
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: soundstorm
+
   # Redis stores the ephemeral Rails/HTTP cache and Sidekiq job queue
   redis:
     image: redis
     volumes:
       - redis:/data
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: soundstorm_redis
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: soundstorm
+
 
   # Speed up application deployment by launching an image rather than
   # building a full container, such as in development. Dependencies are
@@ -24,8 +40,8 @@ services:
       args:
         - RAILS_ENV=production
     image: tubbo/soundstorm
-    volumes:
-      - static:/srv/public
+    # volumes:
+    #   - static:/srv/public
     expose:
       - 3000
     depends_on:
@@ -34,28 +50,42 @@ services:
     env_file:
       - .env.production
       - .env.secrets
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: soundstorm_web
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: soundstorm
+
 
   # Lock down Elasticsearch clients to other Docker hosts
   search:
-    expose: 9200
+    expose:
+      - 9200
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: soundstorm_search
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: soundstorm
 
   # Set up the database asynchronously to the main production container.
-  migrations: &task
-    image: tubbo/soundstorm
-    command: bin/rails db:update
-    depends_on:
-      - db
-      - web
-    env_file:
-      - .env.production
-      - .env.secrets
+  # migrations: &task
+  #   image: tubbo/soundstorm
+  #   command: bin/rails db:update
+  #   depends_on:
+  #     - db
+  #     - web
+  #   env_file:
+  #     - .env.production
+  #     - .env.secrets
 
   # Precompile static assets
-  assets:
-    <<: *task
-    command: bin/rails assets:precompile
-    volumes:
-      - static:/srv/public
+  # assets:
+  #   <<: *task
+  #   command: bin/rails assets:precompile
+    # volumes:
+    #   - static:/srv/public
 
   # Background job processor for the application, running background
   # jobs within the Rails context. This container will always use the
@@ -71,16 +101,23 @@ services:
     env_file:
       - .env.production
       - .env.secrets
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: soundstorm_sidekiq
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: soundstorm
 
-  nginx:
-    image: nginx
-    ports:
-      - "443:443"
-      - "80:80"
-    volumes:
-      - static:/www
-      - ./config/nginx.conf:/etc/nginx/sites.d/soundstorm.conf
-      - ./config/ssl:/etc/ssl
+
+  # nginx:
+  #   image: nginx
+  #   ports:
+  #     - "443:443"
+  #     - "80:80"
+  #   volumes:
+  #     - static:/www
+  #     - ./config/nginx.conf:/etc/nginx/sites.d/soundstorm.conf
+  #     - ./config/ssl:/etc/ssl
 
 volumes:
   redis:
