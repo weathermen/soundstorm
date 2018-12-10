@@ -1,7 +1,10 @@
 %article.track
   %header.track__title.track-title
-    %h1= @track.name
-    %h2 by #{@track.user.name}
+    %h1.track-title__name
+      = @track.name
+    %h2.track-title__artist
+      = link_to @track.user do
+        = t('.by', user: @track.user.name)
   %main
     %section.track__player
       = render 'player', track: @track

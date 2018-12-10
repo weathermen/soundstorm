@@ -86,6 +86,7 @@ en:
       action: edited
       object: 'track "%{name}"'
     show:
+      by: "by %{user}"
       comments: Comments
       edit: Edit Track
       delete: Delete Track
@@ -107,8 +108,8 @@ en:
       success: 'Deleted comment on "%{track}"'
       failure: 'Error deleting comment on %{track}: %{errors}'
     comment:
-      edit: Edit
-      delete: Delete
+      edit: Edit Comment
+      delete: Delete Comment
       commented: "commented %{date} ago"
     form:
       save: "%{action} Comment"
