@@ -61,7 +61,7 @@ module PaperTrail
     end
 
     def broadcast
-      BroadcastMessageJob.perform_later(self) unless broadcasted?
+      # BroadcastMessageJob.perform_later(self) unless broadcasted?
     end
 
     def prevent_broadcast

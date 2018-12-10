@@ -17,6 +17,8 @@ module Federatable
     else
       user.actor_id
     end
+  rescue
+    actor.id
   end
 
   def as_activity

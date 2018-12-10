@@ -8,12 +8,16 @@ class Track < ApplicationRecord
 
   extend FriendlyId
 
+  STREAM_SEGMENT_DURATION = 3
+
   index_name "soundstorm_#{Rails.env}"
 
   belongs_to :user, counter_cache: true
 
   has_one_attached :audio
   has_one_attached :waveform
+
+  has_many_attached :segments
 
   has_many :listens, class_name: 'TrackListen', dependent: :destroy
   has_many :comments, dependent: :destroy

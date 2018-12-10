@@ -1,14 +1,18 @@
 # frozen_string_literal: true
 
+require 'open3'
+
 class Track::Analysis
-  attr_reader :track, :audio, :duration, :name
+  attr_reader :track, :audio, :duration, :name, :tmp_path
 
   delegate :path, to: :audio
+  delegate :logger, to: Rails
 
   def initialize(track:, audio:)
     @track = track
     @audio = audio
-    @name = File.basename(path, 'mp3')
+    @name = File.basename(path, '.mp3')
+    @tmp_path = Pathname.new("/tmp/#{name}")
   end
 
   def self.create(track, audio)
@@ -19,7 +23,7 @@ class Track::Analysis
   end
 
   def save
-    analyze && generate_stream
+    analyze && segmentize
   end
 
   private
@@ -33,10 +37,26 @@ class Track::Analysis
     track.update(duration: duration)
   end
 
-  def generate_stream
-    `ffmpeg -i #{path} -f segment -segment_time 3 -c copy /tmp/#{name}-%03d.mp3`
+  def segmentize
+    tmp_path.mkdir && create_segments && attach_segments && tmp_path.rm_rf
+  end
 
-    Dir["/tmp/#{name}-*.mp3"].each do |segment_path|
+  def create_segments
+    Open3.popen3(ffmpeg_command.join(' ')) do |stdin, stdout, stderr, thread|
+      logger.tagged("ffmpeg #{thread.pid}") do
+        output = stdout.read.chomp
+        errors = stderr.read.chomp
+
+        logger.debug(output)
+        logger.error(errors) if errors.present?
+      end
+    end
+
+    tmp_path.entries.any?
+  end
+
+  def attach_segments
+    Dir[tmp_path.join('*.ts')].each do |segment_path|
       track.segments.attach(
         io: File.open(segment_path),
         filename: File.basename(segment_path)
@@ -44,5 +64,15 @@ class Track::Analysis
     end
 
     track.segments.attached?
+  end
+
+  def ffmpeg_command
+    [
+      'ffmpeg',
+      "-i #{path}",
+      '-f segment',
+      "-segment_time #{Track::STREAM_SEGMENT_DURATION}",
+      "-c copy #{tmp_path}/%03d.ts"
+    ]
   end
 end

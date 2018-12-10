@@ -1,6 +1,18 @@
 # frozen_string_literal: true
 
 module TracksHelper
+  def segment_url(segment)
+    ActiveStorage::Current.host = "#{request.scheme}://#{Rails.configuration.host}"
+    blob = segment.blob
+    ActiveStorage::Blob.service.url(
+      segment.blob.key,
+      disposition: 'attachment',
+      filename: blob.filename,
+      content_type: blob.content_type,
+      expires_in: 1.hour
+    ).html_safe
+  end
+
   def track_player_button(track)
     return unless track.audio.attached?
 
@@ -24,7 +36,7 @@ module TracksHelper
     data = {
       controller: 'player',
       track: url_for([track.user, track]),
-      liked: current_user.likes?(track),
+      liked: current_user&.likes?(track),
       duration: track.duration
     }
 
