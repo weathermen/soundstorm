@@ -35,7 +35,7 @@ module TracksHelper
   def player_for(track, &block)
     data = {
       controller: 'player',
-      track: url_for([track.user, track]),
+      track: user_track_path(track.user, track),
       liked: current_user&.likes?(track),
       duration: track.duration
     }

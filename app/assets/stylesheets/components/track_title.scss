@@ -4,9 +4,18 @@
 }
 .track-title__name {
   margin-right: 15px;
+  a {
+    text-decoration: none;
+  }
 }
 .track-title__artist {
   a {
     text-decoration: none;
+  }
+}
+
+.activity {
+  .track-title__artist {
+    display: none;
   }
 }

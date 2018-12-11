@@ -53,6 +53,13 @@ module SearchesHelper
   end
 
   def search_result_template(result)
-    "searches/results/#{result.class.name.downcase}"
+    case result.class
+    when Track
+      [result.user, result]
+    when Comment
+      [result.user, result.track, result]
+    else
+      result
+    end
   end
 end

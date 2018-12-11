@@ -2,10 +2,10 @@
   %header.activity__event
     %span.activity__subject
       = activity.subject
-    %span.activity__action
-      = activity.action
     %span.activity__object
-      = activity.object
+      = link_to activity.url do
+        = activity.action
+        = activity.object
   - if activity.exist?
     %main.activity__content
       = render activity.item

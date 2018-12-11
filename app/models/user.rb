@@ -157,6 +157,13 @@ class User < ApplicationRecord
     devise_mailer.send(notification, self, *args).deliver_later
   end
 
+  def avatar_image
+    if avatar.attached?
+      avatar.variant(resize: 100)
+    else
+      'https://via.placeholder.com/100'
+    end
+  end
 
   # All activity by users this user follows.
   #

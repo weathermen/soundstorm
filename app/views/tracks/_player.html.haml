@@ -1,6 +1,6 @@
 = player_for track do
   %main.player__interface
-    %video.player__media{ data: { target: 'player.video' } }
+    %video.player__media{ data: { target: 'player.video', action: 'playing->player#start ended->player#stop' } }
       / this is where the media goes
     .player__transport
       .player__button

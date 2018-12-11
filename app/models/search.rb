@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Search
+  TYPES = %w(user track comment)
+
   include Enumerable
 
   attr_reader :query, :filters
@@ -17,7 +19,11 @@ class Search
       end
 
       [type, records]
-    end
+    end.to_h
+  end
+
+  def count_for(type)
+    types[type]&.count || 0
   end
 
   def each

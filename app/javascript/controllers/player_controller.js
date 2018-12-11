@@ -3,6 +3,7 @@ import { Controller } from "stimulus"
 import HLS from "hls.js"
 import moment from "moment"
 import momentDurationFormatSetup from "moment-duration-format"
+import { each } from "lodash"
 
 momentDurationFormatSetup(moment)
 
@@ -14,7 +15,7 @@ export default class Player extends Controller {
 
   initialize() {
     this.updateElapsedTime = this.updateElapsedTime.bind(this)
-    this.updateProgress = this.updateProgress.bind(this)
+    // this.updateProgress = this.updateProgress.bind(this)
   }
 
   /**
@@ -27,7 +28,7 @@ export default class Player extends Controller {
     this.totalDuration = parseInt(this.element.getAttribute("data-duration"))
     this.liked = this.element.getAttribute("data-liked")
     this.ticks = 0
-    this.totalTicks = this.totalDuration * 1000
+    this.totalTicks = this.totalDuration * 800
     this.streamURL = this.buttonTarget.getAttribute("href")
 
     if (HLS.isSupported()) {
@@ -38,6 +39,9 @@ export default class Player extends Controller {
       this.sound = this.videoTarget
       this.sound.src = this.streamURL
     }
+
+    this.videoTarget.addEventListener("play", this.start)
+    this.videoTarget.addEventListener("pause", this.stop)
   }
 
   /**
@@ -62,12 +66,8 @@ export default class Player extends Controller {
     }
 
     this.elapsedTarget.innerText = elapsedTime
-  }
 
-  updateProgress() {
-    this.ticks++
-
-    const percent = (this.ticks / this.totalTicks) * 120
+    const percent = (this.secondsElapsed / this.totalDuration) * 100
 
     this.notchTarget.style.left = `${percent}%`
   }
@@ -176,7 +176,7 @@ export default class Player extends Controller {
 
   start() {
     this.elapsedTimeInterval = setInterval(this.updateElapsedTime, 1000)
-    this.progressInterval = setInterval(this.updateProgress, 1)
+    // this.progressInterval = setInterval(this.updateProgress, 1)
   }
 
   stop() {

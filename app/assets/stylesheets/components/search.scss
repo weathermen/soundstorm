@@ -24,7 +24,9 @@
 .search-filter__name {
 }
 
-.search-result {}
+.search-result {
+  margin-bottom: 2vh;
+}
 .search-result__link {
   display: grid;
   grid-template-columns: 1fr 2fr;

@@ -3,13 +3,12 @@
     %h1.search__title
       #{@search.count} results for "#{@search.query}"
     %nav.search__filters
-      - @search.types.each do |type, results|
+      - Search::TYPES.each do |type|
         = search_filter_link type do
-          .search-filter__count= results.count
+          .search-filter__count= @search.count_for(type)
           .search-filter__name= type.titleize.pluralize
   %main.search__listing
     %ul.search__results
       - @search.each do |result|
         %li.search-result{ class: "search-result--#{result.param_key}" }
-          = link_to search_result_url(result), class: 'search-result__link' do
-            = render search_result_template(result), result: result
+          = render search_result_template(result)

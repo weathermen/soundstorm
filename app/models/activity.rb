@@ -26,6 +26,17 @@ class Activity
     end
   end
 
+  def url
+    case item_type
+    when 'Track'
+      [item.user, item]
+    when 'Comment'
+      [item.user, item.track, item]
+    else
+      item
+    end
+  end
+
   def object
     I18n.t(:object, name: object_name, scope: i18n_scope)
   end

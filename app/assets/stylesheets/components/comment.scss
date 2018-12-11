@@ -1,5 +1,10 @@
 .comment {}
 .comment__metadata {}
+.activity {
+  .comment__metadata {
+    display: none;
+  }
+}
 .comment__user {
   font-weight: bold;
   text-decoration: none;

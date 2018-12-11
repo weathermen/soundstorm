@@ -76,8 +76,6 @@ en:
       success: "Uploaded Track '%{name}'"
       failure: "Error Uploading Track: %{errors}"
       submit: Upload Track
-      action: uploaded
-      object: a new track
     update:
       success: "Successfully edited Track '%{name}'"
       failure: "Error uploading Track: %{errors}"
@@ -92,7 +90,8 @@ en:
       delete: Delete Track
     track:
       action: uploaded
-      object: a track
+      object: a new track
+      by: "by %{artist}"
   likes:
     create:
       success: "You have liked %{track}"

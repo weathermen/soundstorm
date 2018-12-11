@@ -1,6 +1,8 @@
 .track-summary
   .track-summary__title.track-title
-    %h2.track-title__name= track.name
-    %h3.track-title__artist by #{track.user.name}
+    %h2.track-title__name
+      = link_to track.name, user_track_path(track.user, track)
+    %h3.track-title__artist
+      = t('.by', artist: track.user.name)
   .track-summary__player
     = render 'tracks/player', track: track
