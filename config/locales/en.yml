@@ -90,6 +90,9 @@ en:
       comments: Comments
       edit: Edit Track
       delete: Delete Track
+    track:
+      action: uploaded
+      object: a track
   likes:
     create:
       success: "You have liked %{track}"
@@ -108,6 +111,8 @@ en:
       success: 'Deleted comment on "%{track}"'
       failure: 'Error deleting comment on %{track}: %{errors}'
     comment:
+      action: commented on
+      object: 'track "%{name}"'
       edit: Edit Comment
       delete: Delete Comment
       commented: "commented %{date} ago"

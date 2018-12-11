@@ -1,8 +1,0 @@
-- if create.item.present?
-  .activity
-    %header.activity__event
-      %span.activity__subject= create.user.name
-      %span.activity__action= t(:action, scope: create.i18n_scope)
-      %span.activity__object= t(:object, scope: create.i18n_scope)
-    %main.activity__content
-      = render create.item

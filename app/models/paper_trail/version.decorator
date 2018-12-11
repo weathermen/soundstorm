@@ -9,14 +9,6 @@ module PaperTrail
       scope :unpublished, -> { where(broadcasted_at: nil) }
     end
 
-    def to_partial_path
-      "activities/#{event}"
-    end
-
-    def to_key
-      ['activity']
-    end
-
     def followers
       return [] if user.blank?
       user.followers(User)
@@ -61,10 +53,6 @@ module PaperTrail
 
     def broadcast
       BroadcastMessageJob.perform_later(self) unless broadcasted?
-    end
-
-    def i18n_scope
-      [item_type.tableize, event]
     end
   end
 end
