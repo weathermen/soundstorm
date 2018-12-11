@@ -2,8 +2,10 @@
 #EXT-X-VERSION:3
 #EXT-X-PLAYLIST-TYPE:VOD
 #EXT-X-TARGETDURATION:<%= Track::STREAM_SEGMENT_DURATION %>
-<% @track.segments.sort_by { |segment| File.basename(segment.filename.to_s, '.mp3').split('-').last }.each do |segment| %>
+<% cache [@track, :segments] do %>
+<% @track.segments.order(:created_at).each do |segment| %>
 #EXTINF:<%= Track::STREAM_SEGMENT_DURATION %>.0,
 <%= segment_url(segment) %>
+<% end %>
 <% end %>
 #EXT-X-ENDLIST

@@ -56,7 +56,7 @@ class Track::Analysis
   end
 
   def attach_segments
-    Dir[tmp_path.join('*.ts')].each do |segment_path|
+    Dir[tmp_path.join('*.ts')].sort.each do |segment_path|
       track.segments.attach(
         io: File.open(segment_path),
         filename: File.basename(segment_path)
