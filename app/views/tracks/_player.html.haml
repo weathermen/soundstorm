@@ -1,6 +1,6 @@
 = player_for track do
   %main.player__interface
-    %video.player__media{ data: { target: 'player.video', action: 'playing->player#start ended->player#stop' } }
+    %video.player__media{ data: track_video_tag_options }
       / this is where the media goes
     .player__transport
       .player__button
@@ -10,7 +10,7 @@
         - unless track.duration.blank?
           .player__left
             = track.formatted_duration
-    .player__waveform{ data: { action: 'click->player#cue' } }
+    .player__waveform{ data: { action: 'click->player#seek' } }
       - if track.waveform.attached?
         = image_tag track.waveform
       %span.player__notch{ data: { target: 'player.notch' } }

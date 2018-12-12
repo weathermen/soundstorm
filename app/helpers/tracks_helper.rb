@@ -35,9 +35,10 @@ module TracksHelper
   def player_for(track, &block)
     data = {
       controller: 'player',
-      track: user_track_path(track.user, track),
-      liked: current_user&.likes?(track),
-      duration: track.duration
+      'player-track': user_track_path(track.user, track),
+      'player-liked': current_user&.likes?(track),
+      'player-duration': track.duration,
+      'player-seek-position': 0
     }
 
     content_tag :section, class: 'player', data: data, &block
@@ -57,6 +58,13 @@ module TracksHelper
 
   def track_download_url(track)
     user_track_url(track.user, track, format: :mp3)
+  end
+
+  def track_video_tag_options
+    {
+      target: 'player.video',
+      action: 'playing->player#start ended->player#stop'
+    }
   end
 
   private

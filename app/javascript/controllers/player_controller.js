@@ -15,7 +15,7 @@ export default class Player extends Controller {
 
   initialize() {
     this.updateElapsedTime = this.updateElapsedTime.bind(this)
-    // this.updateProgress = this.updateProgress.bind(this)
+    this.updateProgress = this.updateProgress.bind(this)
   }
 
   /**
@@ -23,12 +23,6 @@ export default class Player extends Controller {
    */
   connect() {
     this.playing = false
-    this.secondsElapsed = 0
-    this.listens = parseInt(this.element.getAttribute("data-listens"))
-    this.totalDuration = parseInt(this.element.getAttribute("data-duration"))
-    this.liked = this.element.getAttribute("data-liked")
-    this.ticks = 0
-    this.totalTicks = this.totalDuration * 800
     this.streamURL = this.buttonTarget.getAttribute("href")
 
     if (HLS.isSupported()) {
@@ -45,20 +39,12 @@ export default class Player extends Controller {
   }
 
   /**
-   * TODO Clean up existing Howl sounds from the environment when
-   * disconnected from the DOM
-   */
-  disconnect() {
-    // this.sound.unload()
-  }
-
-  /**
-   * Update the elapsed time on the player
+   * Update the elapsed time on the player every second it is playing
    */
   updateElapsedTime() {
-    this.secondsElapsed++
+    const secondsElapsed = this.videoTarget.currentTime
 
-    let elapsedTime = moment.duration(this.secondsElapsed, "seconds")
+    let elapsedTime = moment.duration(secondsElapsed, "seconds")
                             .format("mm:ss")
 
     if (elapsedTime.length == 2) {
@@ -67,11 +53,19 @@ export default class Player extends Controller {
 
     this.elapsedTarget.innerText = elapsedTime
 
-    const percent = (this.secondsElapsed / this.totalDuration) * 100
+  }
+
+  updateProgress() {
+    const totalDuration = this.data.get("duration")
+    const secondsElapsed = this.videoTarget.currentTime
+    const percent = (secondsElapsed / totalDuration) * 100
 
     this.notchTarget.style.left = `${percent}%`
   }
 
+  /**
+   * Get position of an element in the DOM.
+   */
   getPosition(el) {
     var xPos = 0
     var yPos = 0
@@ -123,23 +117,32 @@ export default class Player extends Controller {
     event.preventDefault()
 
     const url = `${this.url}/like.json`
-    const method = this.liked ? "DELETE" : "POST"
+    const method = this.data.get("liked") ? "DELETE" : "POST"
     const response = await fetch(url, { method })
 
     if (response.status === 200) {
       const { likes } = await response.json()
-      this.liked = method === "POST"
+      this.data.set("liked", method === "POST")
 
       this.likesTarget.innerText = `${likes} likes`
     }
   }
 
-  cue(event) {
+  /**
+   * Seek to the position of the track that was clicked on the waveform.
+   */
+  seek(event) {
     const parentPosition = this.getPosition(event.currentTarget)
     const xPosition = event.clientX - parentPosition.x
     const percent = (xPosition / event.currentTarget.clientWidth) * 100
+    const totalDuration = this.data.get("duration")
+    const trackPosition = Math.ceil((percent / 100) * totalDuration)
 
+    this.data.set("seek-position", trackPosition)
+
+    this.videoTarget.currentTime = trackPosition
     this.notchTarget.style.left = `${percent}%`
+    this.updateElapsedTime()
   }
 
   /**
@@ -176,7 +179,7 @@ export default class Player extends Controller {
 
   start() {
     this.elapsedTimeInterval = setInterval(this.updateElapsedTime, 1000)
-    // this.progressInterval = setInterval(this.updateProgress, 1)
+    this.progressInterval = setInterval(this.updateProgress, 1)
   }
 
   stop() {

@@ -15,8 +15,17 @@
 
 .flash-message__text {
   text-align: center;
+
+  p {
+    padding-left: 40px;
+  }
 }
 .flash-message__close {
+  p {
+    margin: 0 auto;
+    padding: 15px;
+  }
+
   a {
     text-decoration: none;
     color: black;
