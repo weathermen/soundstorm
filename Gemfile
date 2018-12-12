@@ -61,6 +61,10 @@ gem 'oily_png'
 # Search users and tracks with Elasticsearch
 gem 'elasticsearch-rails', '~> 5', require: 'elasticsearch/rails'
 gem 'elasticsearch-model', '~> 5', require: 'elasticsearch/model'
+# Sign in with Mastodon
+gem 'omniauth'
+gem 'omniauth-mastodon'
+gem 'mastodon-api', github: 'tubbo/mastodon-api', branch: 'upgrade-to-http-v4'
 
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console
