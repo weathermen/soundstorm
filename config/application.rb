@@ -41,5 +41,9 @@ module Soundstorm
 
     # URL for Google Fonts
     config.google_fonts_url = 'https://fonts.googleapis.com/css?family=Fredoka+One|PT+Sans'
+
+    config.to_prepare do
+      Doorkeeper::ApplicationsController.layout 'application'
+    end
   end
 end
