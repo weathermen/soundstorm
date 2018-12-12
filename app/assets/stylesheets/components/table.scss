@@ -21,6 +21,9 @@
   padding: 5px;
 }
 
-.users__controls {
-  text-align: center;
+.table__controls {
+  .navigation {
+    width: 80%;
+    margin: 0 auto;
+  }
 }

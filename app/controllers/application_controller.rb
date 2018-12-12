@@ -3,18 +3,31 @@
 class ApplicationController < ActionController::Base
   before_action :cache_page, only: :index
   before_action :doorkeeper_authorize!, if: :api?
+  before_action :authorize_admin!, only: %w[index]
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   append_before_action :set_paper_trail_whodunnit, if: :user_signed_in?
 
   after_action :set_headers
 
+  helper_method :current_model
+
   def index
+    @query = params[:q] || '*'
+    @title = t(:admin, scope: %i[application], models: current_model.name.pluralize)
+    @models = if current_model.respond_to? :search
+      current_model.search(@query).records
+    else
+      current_model.all
+    end
+  end
+
+  def splash
     if user_signed_in?
       @activities = current_user.activities
       render 'users/dashboard'
     else
-      render :index
+      render 'splash'
     end
   end
 
@@ -26,6 +39,10 @@ class ApplicationController < ActionController::Base
 
   def cache_page
     expires_in config.page_cache_ttl, public: true if flash.blank?
+  end
+
+  def current_model
+    controller_name.classify.constantize
   end
 
   private

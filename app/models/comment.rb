@@ -3,6 +3,8 @@
 class Comment < ApplicationRecord
   include Federatable
 
+  FIELDS = %w(author track content)
+
   belongs_to :user
   belongs_to :track, counter_cache: true
   belongs_to :parent, class_name: 'Comment', optional: true
@@ -19,6 +21,10 @@ class Comment < ApplicationRecord
 
   after_create :notify_replied_user, if: :reply?
   after_save :mention_users
+
+  def author
+    user.display_name
+  end
 
   def root?
     parent.blank?

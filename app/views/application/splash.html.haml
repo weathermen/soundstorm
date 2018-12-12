@@ -1,0 +1,10 @@
+%article.splash
+  %header.splash__title
+    %h1= app_title
+    %h2= t('.slogan')
+  %main.splash__about
+    %p= t('.about')
+  %footer.splash__buttons
+    %nav.navigation
+      = splash_link_to :login, new_user_session_path
+      = splash_link_to :signup, new_user_registration_path

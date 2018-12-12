@@ -1,10 +1,28 @@
-%article.splash
-  %header.splash__title
-    %h1= app_title
-    %h2= t('.slogan')
-  %main.splash__about
-    %p= t('.about')
-  %footer.splash__buttons
-    %nav.navigation
-      = splash_link_to :login, new_user_session_path
-      = splash_link_to :signup, new_user_registration_path
+%table.table.users
+  %thead.table__header
+    %tr.table__title
+      %td{ colspan: admin_colspan }
+        %h1= page_title
+    %tr.table__search
+      %td{ colspan: admin_colspan }
+        = search_form do |f|
+          = f.search_field :q, admin_search_field_options
+    %tr.table__fields
+      - admin_fields.each do |column|
+        %th.table__field
+          = admin_attribute_name(column)
+      %th
+        - unless current_model == Comment
+          = link_to t('.new', model: current_model.name), class: 'button'
+  %tbody.table__results
+    - @models.each do |model|
+      %tr{ id: admin_row_id(model), class: admin_row_class }
+        - admin_fields.each do |field|
+          %td{ class: admin_column_class(field) }
+            = admin_render_field(model, field)
+        %td{ class: admin_controls_class }
+          %nav.navigation.navigation--buttons
+            = link_to admin_edit_path(model), class: 'button navigation__button' do
+              = t('.edit', model: current_model.name)
+            = link_to model, method: :delete, class: 'button navigation__button' do
+              = t('.delete', model: current_model.name)

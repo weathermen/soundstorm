@@ -32,4 +32,16 @@ module UsersHelper
       yield form
     end
   end
+
+  def link_to_activity(activity)
+    url = if activity.item.is_a?(Comment)
+      view_comment_path(activity.item)
+    else
+      url_for(activity.url)
+    end
+
+    link_to url do
+      yield
+    end
+  end
 end

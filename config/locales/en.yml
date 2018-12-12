@@ -100,6 +100,8 @@ en:
       success: "You have unliked %{track}"
       failure: "Error unliking %{track}"
   comments:
+    index:
+      title: Comments Admin
     create:
       success: 'Comment on "%{track}" has been added'
       failure: 'Error commenting on %{track}: %{errors}'
@@ -178,9 +180,13 @@ en:
       subject: '@%{author} mentioned you in a comment'
       view: View Comment
   application:
+    admin: '%{models} Admin'
     index:
       slogan: Share your music with the Fediverse.
       about: Soundstorm is a music sharing platform.
+      new: "New %{model}"
+      edit: "Edit %{model}"
+      delete: "Delete %{model}"
   notification_mailer:
     reply:
       subject: '%{user} has replied to your comment on "%{track}"'
@@ -201,3 +207,6 @@ en:
     registrations:
       edit:
         submit: Update
+  searches:
+    show:
+      no_results: 'No %{type}s found matching "%{query}"'

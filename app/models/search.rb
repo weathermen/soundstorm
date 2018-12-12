@@ -7,37 +7,38 @@ class Search
 
   attr_reader :query, :filters
 
+  delegate_missing_to :to_a
+
   def initialize(query:, **filters)
     @query = query
     @filters = filters.compact
   end
 
-  def types
-    results.group_by { |result| result['_type'] }.map do |type, results|
-      records = results.each do |result|
-        record_for(result)
-      end
-
-      [type, records]
-    end.to_h
-  end
-
+  # Find the amount of items in this query for the given type.
   def count_for(type)
-    types[type]&.count || 0
+    query_for(type).count || 0
   end
 
+  # Iterate over every model found in the query results.
   def each
     results.each do |result|
       yield record_for(result)
     end
   end
 
+  # Total number of all items in the query, without filters applied.
+  def total_count
+    Search.new(query: query).count
+  end
+
+  # Total number of all items in the query matching filters.
   def count
     response['hits']['total']
   end
 
-  def as_json
-    json = {
+  # Base query used for searching items.
+  def as_unfiltered_json
+    {
       query: {
         bool: {
           must: [
@@ -50,7 +51,11 @@ class Search
         }
       }
     }
+  end
 
+  # The full Elasticsearch query sent to the server.
+  def as_json
+    json = as_unfiltered_json
     json[:query][:bool][:must] << {
       type: {
         value: filters[:type]
@@ -74,9 +79,13 @@ class Search
   end
 
   def response
-    @response ||= Elasticsearch::Model.client.search(
+    Elasticsearch::Model.client.search(
       index: "soundstorm_#{Rails.env}",
       body: as_json
     )
+  end
+
+  def query_for(type)
+    Search.new(query: query, **filters.merge(type: type))
   end
 end

@@ -1,14 +1,18 @@
 %article.search
   %header.search__summary
     %h1.search__title
-      #{@search.count} results for "#{@search.query}"
+      #{@search.total_count} results for "#{@search.query}"
     %nav.search__filters
       - Search::TYPES.each do |type|
         = search_filter_link type do
           .search-filter__count= @search.count_for(type)
           .search-filter__name= type.titleize.pluralize
   %main.search__listing
-    %ul.search__results
-      - @search.each do |result|
-        %li.search-result{ class: "search-result--#{result.param_key}" }
-          = render search_result_template(result)
+    %ul.search__results{ class: ("search-results--empty" if @search.empty?) }
+      - if @search.any?
+        - @search.each do |result|
+          %li.search-result{ class: "search-result--#{result.param_key}" }
+            = render search_result_template(result)
+      - else
+        %p.search__no-results
+          = t('.no_results', type: params[:type], query: params[:q])

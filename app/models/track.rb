@@ -40,8 +40,12 @@ class Track < ApplicationRecord
     end
   end
 
+  def title
+    "#{user.display_name} - #{name}"
+  end
+
   def filename
-    "#{user.display_name} - #{name}.mp3"
+    "#{title}.mp3"
   end
 
   def formatted_duration

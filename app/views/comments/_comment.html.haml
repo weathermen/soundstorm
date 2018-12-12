@@ -1,7 +1,7 @@
 .comment
   %header.comment__metadata
     = link_to comment.user.name, comment.user, class: 'comment__user'
-    = link_to comment_path(comment), class: 'comment__date' do
+    = link_to view_comment_path(comment), class: 'comment__date' do
       = comment_date(comment)
   %main.comment__content
     %p

@@ -1,7 +1,19 @@
-.activity {}
+.activity {
+  margin-bottom: 5vh;
+  padding-bottom: 15px;
+  border-bottom: 1px solid lighten($background-color, 5%);
+}
 .activity__event {}
 .activity__subject {
   font-weight: bold;
+  a {
+    text-decoration: none;
+    color: $foreground-color;
+  }
 }
 .activity__action {}
-.activity__object {}
+.activity__object {
+  a {
+    text-decoration: none;
+  }
+}

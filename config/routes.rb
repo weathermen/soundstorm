@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   resources :tracks, except: %i[index show]
   resources :likes, only: %i[index]
   # resources :users, except: %i[show], as: :users
+  # resources :comments, only: %i[index show]
   resources :users, path: '', only: %i[show] do
     member do
       post :inbox, to: 'versions#create'
@@ -34,7 +35,7 @@ Rails.application.routes.draw do
         post :listen
       end
 
-      resources :comments, except: %i[index new]
+      resources :comments, only: %w[edit create update destroy]
       resource :like, only: %i[create destroy]
     end
   end
@@ -44,5 +45,5 @@ Rails.application.routes.draw do
   post :inbox, to: 'versions#create'
 
   # dashboard
-  root to: 'application#index'
+  root to: 'application#splash'
 end

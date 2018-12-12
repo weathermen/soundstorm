@@ -1,6 +1,9 @@
 .navigation {
   height: 100%;
 }
+.navigation--buttons {
+  display: flex;
+}
 .navigation__link {
   padding: 5px;
   display: inline-block;
@@ -16,4 +19,9 @@
   img {
     vertical-align: middle;
   }
+}
+
+.navigation__button {
+  margin: 0 15px;
+  flex: 1
 }

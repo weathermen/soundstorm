@@ -6,11 +6,6 @@ class UsersController < ApplicationController
   before_action :authorize_admin!, except: %i[show webfinger dashboard]
   skip_before_action :doorkeeper_authorize!, only: %i[show webfinger]
 
-  def index
-    @query = params[:q] || '*'
-    @users = User.search(@query).records
-  end
-
   def new
     @user = User.new
   end

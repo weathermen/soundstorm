@@ -1,8 +1,19 @@
 # frozen_string_literal: true
 
 class CommentsController < ApplicationController
+  include CommentsHelper
+
   before_action :authenticate_user!
-  before_action :find_track
+  before_action :find_track, except: %i[index]
+
+  def show
+    @comment = Comment.find(params[:id])
+
+    respond_to do |format|
+      format.html { redirect_to view_comment_path(@comment) }
+      format.json { render json: @comment }
+    end
+  end
 
   def edit
     @comment = @comments.find(params[:id])

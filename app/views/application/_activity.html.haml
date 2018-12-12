@@ -1,9 +1,10 @@
 .activity
   %header.activity__event
     %span.activity__subject
-      = activity.subject
+      = link_to activity.user do
+        = activity.subject
     %span.activity__object
-      = link_to activity.url do
+      = link_to_activity(activity) do
         = activity.action
         = activity.object
   - if activity.exist?

@@ -6,6 +6,11 @@
 .search__results {
   list-style: none;
 }
+.search__no-results {
+  text-align: center;
+  color: darken($foreground-color, 25%);
+  font-size: 1.3em;
+}
 
 .search-filter {
   display: inline-block;
