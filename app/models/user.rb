@@ -22,7 +22,8 @@ class User < ApplicationRecord
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable,
-         :confirmable, :lockable, :timeoutable, :trackable # , :omniauthable
+         :confirmable, :lockable, :timeoutable, :trackable,
+         :omniauthable
 
   acts_as_follower
   acts_as_liker
@@ -70,10 +71,6 @@ class User < ApplicationRecord
     end
   end
 
-  def likes
-    likees(Track)
-  end
-
   # Find a given +User+ record by its Webfinger resource string, and
   # throw an exception when the User cannot be found.
   #
@@ -105,6 +102,35 @@ class User < ApplicationRecord
       user.confirmed_at = Time.current
       user.save!
     end
+  end
+
+  # Find or create a User record from OAuth details.
+  #
+  # @param [OmniAuth::AuthHash]
+  # @return [User]
+  def self.from_omniauth(auth_hash)
+    user = find_or_create_by(provider: auth.provider, uid: auth.uid) do
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0, 20]
+      user.name = auth.info.name
+      user.display_name = auth.info.display_name
+      user.skip_confirmation!
+    end
+  end
+
+  # Append additional data to the session when logged in from OAuth.
+  def self.new_with_session(params, session)
+    super.tap do |user|
+      if data = session['devise.mastodon_data'] && session['devise.mastodon_data']['extra']['raw_info']
+        user.email = data['email'] if user.email.blank?
+        user.name = data['name'] if user.email.blank?
+        user.display_name = data['display_name'] if user.email.blank?
+      end
+    end
+  end
+
+  def likes
+    likees(Track)
   end
 
   # External ActivityPub ID for this User.

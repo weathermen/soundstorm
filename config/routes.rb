@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   # user management
-  devise_for :users
+  devise_for :users, controllers: { omniauth_callbacks: 'users/omniauth_callbacks' }
   use_doorkeeper
 
   # errors

@@ -13,5 +13,7 @@
       = f.check_box :remember_me
       = f.label :remember_me
   .actions
-    = f.submit "Log in"
-= render "devise/shared/links"
+    = f.submit 'Log in'
+    = link_to user_mastodon_omniauth_authorize_path, class: 'button'
+      = t('.sign_in_with', service: 'Mastodon')
+    = render 'devise/shared/links'

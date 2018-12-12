@@ -204,6 +204,9 @@ en:
     create:
       title: Sign Up
   devise:
+    sessions:
+      new:
+        sign_in_with: "Sign in with %{service}"
     registrations:
       edit:
         submit: Update
