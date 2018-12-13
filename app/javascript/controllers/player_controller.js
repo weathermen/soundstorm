@@ -92,10 +92,6 @@ export default class Player extends Controller {
     }
   }
 
-  get url() {
-    return this.element.getAttribute("data-track")
-  }
-
   /**
    * Toggle play/pause functionality on the sound
    */
@@ -190,12 +186,12 @@ export default class Player extends Controller {
     const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")
                               .getAttribute("content")
     const method = "POST"
-    const url = `${this.url}/listen.json`
+    const url = `${this.data.get("track")}/listen.json`
     const headers = { "X-CSRF-Token": csrfToken }
     const response = await fetch(url, { method, headers })
 
     if (response.status === 201) {
-      const { listens } = await response.json()
+      const listens = await response.json()
 
       this.listensTarget.innerText = `${listens} listens`
     }
