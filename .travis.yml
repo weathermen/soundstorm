@@ -9,16 +9,14 @@ services:
   - docker
 addons:
   apt:
-    sources:
-      - sourceline: https://deb.nodesource.com/setup_8.x
-      - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
-        key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
     packages:
       - libdsndfile1-dev
       - ffmpeg
-      - nodejs
-      - yarn
-cache: bundler
+cache:
+  bundler: true
+  yarn: true
+  directories:
+    - node_modules
 bundler_args: "--without development production"
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
