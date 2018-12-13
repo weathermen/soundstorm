@@ -26,4 +26,13 @@ module Soundstorm
   DATABASE_URL = ENV['DATABASE_URL']
 
   SERVE_STATIC_FILES = ENV['RAILS_SERVE_STATIC_FILES'].present?
+
+  # URL to the Soundstorm engineering blog
+  BLOG_URL    = 'https://blog.soundstorm.social'
+
+  # URL to the canonical source code repository
+  SOURCE_URL  = 'https://github.com/soundstorm/soundstorm'
+
+  # URL to the documentation for Soundstorm
+  DOCS_URL    = 'https://docs.soundstorm.social'
 end

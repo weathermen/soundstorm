@@ -37,3 +37,13 @@
             = render 'flash_message', type: type, message: message
       %section.page__content
         = yield
+    %footer.footer
+      %nav.navigation.footer__navigation
+        %span.navigation__item.footer__version
+          #{Soundstorm.to_s} v#{Soundstorm::VERSION}
+        = link_to Soundstorm::BLOG_URL, class: 'navigation__link' do
+          = t('.footer.blog')
+        = link_to Soundstorm::SOURCE_URL, class: 'navigation__link' do
+          = t('.footer.source')
+        = link_to Soundstorm::DOCS_URL, class: 'navigation__link' do
+          = t('.footer.documentation')

@@ -55,6 +55,10 @@ en:
         logout: Log out
         login: Log in
         signup: Sign up
+      footer:
+        blog: Blog
+        source: Source Code
+        documentation: Documentation
   tracks:
     player:
       likes: "%{count} likes"

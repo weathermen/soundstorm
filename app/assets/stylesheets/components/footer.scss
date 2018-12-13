@@ -1,0 +1,19 @@
+.footer {
+  margin: 15px 0;
+}
+.footer__version {
+  color: lighten(gray, 10%);
+  margin-right: 15px;
+}
+.footer__navigation {
+  text-align: center;
+
+  a {
+    color: lightgray;
+    transition: color .5s ease-in-out;
+
+    &:hover {
+      color: lighten(lightgray, 10%);
+    }
+  }
+}
