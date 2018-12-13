@@ -11,7 +11,8 @@ export default class FlashMessage extends Controller {
   }
 
   /**
-   * Remove this flash message from the DOM
+   * Fade the flash message out when the "close" button is clicked. This
+   * triggers an animation that eventually calls the #remove event.
    */
   close(event) {
     if (event) {
@@ -19,6 +20,12 @@ export default class FlashMessage extends Controller {
     }
 
     this.element.classList.add("flash-message--closed")
-    this.element.addEventListener("animationend", this.element.remove)
+  }
+
+  /**
+   * Remove the flash message from the DOM when animation ends.
+   */
+  remove(event) {
+    this.element.remove()
   }
 }

@@ -10,9 +10,7 @@
       = comment.content
   %footer.comment__links
     %nav.navigation
-      - edit_comment = [:edit, comment.track.user, comment.track, comment]
-      = link_to edit_comment, class: 'navigation__link' do
+      = link_to edit_user_track_comment_path(comment.track.user, comment.track, comment), class: 'navigation__link' do
         = t('.edit')
-      - delete_comment = [comment.track.user, comment.track, comment]
-      = link_to delete_comment, method: :delete, class: 'navigation__link' do
+      = link_to user_track_comment_path(comment.track.user, comment.track, comment), method: :delete, class: 'navigation__link' do
         = t('.delete')

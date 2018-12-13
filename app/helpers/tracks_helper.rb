@@ -76,8 +76,14 @@ module TracksHelper
   end
 
   def like_button(track)
+    method = if current_user&.likes?(track)
+      :delete
+    else
+      :post
+    end
     options = {
-      method: :post,
+      method: method,
+      remote: true,
       class: 'player__link',
       data: {
         action: 'ajax:success->player#like',

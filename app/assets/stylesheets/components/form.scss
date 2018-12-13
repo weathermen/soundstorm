@@ -19,6 +19,10 @@
 }
 .form__actions {
   margin-top: 2vh;
+
+  button, input[type="submit"] {
+    cursor: pointer;
+  }
 }
 
 .form-links {

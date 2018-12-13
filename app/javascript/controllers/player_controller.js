@@ -114,16 +114,12 @@ export default class Player extends Controller {
    * Like or unlike the track
    */
   async like(event) {
-    event.preventDefault()
+    const [response, status] = event.detail
 
-    const url = `${this.url}/like.json`
-    const method = this.data.get("liked") ? "DELETE" : "POST"
-    const response = await fetch(url, { method })
+    if (status === 200) {
+      const { likes } = response
 
-    if (response.status === 200) {
-      const { likes } = await response.json()
-      this.data.set("liked", method === "POST")
-
+      this.data.toggle("liked")
       this.likesTarget.innerText = `${likes} likes`
     }
   }

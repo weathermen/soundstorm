@@ -3,14 +3,11 @@
 class Track < ApplicationRecord
   include Commentable
   include Federatable
-  include Elasticsearch::Model
-  include Elasticsearch::Model::Callbacks
+  include Searchable
 
   extend FriendlyId
 
   STREAM_SEGMENT_DURATION = 3
-
-  index_name "soundstorm_#{Rails.env}"
 
   belongs_to :user, counter_cache: true
 
@@ -33,11 +30,20 @@ class Track < ApplicationRecord
 
   delegate :name, to: :user, prefix: true
 
+  attr_writer :username, :artist
+
   settings index: { number_of_shards: 1 } do
     mappings dynamic: 'false' do
       indexes :name
-      indexes :user_name, analyzer: 'english'
+      indexes :artist
     end
+  end
+
+  def as_indexed_json(options = {})
+    as_json.merge(
+      username: user.name,
+      artist: user.display_name
+    )
   end
 
   def title

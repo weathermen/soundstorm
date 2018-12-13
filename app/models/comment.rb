@@ -2,6 +2,7 @@
 
 class Comment < ApplicationRecord
   include Federatable
+  include Searchable
 
   FIELDS = %w(author track content)
 
@@ -21,6 +22,18 @@ class Comment < ApplicationRecord
 
   after_create :notify_replied_user, if: :reply?
   after_save :mention_users
+
+  delegate :name, to: :user, prefix: true
+
+  attr_writer :author, :user_name
+
+  settings index: { number_of_shards: 1 } do
+    mappings dynamic: 'false' do
+      indexes :content
+      indexes :author
+      indexes :user_name
+    end
+  end
 
   def author
     user.display_name
@@ -54,6 +67,10 @@ class Comment < ApplicationRecord
       inReplyTo: parent_activity_id,
       content: content
     )
+  end
+
+  def as_indexed_json(options = {})
+    as_json.merge(author: author, user_name: user_name)
   end
 
   def mentioned_users

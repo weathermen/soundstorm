@@ -92,13 +92,6 @@ en:
       action: uploaded
       object: a new track
       by: "by %{artist}"
-  likes:
-    create:
-      success: "You have liked %{track}"
-      failure: "Error liking %{track}"
-    destroy:
-      success: "You have unliked %{track}"
-      failure: "Error unliking %{track}"
   comments:
     index:
       title: Comments Admin
@@ -119,6 +112,15 @@ en:
       commented: "commented %{date} ago"
     form:
       save: "%{action} Comment"
+  likes:
+    index:
+      title: Library
+    create:
+      success: "You have liked %{track}"
+      failure: "Error liking %{track}"
+    destroy:
+      success: "You have unliked %{track}"
+      failure: "Error unliking %{track}"
   versions:
     unauthorized: Request signature could not be verified.
   errors:
@@ -147,9 +149,6 @@ en:
     destroy:
       success: 'You are no longer following %{user}'
       failure: 'Error following %{user}'
-  likes:
-    index:
-      title: Library
   users:
     dashboard:
       welcome: Welcome to Soundstorm!

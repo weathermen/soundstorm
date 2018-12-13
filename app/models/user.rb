@@ -7,10 +7,7 @@ class User < ApplicationRecord
   extend FriendlyId
 
   include Federatable
-  include Elasticsearch::Model
-  include Elasticsearch::Model::Callbacks
-
-  index_name "soundstorm_#{Rails.env}"
+  include Searchable
 
   # Generate 2048-bit keys
   KEY_LENGTH = 2048

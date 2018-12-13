@@ -22,7 +22,10 @@ class User::Timeline
   private
 
   def results
-    PaperTrail::Version.where(event: EVENT_NAME, whodunnit: user_ids)
+    PaperTrail::Version.where(
+      event: EVENT_NAME,
+      whodunnit: user_ids
+    ).order(created_at: :desc)
   end
 
   # All GlobalIDs, including this one, for users which should appear in the

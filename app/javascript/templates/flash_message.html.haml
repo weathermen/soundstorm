@@ -1,4 +1,5 @@
-- data = { controller: 'flash_message', type: type }
+- action = 'animationend->flash-message#remove'
+- data = { controller: 'flash-message', action: action }
 .flash-message{ class: "flash-message--#{type}", data: data }
   .flash-message__text
     %p= message
