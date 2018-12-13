@@ -1,0 +1,10 @@
+version: "2"
+plugins:
+  brakeman:
+    enabled: true
+  rubocop:
+    enabled: true
+  eslint:
+    enabled: true
+  stylelint:
+    enabled: true
