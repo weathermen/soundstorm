@@ -8,6 +8,8 @@ if [[ -z "$RAILS_ENV" ]]; then
   RAILS_ENV=development
 fi
 
+DOCKER_IMAGE_NAME="weathermen/soundstorm"
+
 case "$1" in
   # build containers and set up the database. generate a puma-dev
   # configuration file if it does not exist and is in use
@@ -50,12 +52,12 @@ case "$1" in
       service="$2"
     fi
 
-    COMPOSE_FILE="docker-compose.yml:docker-compose.development.yml" \
+    COMPOSE_FILE="docker-compose.yml:docker-compose.$RAILS_ENV.yml" \
       docker-compose logs -f "$service"
     ;;
   # start all containers
   start)
-    COMPOSE_FILE="docker-compose.yml:docker-compose.development.yml" \
+    COMPOSE_FILE="docker-compose.yml:docker-compose.$RAILS_ENV.yml" \
       docker-compose up -d
 
     if [[ -f "$PUMA_DEV/soundstorm" ]]; then
@@ -66,13 +68,13 @@ case "$1" in
     ;;
   # stop and remove running containers
   stop)
-    COMPOSE_FILE="docker-compose.yml:docker-compose.development.yml" \
+    COMPOSE_FILE="docker-compose.yml:docker-compose.$RAILS_ENV.yml" \
       docker-compose down
     echo "Soundstorm has shut down"
     ;;
   # restart the web container
   restart)
-    COMPOSE_FILE="docker-compose.yml:docker-compose.development.yml" \
+    COMPOSE_FILE="docker-compose.yml:docker-compose.$RAILS_ENV.yml" \
       docker-compose restart web
     echo "Soundstorm has restarted"
     ;;
@@ -84,12 +86,12 @@ case "$1" in
   build)
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
       docker-compose build --build-arg RAILS_ENV=production web &&
-      docker image tag tubbo/soundstorm:latest "tubbo/soundstorm:$(soundstorm version)"
+      docker image tag "$DOCKER_IMAGE_NAME:latest" "$DOCKER_IMAGE_NAME:$(bin/soundstorm version)"
     ;;
   # release the production image(s) to Docker Hub
   release)
-    docker image push "tubbo/soundstorm:$(soundstorm version)"
-    docker image push "tubbo/soundstorm:latest"
+    docker image push "weathermen/soundstorm:$(soundstorm version)"
+    docker image push "weathermen/soundstorm:latest"
   ;;
   # run ECS commands
   production)
