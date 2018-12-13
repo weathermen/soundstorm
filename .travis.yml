@@ -9,6 +9,7 @@ services:
   - docker
 addons:
   apt:
+    update: true
     packages:
       - libdsndfile1-dev
       - ffmpeg
