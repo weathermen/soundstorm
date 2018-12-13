@@ -4,10 +4,6 @@ import { Controller } from "stimulus"
  * Behavior for individual flash messages, like closing and timeouts.
  */
 export default class FlashMessage extends Controller {
-  get type() {
-    return this.data.get("type")
-  }
-
   connect() {
     if (this.type === "notice") {
       setTimeout(this.close, 15000)
@@ -18,8 +14,11 @@ export default class FlashMessage extends Controller {
    * Remove this flash message from the DOM
    */
   close(event) {
-    event.preventDefault()
+    if (event) {
+      event.preventDefault()
+    }
 
-    this.element.remove()
+    this.element.classList.add("flash-message--closed")
+    this.element.addEventListener("animationend", this.element.remove)
   }
 }

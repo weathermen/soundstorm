@@ -12,6 +12,9 @@
     background: darken(red, 20%);
     color: white;
   }
+  .flash-message--closed {
+    animation: fadeOut 1s both;
+  }
 
 .flash-message__text {
   text-align: center;
