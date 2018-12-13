@@ -7,6 +7,16 @@ env:
 language: ruby
 services:
   - docker
+apt:
+  sources:
+    - sourceline: https://deb.nodesource.com/setup_8.x
+    - sourceline: deb https://dl.yarnpkg.com/debian/ stable main
+      key_url: https://dl.yarnpkg.com/debian/pubkey.gpg
+  packages:
+    - libdsndfile1-dev
+    - ffmpeg
+    - nodejs
+    - yarn
 cache: bundler
 bundler_args: "--without development production"
 before_script:
