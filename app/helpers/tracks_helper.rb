@@ -1,16 +1,19 @@
 # frozen_string_literal: true
 
 module TracksHelper
+  def segment_url_host
+    host = Rails.configuration.action_controller.asset_host ||
+           "#{request.scheme}://#{Rails.configuration.host}"
+
+    return host unless host.respond_to? :call
+
+    host.call(request)
+  end
+
   def segment_url(segment)
-    ActiveStorage::Current.host = "#{request.scheme}://#{Rails.configuration.host}"
-    blob = segment.blob
-    ActiveStorage::Blob.service.url(
-      segment.blob.key,
-      disposition: 'attachment',
-      filename: blob.filename,
-      content_type: blob.content_type,
-      expires_in: 1.hour
-    ).html_safe
+    ActiveStorage::Current.host = segment_url_host
+
+    segment.blob.service_url(disposition: 'attachment').html_safe
   end
 
   def track_player_button(track)

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  before_action :cache_page, only: :index
+  before_action :cache_page, only: :splash
   before_action :doorkeeper_authorize!, if: :api?
   before_action :authorize_admin!, only: %w[index]
   before_action :configure_permitted_parameters, if: :devise_controller?

@@ -29,9 +29,15 @@ Rails.application.configure do
     config.public_file_server.headers = {
       'Cache-Control' => "public, max-age=#{2.days.to_i}"
     }
+    config.action_dispatch.rack_cache = {
+      verbose: true,
+      metastore: 'heap:/',
+      entitystore: 'heap:/'
+    }
   else
     config.action_controller.perform_caching = false
     config.action_mailer.perform_caching = false
+    config.action_dispatch.rack_cache = false
 
     config.cache_store = :null_store
   end
