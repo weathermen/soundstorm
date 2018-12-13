@@ -31,7 +31,7 @@ module Soundstorm
   BLOG_URL    = 'https://blog.soundstorm.social'
 
   # URL to the canonical source code repository
-  SOURCE_URL  = 'https://github.com/soundstorm/soundstorm'
+  SOURCE_URL  = 'https://github.com/weathermen/soundstorm'
 
   # URL to the documentation for Soundstorm
   DOCS_URL    = 'https://docs.soundstorm.social'
