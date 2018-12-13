@@ -40,16 +40,10 @@ module SearchesHelper
     url_for(q: params[:q], utf8: params[:utf8], type: type)
   end
 
-  def search_filter_link(type)
-    if params[:type] == type
-      content_tag :span, class: 'search-filter search-filter--current' do
-        yield
-      end
-    else
-      link_to search_filter_url(type), class: 'search-filter' do
-        yield
-      end
-    end
+  def search_filter_class(type)
+    css = %w(search-filter)
+    css << 'search-filter--current' if params[:type] == type
+    css
   end
 
   def search_result_template(result)

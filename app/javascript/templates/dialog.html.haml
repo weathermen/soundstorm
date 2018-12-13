@@ -1,0 +1,10 @@
+.dialog{ data: { controller: "dialog" } }
+  .dialog__overlay{ target: "dialog.overlay" }
+    / overlay for the rest of the page
+  .dialog__window{ target: "dialog.window" }
+    .dialog__taskbar
+      %p.dialog__title= title
+      %a.dialog__close{ href: '#', data: { action: 'click->dialog#close' } }
+        / X
+    .dialog__content
+      = content

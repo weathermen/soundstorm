@@ -60,4 +60,18 @@ module ApplicationHelper
       link_to text, path, options.merge(class: nav_class(path))
     end
   end
+
+  def google_fonts_url
+    'https://fonts.googleapis.com/css?family=Fredoka+One|PT+Sans|Oswald'
+  end
+
+  def dialog_link_to(text, href, **options)
+    link_to text, href, options.merge(
+      remote: true,
+      data: {
+        controller: 'dialog',
+        action: 'ajax:success->dialog#open'
+      }
+    )
+  end
 end

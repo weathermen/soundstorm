@@ -22,6 +22,7 @@ ENV BUNDLE_PATH=/gems \
     APP_PATH=/srv \
     RAILS_ENV=$RAILS_ENV \
     PUMA_PIDFILE_PATH=/tmp/pids \
+    ACME_AGREE=true \
     PATH=/usr/local/bundle/bin:/srv/bin:/gems/bin:$PATH
 
 # Copy in application code
@@ -31,7 +32,10 @@ COPY . $APP_PATH
 
 # Install application dependencies.
 RUN if [ "$RAILS_ENV" = "production" ]; then \
-      ./bin/bundle && ./bin/yarn --module-path=/node_modules; \
+      curl https://getcaddy.com | bash -s personal && \
+      ./bin/bundle && \
+      ./bin/yarn --module-path=/node_modules && \
+      ./bin/rails assets:precompile; \
     fi
 
 # Precompile assets in production, install dependencies in development

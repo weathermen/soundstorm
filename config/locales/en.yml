@@ -181,9 +181,10 @@ en:
       view: View Comment
   application:
     admin: '%{models} Admin'
-    index:
+    splash:
       slogan: Share your music with the Fediverse.
       about: Soundstorm is a music sharing platform.
+    index:
       new: "New %{model}"
       edit: "Edit %{model}"
       delete: "Delete %{model}"
@@ -213,3 +214,4 @@ en:
   searches:
     show:
       no_results: 'No %{type}s found matching "%{query}"'
+      nothing_found: 'Nothing found matching "%{query}"'

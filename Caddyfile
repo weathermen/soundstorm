@@ -1,0 +1,17 @@
+#
+# Caddy httpd configuration for Soundstorm
+#
+
+https://soundstorm.test {
+  log /var/log/access.log
+  errors /var/log/errors.log
+
+  tls soundstorm@psychedeli.ca
+
+  proxy / http://web:3000 {
+    fail_timeout 300s
+    transparent
+    websocket
+    header_upstream X-Forwarded-Ssl on
+  }
+}

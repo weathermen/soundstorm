@@ -1,12 +1,18 @@
 .form {}
 .form__errors {}
 .form__fields {}
+%form-field-spacing {
+  margin: 3vh 0;
+}
 .form__field {
-  margin-top: 1vh;
+  @extend %form-field-spacing;
 
   label {
     display: block;
   }
+}
+.form__checkbox-field {
+  @extend %form-field-spacing;
 }
 .form__hint {
   display: block;

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'mastodon'
+
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
@@ -257,7 +259,7 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-  config.omniauth :mastodon, scope: 'read write follow', credentials: lambda { |domain, callback_url|
+  config.omniauth :mastodon, scopes: 'read write follow', credentials: lambda { |domain, callback_url|
     Rails.logger.info "Requested credentials for #{domain} with callback URL #{callback_url}"
 
     Rails.cache.fetch("mastodon/#{domain}") do

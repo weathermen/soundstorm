@@ -4,6 +4,11 @@
 .navigation--buttons {
   display: flex;
 }
+.navigation--vertical {
+  a {
+    display: block;
+  }
+}
 .navigation__link {
   padding: 5px;
   display: inline-block;

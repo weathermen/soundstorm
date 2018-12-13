@@ -36,6 +36,10 @@ class Search
     response['hits']['total']
   end
 
+  def css_class
+    'search-results--empty' if empty?
+  end
+
   # Base query used for searching items.
   def as_unfiltered_json
     {
