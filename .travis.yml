@@ -6,18 +6,22 @@ env:
   - secure: qNZ89oaVWzsGwKI7TizGh4XrxbT/cLGn7Rlydv9G5+k+fD1/N1dYHyFWSlz7yeNt0gMXSgLmi6WtrzHe0BRvFGcQhkr2UNG+r2HtB1l4gnaEekvQju7CchhTuTIUQ9SS10K/0kmHtobHQwaPPjrs9y3QIrrdU0c2RKgHKRssj/iHvZg57iblbSBpwPEH1Q8vPhqR3gBiPC3eFmBYd8vfmmpdgh+3PSr2s+ailmec38nnAwFWpNjIEnWOeZy/r+AYkhscTlT5YoRLSoJUwBOKjhOBDaJ7yLtnlLpXdSxzxnP8b/7f8j66O5KnJ/iQTaxgEE8puuTLmkqfo80GRWJ3wC0JjqKam9GuPAF9hC0Icar8EEZp8Oc7DDU2m/2/5r+/Lw6cWQ2/yV2VpYR7WQ6Jiu110lmbKY+jXI5a+FNKN7etdqKUpV5lbjxTe5kEpzBo2klvSRHc7X/bchEiuRX/rD/gBV1gpn6qpcQrDO61zD/lJPYUgjeF7T0y6kyPI+2c2n3lm0z32ma3BqBTyoBEd+iHoJrphIvifPiyBKfM35bJ4iwTCZbtHjNLL/v2Tm06GxMiq8flXm3O6zSg7gd9yTyqC2UkCZIGjSz1KL4+ycVO0ZTh+1BnRQiYaoq39juEGZ/aiqexuCvuVwhotzSw1YjR1od/lwVg3vBaTNxsZBc=
 language: ruby
 services:
-- docker
+  - docker
 cache: bundler
 bundler_args: "--without development production"
 before_script:
-- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
-  > ./cc-test-reporter
-- chmod +x ./cc-test-reporter
-- "./cc-test-reporter before-build"
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
+    > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - "./cc-test-reporter before-build"
 after_script:
-- "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
+  - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
 deploy:
-- provider: script
-  script: bash bin/soundstorm deploy
-  on:
-    tags: true
+  - provider: script
+    script: bash bin/soundstorm release
+    on:
+      tags: true
+  - provider: script
+    script: bash bin/soundstorm deploy
+    on:
+      tags: true

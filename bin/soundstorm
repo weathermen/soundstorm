@@ -82,38 +82,29 @@ case "$1" in
   clean)
     docker volume rm soundstorm_postgresql
     ;;
-  # build a production image of Soundstorm
+  # build a production image of Soundstorm and push to Docker Hub
   build)
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
       docker-compose build --build-arg RAILS_ENV=production web &&
-      docker image tag "$DOCKER_IMAGE_NAME:latest" "$DOCKER_IMAGE_NAME:$(bin/soundstorm version)"
+      docker image push "$DOCKER_IMAGE_NAME:latest"
     ;;
-  # release the production image(s) to Docker Hub
+  # tag and release the production image(s) to Docker Hub
   release)
-    docker image push "weathermen/soundstorm:$(soundstorm version)"
-    docker image push "weathermen/soundstorm:latest"
+    VERSIONED_IMAGE_NAME="$DOCKER_IMAGE_NAME:$(bin/soundstorm version)"
+
+    bin/soundstorm build &&
+      docker image tag "$DOCKER_IMAGE_NAME:latest" "$VERSIONED_IMAGE_NAME" &&
+      docker image push "$VERSIONED_IMAGE_NAME"
   ;;
   # run ECS commands
   production)
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
-      ecs-cli compose \
-        --project-name soundstorm \
-        "$*" \
-        --cluster-config soundstorm
+      ecs-cli compose --project-name soundstorm "$*" --cluster-config soundstorm
   ;;
   # deploy to ECS
   deploy)
-    COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
-      ecs-cli compose \
-        --project-name soundstorm \
-        up \
-        --create-log-groups \
-        --cluster-config soundstorm && \
-      ecs-cli compose \
-        --project-name soundstorm \
-        run web bin/rails db:update assets:precompile \
-        --cluster-config soundstorm
-
+    bin/soundstorm production up --create-log-groups
+    bin/soundstorm production run --rm web bin/rails db:update
   ;;
   # print version
   version)
