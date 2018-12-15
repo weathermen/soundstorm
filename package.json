@@ -6,6 +6,7 @@
     "@rails/webpacker": "3.5",
     "activestorage": "^5.2.1",
     "animate.css": "^3.7.0",
+    "hamljs-loader": "https://github.com/weathermen/hamljs-loader",
     "hls.js": "^0.11.0",
     "moment": "^2.22.2",
     "moment-duration-format": "^2.2.2",
@@ -20,7 +21,6 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "eslint": "^5.9.0",
     "eslint-config-standard": "^12.0.0",
-    "haml-haml-loader": "^1.0.1",
     "stylelint": "^9.8.0",
     "stylelint-scss": "^3.4.0",
     "webpack-dev-server": "2.11.2"

@@ -3388,18 +3388,17 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.6, graceful-fs@^4.1.9:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.1.15.tgz#ffb703e1066e8a0eeaa4c8b80ba9253eeefbfb00"
   integrity sha512-6uHUhOPEBgQ24HM+r6b/QwWfZq+yiFcipKFrOFiBEnWdy5sdzYoi+pJeQaPI5qOLRFqWmAXUPQNsielzdLoecA==
 
-haml-haml-loader@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/haml-haml-loader/-/haml-haml-loader-1.0.1.tgz#f05c6079f3b7bbab9c873c4d6dc29303fab2f540"
-  integrity sha1-8FxgefO3u6uchzxNbcKTA/qy9UA=
+"hamljs-loader@https://github.com/weathermen/hamljs-loader":
+  version "0.1.0"
+  resolved "https://github.com/weathermen/hamljs-loader#cbeb219cf57cbd5a77678c6009906809e747c02a"
   dependencies:
-    haml "^0.4.3"
+    hamljs "^0.6.2"
     loader-utils "0.2.x"
 
-haml@^0.4.3:
-  version "0.4.3"
-  resolved "https://registry.yarnpkg.com/haml/-/haml-0.4.3.tgz#f7405318f3c2edd197a48b1b8f2b2f13e0bb5378"
-  integrity sha1-90BTGPPC7dGXpIsbjysvE+C7U3g=
+hamljs@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/hamljs/-/hamljs-0.6.2.tgz#7b7116cf6dbe7278e42b3f6ef8725a33e177c8e3"
+  integrity sha1-e3EWz22+cnjkKz9u+HJaM+F3yOM=
 
 handle-thing@^1.2.5:
   version "1.2.5"
