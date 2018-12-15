@@ -1,9 +1,8 @@
-- action = 'animationend->flash-message#remove'
-- data = { controller: 'flash-message', action: action }
-.flash-message{ class: "flash-message--#{type}", data: data }
+- class_name = `flash-message--${type}`
+.flash-message{ class: class_name, "data-controller": "flash-message", "data-action": "animationend->flash-message#remove" }
   .flash-message__text
     %p= message
   .flash-message__close
     %p
-      %a{ href: '#close', data: { action: 'click->flash_message#close' } }
+      %a{ href: '#close', "data-action": 'click->flash_message#close' }
         %i.flash-message__icon
