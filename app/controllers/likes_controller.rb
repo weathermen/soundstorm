@@ -3,6 +3,7 @@
 class LikesController < ApplicationController
   before_action :authenticate_user!
   before_action :cache_page, only: :index
+  skip_before_action :authorize_admin!, only: :index
 
   def index
     @likes = current_user.likes

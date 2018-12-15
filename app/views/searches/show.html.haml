@@ -12,7 +12,7 @@
       - if @search.any?
         - @search.each do |result|
           %li.search-result{ class: "search-result--#{result.param_key}" }
-            = render search_result_template(result)
+            = render result
       - else
         %p.search__no-results
           - if params[:type].present?

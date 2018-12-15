@@ -29,7 +29,10 @@ module ApplicationHelper
   end
 
   def splash_link_to(id, path)
-    link_to t(id, scope: %i[layouts application nav]), path, class: 'button'
+    link_to t(id, scope: %i[layouts application nav]), path, class: %w(
+      button
+      button--large
+    )
   end
 
   def turbolinks_stylesheet_tag(path, **options)
