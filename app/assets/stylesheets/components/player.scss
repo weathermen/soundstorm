@@ -1,4 +1,8 @@
-.player {}
+.player {
+  background: darken($background-color, 20%);
+  padding: 10px;
+  border-radius: 3px;
+}
 .player__interface {
   display: grid;
   grid-template-columns: 1fr 12fr;
@@ -8,7 +12,7 @@
 }
 .player__transport {
   text-align: center;
-  background: black;
+  background: darken($background-color, 30%);
 }
 .player__button {
   margin-bottom: 1vh;
@@ -50,18 +54,32 @@
     max-width: 100%;
   }
 }
-.player__notch {
+.player__progress {
   position: absolute;
   left: 0;
   top: 0;
-  background-color: #FFF;
+  background: black;
+  opacity: .5;
   height: 100%;
   width: 1px;
+  border-right: 1px solid #FFF;
 }
 .player__bar {
-  text-align: right;
+  display: grid;
+  justify-items: right;
 }
-.player__links {}
-.player__link {
-  margin-right: 15px;
+
+.player__stats {
+  display: flex;
+  width: 30%;
+
+  .button_to {
+    display: inline-block;
+  }
+}
+
+.player__stat {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
 }

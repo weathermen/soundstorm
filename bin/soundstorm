@@ -103,8 +103,9 @@ case "$1" in
   ;;
   # deploy to ECS
   deploy)
-    bin/soundstorm production up --create-log-groups
-    bin/soundstorm production run --rm web bin/rails db:update
+    COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
+      ecs-cli compose --project-name soundstorm up --create-log-groups --cluster-config soundstorm
+      # ecs-cli compose --project-name soundstorm run --rm bin/rails --cluster-config soundstorm
   ;;
   # print version
   version)

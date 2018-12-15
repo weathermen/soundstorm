@@ -6,7 +6,7 @@ module UsersHelper
   end
 
   def follow_button(user)
-    styles = ['profile__follow-button']
+    styles = ['profile__follow-button button button--small']
     label = if current_user&.follows?(user)
       styles << 'profile__follow-button--clicked'
       t('.unfollow')
@@ -15,10 +15,10 @@ module UsersHelper
     end
     options = {
       method: current_user&.follows?(user) ? :delete : :post,
+      class: styles,
       data: {
         action: 'click->follow#toggle',
-        target: 'button',
-        class: styles
+        target: 'button'
       }
     }
 

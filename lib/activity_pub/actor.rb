@@ -4,8 +4,6 @@ module ActivityPub
   # Represents the entity that creates activity messages.
   class Actor
     DEFAULT_TYPE = 'Person'
-    WEBFINGER_REL = 'self'
-    WEBFINGER_CONTENT_TYPE = 'application/activity+json'
 
     attr_reader :name, :type, :host, :secret, :summary, :private_key, :params
 
@@ -29,7 +27,7 @@ module ActivityPub
       response = HTTP.get(id)
       return unless response.success?
 
-      from_json(response.parse)
+      from(response.parse)
     end
 
     def self.from(json = {}, **options)
@@ -41,7 +39,7 @@ module ActivityPub
     end
 
     def id
-      "https://#{host}/#{name}"
+      @id ||= "https://#{host}/#{name}"
     end
 
     def attributes
@@ -53,17 +51,22 @@ module ActivityPub
       }
     end
 
+    # Webfinger response for this Actor.
+    #
+    # @return [Actor::Finger]
+    def webfinger
+      Finger.new(
+        name: name,
+        host: host,
+        href: id
+      )
+    end
+
+    # Webfinger JSON representation for this Actor.
+    #
+    # @return [Hash]
     def as_webfinger
-      {
-        subject: "acct:#{name}@#{host}",
-        links: [
-          {
-            rel: WEBFINGER_REL,
-            type: WEBFINGER_CONTENT_TYPE,
-            href: id
-          }
-        ]
-      }
+      webfinger.as_json
     end
 
     def as_json
@@ -88,7 +91,7 @@ module ActivityPub
     end
 
     def url_for(path)
-      params[path.to_sym] || "https://#{host}/#{name}/#{path}.json"
+      params[path.to_sym] || "#{id}/#{path}.json"
     end
   end
 end

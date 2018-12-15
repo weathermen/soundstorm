@@ -47,9 +47,18 @@ module TracksHelper
     content_tag :section, class: 'player', data: data, &block
   end
 
+  def player_link_to(href)
+    player_link do
+      link_to href do
+        yield
+      end
+    end
+  end
+
   def like_button_for(track, &block)
     if track.user == current_user
-      player_link(&block)
+      data = { target: 'player.like' }
+      content_tag(:span, class: %w(player__stat), data: data, &block)
     else
       like_button(track, &block)
     end
@@ -73,7 +82,7 @@ module TracksHelper
   private
 
   def player_link(&block)
-    content_tag :span, class: 'player__link' do
+    content_tag :span, class: 'player__stat' do
       yield
     end
   end
@@ -87,7 +96,7 @@ module TracksHelper
     options = {
       method: method,
       remote: true,
-      class: 'player__link',
+      class: %w(player__link button button--small),
       data: {
         action: 'ajax:success->player#like',
         target: 'like'

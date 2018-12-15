@@ -47,4 +47,9 @@ module ActivityPub
   def self.digest
     @digest ||= OpenSSL::Digest::SHA256.new
   end
+
+  # Perform a Webfinger request.
+  def self.finger(id)
+    Actor::Finger.find(id)
+  end
 end

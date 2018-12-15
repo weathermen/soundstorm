@@ -13,16 +13,15 @@
     .player__waveform{ data: { action: 'click->player#seek' } }
       - if track.waveform.attached?
         = image_tag track.waveform
-      %span.player__notch{ data: { target: 'player.notch' } }
+      %span.player__progress{ data: { target: 'player.progress' } }
   %footer.player__bar
-    %nav.player__links
-      = link_to track_comments_url(track), class: 'player__link' do
+    %nav.navigation.player__stats
+      = link_to track_comments_url(track), class: 'player__stat' do
         = t('.comments', count: track.comments_count)
       = like_button_for track do
         = t('.likes', count: track.likers_count)
-      = player_link do
-        %span.player__listens{ data: { target: 'player.listens' } }
-          = t('.listens', count: track.listens_count)
+      %span.player__stat{ data: { target: 'player.listens' } }
+        = t('.listens', count: track.listens_count)
       - if track.downloadable?
         = link_to track_download_url(track), class: 'player__link' do
           = t('.download')

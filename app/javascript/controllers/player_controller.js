@@ -11,7 +11,7 @@ momentDurationFormatSetup(moment)
  * Controls playback of uploaded tracks
  */
 export default class Player extends Controller {
-  static targets = ["button", "elapsed", "like", "listens", "notch", "waveform", "video"]
+  static targets = ["button", "elapsed", "like", "listens", "progress", "waveform", "video"]
 
   initialize() {
     this.updateElapsedTime = this.updateElapsedTime.bind(this)
@@ -60,7 +60,7 @@ export default class Player extends Controller {
     const secondsElapsed = this.videoTarget.currentTime
     const percent = (secondsElapsed / totalDuration) * 100
 
-    this.notchTarget.style.left = `${percent}%`
+    this.progressTarget.style.width = `${percent}%`
   }
 
   /**
@@ -133,7 +133,7 @@ export default class Player extends Controller {
     this.data.set("seek-position", trackPosition)
 
     this.videoTarget.currentTime = trackPosition
-    this.notchTarget.style.left = `${percent}%`
+    this.progressTarget.style.width = `${percent}%`
     this.updateElapsedTime()
   }
 
