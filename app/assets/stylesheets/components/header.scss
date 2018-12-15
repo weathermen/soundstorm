@@ -11,9 +11,10 @@
       letter-spacing: 0.098em;
       text-transform: uppercase;
       font-weight: bold;
+      transition: color 1300ms ease-in-out;
 
       &:hover {
-        color: white;
+        color: yellow;
       }
     }
     font-size: 1.1em;

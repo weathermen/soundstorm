@@ -155,7 +155,7 @@ en:
       failure: 'Error following %{user}'
   users:
     dashboard:
-      welcome: Welcome to Soundstorm!
+      welcome: Your Timeline
     index:
       title: Users
       new: New User
