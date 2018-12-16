@@ -1,7 +1,12 @@
-.translations
-  - @translations.each do |translation|
-    = translation_form_for translation do |f|
-      = f.label :value, translation.key, class: 'translation__key', data: { action: 'click->translation#toggle' }
-      = f.text_field :value, value: translation.value, class: 'translation__value', data: { target: 'translation.value' }
-      = f.submit 'Edit', class: %w(button button--small translation__button), data: { target: 'translation.button' }
-      %span.translation__response{ data: { target: 'translation.response' } }
+%article.translations
+  %header.translations__title
+    %h1= t('.title')
+    %p.translations__about
+      = t('.about')
+  %main.translations__listing
+    - @translations.each do |translation|
+      = translation_form_for translation do |f|
+        = f.label :value, translation.key, class: 'translation__key', data: { action: 'click->translation#toggle' }
+        = f.text_field :value, value: translation.value, class: 'translation__value', data: { target: 'translation.value' }
+        = f.submit 'Edit', class: %w(button button--small translation__button), data: { target: 'translation.button' }
+        %span.translation__response{ data: { target: 'translation.response' } }

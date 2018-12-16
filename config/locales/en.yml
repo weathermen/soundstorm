@@ -208,6 +208,9 @@ en:
     create:
       title: Sign Up
   translations:
+    index:
+      title: Translations and Text Content
+      about: Click on the translation keys to view their contents.
     update:
       success: 'Saved new content for "%{key}"'
       failure: 'Error saving content for "%{key}": %{errors}'

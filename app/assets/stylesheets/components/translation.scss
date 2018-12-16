@@ -4,8 +4,11 @@
   display: grid;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 6fr 1fr;
+  max-height: 3em;
 }
   .translation--open {
+    max-height: inherit;
+
     .translation__button, .translation__value {
       animation: slideDown 1s both;
       display: block;
@@ -25,4 +28,8 @@
 
 .translation__value {
   width: 100%;
+}
+
+.translation__response {
+  display: none;
 }

@@ -17,6 +17,9 @@
 .form__hint {
   display: block;
 }
+.form__hint--hidden {
+  display: none;
+}
 .form__actions {
   margin-top: 2vh;
 
