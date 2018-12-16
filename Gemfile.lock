@@ -170,6 +170,8 @@ GEM
     http_parser.rb (0.6.0)
     i18n (1.1.1)
       concurrent-ruby (~> 1.0)
+    i18n-active_record (0.2.2)
+      i18n (>= 0.5.0)
     io-like (0.3.0)
     jaro_winkler (1.5.1)
     jbuilder (2.8.0)
@@ -411,6 +413,7 @@ DEPENDENCIES
   haml-lint
   hamlit-rails
   http
+  i18n-active_record
   jbuilder (~> 2.5)
   listen (>= 3.0.5, < 3.2)
   logstasher

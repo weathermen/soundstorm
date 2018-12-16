@@ -1,0 +1,6 @@
+.translations
+  - @translations.each do |translation|
+    = form_with model: translation, url: translation_path(id: translation.slug) do |f|
+      = f.label :value, translation.key, class: 'translation__key'
+      = f.text_field :value, value: translation.value, class: 'translation__value'
+      = f.submit 'Edit'

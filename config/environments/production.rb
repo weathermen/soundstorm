@@ -89,7 +89,4 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-
-  # TODO Ping the directory at https://hub.soundstorm.social after the app initializes
-  # config.after_initialize { Soundstorm::Hub.ping }
 end

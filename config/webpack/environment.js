@@ -2,7 +2,7 @@ const { environment } = require("@rails/webpacker")
 
 environment.loaders.append("haml", {
   test: /\.html\.haml$/,
-  use: "haml-haml-loader"
+  use: "hamljs-loader"
 })
 
 module.exports = environment

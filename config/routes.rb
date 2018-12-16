@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   resources :tracks, except: %i[index show]
   resources :likes, only: %i[index]
   resources :comments, only: %i[index show]
+  resources :translations
   get '/users', to: 'users#index', as: :users
   resources :users, path: '', only: %i[show] do
     member do
@@ -39,7 +40,6 @@ Rails.application.routes.draw do
       resource :like, only: %i[create destroy]
     end
   end
-
 
   # activitypub
   get '/.well-known/webfinger', to: 'users#webfinger', format: :json, as: :webfinger

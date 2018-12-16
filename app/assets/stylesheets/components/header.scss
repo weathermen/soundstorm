@@ -4,34 +4,35 @@
   background: black;
 }
 
-  .header__logo {
-    a {
-      text-decoration: none;
-      font-family: $logo-font;
-      letter-spacing: 0.098em;
-      text-transform: uppercase;
-      font-weight: bold;
-      transition: color 1300ms ease-in-out;
+.header__logo {
+  font-size: 1.1em;
+  padding: 5px;
 
-      &:hover {
-        color: yellow;
-      }
+  a {
+    text-decoration: none;
+    font-family: $logo-font;
+    letter-spacing: 0.098em;
+    text-transform: uppercase;
+    font-weight: bold;
+    transition: color 1300ms ease-in-out;
+
+    &:hover {
+      color: yellow;
     }
-    font-size: 1.1em;
+  }
+}
+
+.header__search {
+  input {
+    width: 100%;
+    background: #111;
+    border: 0;
+    color: #FFF;
+    height: 100%;
     padding: 5px;
   }
+}
 
-  .header__search {
-    input {
-      width: 100%;
-      background: #111;
-      border: 0;
-      color: #FFF;
-      height: 100%;
-      padding: 5px;
-    }
-  }
-
-  .header__navigation {
-    text-align: right;
-  }
+.header__navigation {
+  text-align: right;
+}

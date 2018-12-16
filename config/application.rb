@@ -12,6 +12,7 @@ require 'activity_pub'
 require 'soundstorm'
 require 'elasticsearch/rails/instrumentation'
 # require 'elasticsearch/rails/lograge'
+require 'i18n/backend/active_record'
 
 module Soundstorm
   class Application < Rails::Application
@@ -42,5 +43,16 @@ module Soundstorm
     config.to_prepare do
       Doorkeeper::ApplicationsController.layout 'application'
     end
+
+    config.after_initialize { Soundstorm::Hub.ping }
+
+    # Allow admins to override any copy
+    config.i18n.backend = I18n::Backend::Chain.new(
+      I18n::Backend::ActiveRecord.new,
+      I18n::Backend::Simple.new
+    )
+
+    # Auto load all translations from config/locales/**/*.yml (and sub-directories).
+    config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
   end
 end

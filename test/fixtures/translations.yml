@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  locale: MyString
+  key: MyString
+  value: MyText
+  interpolations: MyString
+  is_proc: false
+
+two:
+  locale: MyString
+  key: MyString
+  value: MyText
+  interpolations: MyString
+  is_proc: false

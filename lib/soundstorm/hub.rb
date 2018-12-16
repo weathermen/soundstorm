@@ -1,22 +1,36 @@
 # frozen_string_literal: true
 
 module Soundstorm
-  # Methods for pinging the Soundstorm Hub
+  # Pings the Soundstorm Hub, a directory of all Soundstorm instances
   module Hub
-    # URL to create a new Instance on the hub
-    URL = 'http://stormhub.test/instances.json'
+    extend self
 
     # Parameters for the request.
-    def self.params
+    def params
       {
         host: Rails.configuration.host,
         version: Soundstorm::VERSION
       }
     end
 
+    # Base URL to the hub.
+    def host
+      if Rails.env.production?
+        'https://hub.soundstorm.social'
+      else
+        'http://stormhub.test'
+      end
+    end
+
+    # URL to create a new Instance on the hub
+    def url
+      "#{host}/instances.json"
+    end
+
     # Ping the hub.
-    def self.ping
-      HTTP.post(URL, json: { instance: params })
+    def ping
+      Rails.logger.info "Pinging #{url}"
+      HTTP.post(url, json: { instance: params })
     end
   end
 end

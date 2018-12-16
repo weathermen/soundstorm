@@ -65,6 +65,8 @@ gem 'elasticsearch-model', '~> 5', require: 'elasticsearch/model'
 gem 'omniauth'
 gem 'omniauth-mastodon'
 gem 'mastodon-api', github: 'tubbo/mastodon-api', branch: 'upgrade-to-http-v4'
+# Custom Translations
+gem 'i18n-active_record', require: 'i18n/active_record'
 
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console
