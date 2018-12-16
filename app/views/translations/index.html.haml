@@ -1,6 +1,7 @@
 .translations
   - @translations.each do |translation|
-    = form_with model: translation, url: translation_path(id: translation.slug) do |f|
-      = f.label :value, translation.key, class: 'translation__key'
-      = f.text_field :value, value: translation.value, class: 'translation__value'
-      = f.submit 'Edit'
+    = translation_form_for translation do |f|
+      = f.label :value, translation.key, class: 'translation__key', data: { action: 'click->translation#toggle' }
+      = f.text_field :value, value: translation.value, class: 'translation__value', data: { target: 'translation.value' }
+      = f.submit 'Edit', class: %w(button button--small translation__button), data: { target: 'translation.button' }
+      %span.translation__response{ data: { target: 'translation.response' } }

@@ -207,6 +207,10 @@ en:
       title: Sign Up
     create:
       title: Sign Up
+  translations:
+    update:
+      success: 'Saved new content for "%{key}"'
+      failure: 'Error saving content for "%{key}": %{errors}'
   devise:
     sessions:
       new:

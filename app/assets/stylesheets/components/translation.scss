@@ -1,0 +1,28 @@
+.translations {}
+
+.translation {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 6fr 1fr;
+}
+  .translation--open {
+    .translation__button, .translation__value {
+      animation: slideDown 1s both;
+      display: block;
+    }
+  }
+
+.translation__button, .translation__value {
+  display: none;
+}
+
+.translation__key {
+  grid-column-start: 1;
+  grid-column-end: 4;
+  padding-top: 15px;
+  cursor: pointer;
+}
+
+.translation__value {
+  width: 100%;
+}
