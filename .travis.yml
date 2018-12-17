@@ -7,8 +7,6 @@ env:
 language: ruby
 services:
   - docker
-node_js:
-  - 8
 addons:
   apt:
     update: true
@@ -24,7 +22,6 @@ cache:
     - node_modules
 bundler_args: "--without development production"
 before_script:
-  - bin/yarn
   - bin/rails db:setup
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
     > ./cc-test-reporter
