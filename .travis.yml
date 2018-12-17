@@ -10,6 +10,8 @@ services:
 addons:
   apt:
     update: true
+    sources:
+      - sourceline: ppa:mc3man/trusty-media
     packages:
       - libdsndfile
       - ffmpeg
