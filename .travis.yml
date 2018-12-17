@@ -21,6 +21,9 @@ cache:
   directories:
     - node_modules
 bundler_args: "--without development production"
+after_install:
+  - bin/yarn
+  - bin/rails db:setup
 before_script:
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
     > ./cc-test-reporter
