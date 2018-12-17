@@ -4,132 +4,128 @@
 [![Test Coverage](https://api.codeclimate.com/v1/badges/bc1fd5c8bb8b54b1da49/test_coverage)](https://codeclimate.com/github/weathermen/soundstorm/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/bc1fd5c8bb8b54b1da49/maintainability)](https://codeclimate.com/github/weathermen/soundstorm/maintainability)
 
-The Federated Music Platform.
+The Federated Social Music Platform.
 
-## Features
-
-* Upload music
-* Follow users
-* Comment on tracks
-* Transmit data through [ActivityPub][]
+**Soundstorm** is an audio-oriented federated social network that speaks
+[ActivityPub][]. Users can upload their own music, comment on others'
+tracks, and like/follow/mention just as in a regular social network.
+Since it speaks the same language as federated platforms like
+[Mastodon][], Soundstorm can send new track upload posts to users'
+followers on the fediverse, allowing them to gain a greater reach than a
+conventional social audio service.
 
 ## Installation
 
-Make sure you have [Docker][] installed and run the following command to
-set up the database and build initial containers:
+Soundstorm is distributed as a [Docker image][] for deployment ease. The
+reference instance, https://soundstorm.social, uses Amazon ECS for
+deployment, but the image is self-contained and can be run on any
+infrastructure. This image runs in `RAILS_ENV=production` mode by
+default.
+
+First, pull down the latest version:
 
 ```bash
-$ ./bin/soundstorm init
+docker pull tubbo/soundstorm:latest
 ```
 
-This will generate the database and an initial User account for
-administration purposes. By default, this user has the name of
-**admin**, with password **Password1!**. You can change this by
-configuring the `$SOUNDSTORM_ADMIN_*` variables like so:
+Create a `.env` file for your configuration:
 
 ```bash
-$ SOUNDSTORM_ADMIN_USERNAME=myuser SOUNDSTORM_ADMIN_PASSWORD=mypass SOUNDSTORM_ADMIN_EMAIL=totally@valid.email.com ./bin/soundstorm init
+SOUNDSTORM_HOST=soundstorm.domain
+SOUNDSTORM_ADMIN_USERNAME=your-username
+SOUNDSTORM_ADMIN_PASSWORD=your-password
+SOUNDSTORM_ADMIN_EMAIL=valid@email.address
+DATABASE_URL=postgres://url@to.your.database:5432
+REDIS_URL=rediss://url@to.your.redis:6379
+CDN_URL=https://cdn.soundstorm.domain
+SMTP_USERNAME=your-smtp-server-user
+SMTP_PASSWORD=your-smtp-server-password
+SMTP_HOST=smtp.server.if.not.using.sendgrid.net
+RAILS_MAX_THREADS=20
 ```
 
-## Usage
-
-Start the application by launching all containers:
+Then, run the setup task:
 
 ```bash
-$ ./bin/soundstorm start
+docker run --rm --env-file .env tubbo/soundstorm rails db:setup
 ```
 
-If you're running [puma-dev][], the application will be available at
-<https://soundstorm.test>. Otherwise, browse to <http://localhost:3000>
-
-Then, browse to <http://localhost:3000> and log in with the admin
-credentials specified when running `soundstorm init`.
-
-View logs at any time by running:
+This will create the database so you can start the server. Run the app
+server and worker containers like so:
 
 ```bash
-$ ./bin/soundstorm logs
+docker run -d -p 3000:3000 --env-file .env tubbo/soundstorm rails server
+docker run -d --env-file .env tubbo/soundstorm sidekiq -C config/sidekiq.yml
 ```
 
-You can always stop the application locally by running:
+This launches the server at `:3000`, but it requires SSL. If you have
+[Caddy][], you can set that up right now with the following `Caddyfile`:
+
+```caddy
+https://soundstorm.domain {
+  tls your@valid.email.address
+
+  proxy / http://127.0.0.1:3000 {
+    fail_timeout 300s
+    transparent
+    websocket
+    header_upstream X-Forwarded-Ssl on
+  }
+}
+```
+
+You can now pull down a Caddy image from Docker and start the HTTP
+server, proxying to your local app server...and with that, Soundstorm is
+ready to go!
 
 ```bash
-$ ./bin/soundstorm stop
+docker run -d \
+  -p 80:80 \
+  -p 443:443 \
+  -v $(pwd)/Caddyfile:/etc/Caddyfile
+  abiosoft/caddy
 ```
-
-Any command that should be run using `./bin/rails` should be replaced by
-`./bin/soundstorm`. For example, if you get an error saying "Migrations
-are pending, run bin/rails db:migrate", you can run the following
-command to migrate the database schema within your container
-environment:
-
-```bash
-$ ./bin/soundstorm db:migrate
-```
-
-## Deploying
-
-The easiest way to deploy Soundstorm to production is by using a single
-[Docker Machine][] VM. In this example, you'll be creating a Docker
-Machine VM with the built-in **amazonec2** driver, but you can use any
-other driver supported by Docker Machine (and installed onto your
-computer) if you wish.
-
-First, create an AWS user with programmatic access, and enable their
-access to creating EC2 instances. Then, run the following command to
-create the new VM that will act as the remote Docker daemon:
-
-```bash
-$ docker-machine create soundstorm \
-  --driver amazonec2 \
-  --amazonec2-access-key "YOUR AWS ACCESS KEY ID" \
-  --amazonec2-secret-key "YOUR AWS SECRET ACCESS KEY" \
-  --amazonec2-ssh-keypath ~/.ssh/id_rsa \
-  --amazonec2-instance-type t3.xlarge
-```
-
-Make sure the new `soundstorm` machine is running:
-
-```bash
-$ docker-machine ls
-```
-
-Then, build the application onto the machine and set up the database.
-The first command in the list below will set the `$DOCKER_HOST` variable
-to the remote server, enabling all future `docker-compose` commands to
-run on the VM you created in the previous step. The rest build the
-application's containers onto the VM and set up the remote database.
-
-```bash
-$ eval "$(docker-machine env soundstorm)"
-$ docker-compose up -d \
-    -f docker-compose.yml
-    -f docker-compose.production.yml
-$ docker-compose run web bin/rails db:update \
-  SOUNDSTORM_ADMIN_USERNAME="your-username" \
-  SOUNDSTORM_ADMIN_PASSWORD="your-password" \
-  SOUNDSTORM_ADMIN_EMAIL="a-valid@email.address" \
-  SOUNDSTORM_HOST="some.host"
-```
-
-Once this is all completed, route your new VM with DNS to the domain
-specified in `$SOUNDSTORM_HOST`. You'll now be able to view your
-production instance and log in with the `$SOUNDSTORM_ADMIN_USERNAME` and
-`$SOUNDSTORM_ADMIN_PASSWORD` specified in config.
 
 ## Development
 
-To run tests:
+The above goes into installing Soundstorm for real-world use, but you
+may also want to contribute to the project in some way. For this, it's
+recommended that you install dependencies locally.
+
+If you're on a Mac, run this command to install hard dependencies:
 
 ```bash
-$ ./bin/soundstorm test [FILES] [OPTIONS]
+brew bundle
 ```
 
-To run ESLint, StyleLint, and RuboCop lint checks:
+On Linux, make sure you have the following packages installed:
+
+- libsndfile-dev
+- ffmpeg
+- nodejs
+- yarn
+
+Next, you can run the setup script to install all application
+dependencies onto your machine:
 
 ```bash
-$ ./bin/soundstorm lint
+bin/setup
 ```
+
+If you're using [puma-dev][], the next step would be to link to
+https://soundstorm.test:
+
+```bash
+puma-dev link
+```
+
+You should now be able to visit the server and log in with username
+**admin** and password **Password1!**. This is configurable by setting
+`$SOUNDSTORM_ADMIN_USERNAME` and `$SOUNDSTORM_ADMIN_PASSWORD` as
+environment variables when running `bin/setup`.
+
+For more information on making contributions to this project, read the
+[contributing guide][].
 
 [ActivityPub]: https://www.w3.org/TR/activitypub/
 [Docker]: https://www.docker.com/
