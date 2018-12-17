@@ -31,6 +31,8 @@ module Soundstorm
     def ping
       Rails.logger.info "Pinging #{url}"
       HTTP.post(url, json: { instance: params })
+    rescue HTTP::ConnectionError => error
+      Rails.logger.error "Error pinging Soundstorm Hub: #{error.message}"
     end
   end
 end
