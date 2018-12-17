@@ -54,5 +54,8 @@ module Soundstorm
 
     # Auto load all translations from config/locales/**/*.yml (and sub-directories).
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
+
+    # Add custom audio analyzer for ActiveStorage track uploads
+    config.active_storage.analyzers.append(AudioAnalyzer)
   end
 end
