@@ -13,7 +13,7 @@ addons:
     sources:
       - sourceline: ppa:mc3man/trusty-media
     packages:
-      - libdsndfile1-dev
+      - libsndfile1-dev
       - ffmpeg
 cache:
   bundler: true

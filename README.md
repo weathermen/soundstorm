@@ -131,18 +131,6 @@ To run ESLint, StyleLint, and RuboCop lint checks:
 $ ./bin/soundstorm lint
 ```
 
-## Architecture
-
-### API
-
-All routes have three different responses:
-
-- `.json` for the HTTP API specified by Soundstorm, used for interacting
-  with *alternate clients*
-- `.jsonld` for the HTTP API specified by [ActivityPub][], used for
-  interacting with *other servers*
-- `.html`, the default, which is our web user interface
-
 [ActivityPub]: https://www.w3.org/TR/activitypub/
 [Docker]: https://www.docker.com/
 [Docker Compose]: https://docs.docker.com/compose/
