@@ -13,6 +13,7 @@ require 'soundstorm'
 require 'elasticsearch/rails/instrumentation'
 # require 'elasticsearch/rails/lograge'
 require 'i18n/backend/active_record'
+require 'active_storage/analyzers/audio_analyzer'
 
 module Soundstorm
   class Application < Rails::Application
@@ -56,6 +57,6 @@ module Soundstorm
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
 
     # Add custom audio analyzer for ActiveStorage track uploads
-    config.active_storage.analyzers.append(AudioAnalyzer)
+    config.active_storage.analyzers.append(ActiveStorage::Analyzer::AudioAnalyzer)
   end
 end

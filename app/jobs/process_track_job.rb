@@ -5,9 +5,13 @@
 class ProcessTrackJob < ApplicationJob
   include ActiveStorage::Downloading
 
+  attr_reader :blob
+
   queue_as :default
 
   def perform(track)
+    @blob = track.audio.blob
+
     download_blob_to_tempfile do |audio|
       Processor.each do |processor|
         processor.process(track, audio)

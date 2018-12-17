@@ -26,7 +26,7 @@ class Track < ApplicationRecord
 
   friendly_id :name, use: %i[slugged finders]
 
-  after_create :analyze
+  after_create :process
 
   delegate :name, to: :user, prefix: true
 
@@ -44,6 +44,10 @@ class Track < ApplicationRecord
       username: user.name,
       artist: user.display_name
     )
+  end
+
+  def duration
+    audio.blob.metadata[:duration] if audio.attached?
   end
 
   def title
@@ -84,7 +88,10 @@ class Track < ApplicationRecord
 
   private
 
-  def analyze
-    AnalyzeTrackJob.perform_later(self)
+  # Post-process Track audio in the background.
+  #
+  # @private
+  def process
+    ProcessTrackJob.perform_later(self)
   end
 end

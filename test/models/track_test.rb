@@ -15,7 +15,7 @@ class TrackTest < ActiveSupport::TestCase
       io: Rails.root.join('test', 'fixtures', 'files', 'one.mp3').open,
       filename: 'one.mp3'
     )
-    @track.save!
+    perform_enqueued_jobs { @track.save! }
   end
 
   test 'activitypub representation' do
@@ -28,7 +28,11 @@ class TrackTest < ActiveSupport::TestCase
     assert_equal @track.audio.content_type, @track.as_activity[:url][:mediaType]
   end
 
-  test 'analyze after create' do
-    assert_enqueued_jobs 1, only: AnalyzeTrackJob
+  test 'analyze duration' do
+    assert_performed_jobs 2, only: ActiveStorage::AnalyzeJob
+    assert @track.audio.attached?
+    refute_nil @track.audio.metadata
+    assert @track.audio.reload
+    assert_equal 42, @track.duration.to_i
   end
 end

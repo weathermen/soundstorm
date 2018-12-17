@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Base class for all processors.
-class Track::Processor
+class Processor
   attr_reader :track, :audio
 
   delegate :path, to: :audio, prefix: true
