@@ -2,12 +2,26 @@
 
 # Create a waveform image from an uploaded +Track+.
 class WaveformProcessor < Processor
+  IMAGE_TYPE = 'png'
+
   def save
     convert && generate && persist
   end
 
   def wav_path
-    "#{path}.wav"
+    "#{audio_path}.wav"
+  end
+
+  def extension
+    File.extname(audio_path)
+  end
+
+  def image_path
+    audio_path.gsub(extension, IMAGE_TYPE)
+  end
+
+  def name
+    File.basename(image_path)
   end
 
   def io

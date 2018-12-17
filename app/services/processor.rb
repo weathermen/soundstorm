@@ -5,6 +5,7 @@ class Processor
   attr_reader :track, :audio
 
   delegate :path, to: :audio, prefix: true
+  delegate :logger, to: Rails
 
   def initialize(track:, audio:)
     @track = track

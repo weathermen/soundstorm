@@ -24,6 +24,10 @@ module ActivityPub
   autoload :Signature
   autoload :Verification
 
+  autoload_under 'actor' do
+    autoload :Finger
+  end
+
   # Deliver a +Message+ to the given +:to+ host.
   #
   # @param [ActivityPub::Message] message - Message to deliver

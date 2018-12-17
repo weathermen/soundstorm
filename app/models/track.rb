@@ -26,7 +26,7 @@ class Track < ApplicationRecord
 
   friendly_id :name, use: %i[slugged finders]
 
-  after_create :process
+  after_save :process, unless: :processed?
 
   delegate :name, to: :user, prefix: true
 
@@ -84,6 +84,10 @@ class Track < ApplicationRecord
         mediaType: audio.content_type
       }
     )
+  end
+
+  def processed?
+    waveform.attached? && segments.attached?
   end
 
   private

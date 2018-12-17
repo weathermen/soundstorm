@@ -41,8 +41,7 @@ class ActiveSupport::TestCase
   private
 
   def index_existing_models
-    User.import
-    Track.import
+    [User, Track, Comment].each(&:import)
   end
 end
 

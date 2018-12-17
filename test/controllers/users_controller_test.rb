@@ -46,8 +46,8 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_equal @resource, json[:subject]
-    assert_equal ActivityPub::Actor::WEBFINGER_REL, link[:rel]
-    assert_equal ActivityPub::Actor::WEBFINGER_CONTENT_TYPE, link[:type]
+    assert_equal ActivityPub::Actor::Finger::RELATIONSHIP, link[:rel]
+    assert_equal ActivityPub::Actor::Finger::CONTENT_TYPE, link[:type]
     assert_equal @user.actor.id, link[:href]
   end
 end

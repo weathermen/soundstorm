@@ -1,11 +1,21 @@
 # frozen_string_literal: true
 
 class SegmentProcessor < Processor
+  delegate :mkdir, to: :tmp_path
+
   def save
     mkdir && create && attach && rmdir
   end
 
   private
+
+  def name
+    File.basename(audio_path, File.extname(audio_path))
+  end
+
+  def tmp_path
+    Pathname.new("/tmp/#{name}")
+  end
 
   def create
     Open3.popen3(ffmpeg_command.join(' ')) do |stdin, stdout, stderr, thread|
@@ -39,7 +49,7 @@ class SegmentProcessor < Processor
   def ffmpeg_command
     [
       'ffmpeg',
-      "-i #{path}",
+      "-i #{audio_path}",
       '-f segment',
       "-segment_time #{Track::STREAM_SEGMENT_DURATION}",
       "-c copy #{tmp_path}/%03d.ts"

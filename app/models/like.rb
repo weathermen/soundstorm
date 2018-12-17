@@ -6,6 +6,6 @@ class Like < Socialization::ActiveRecordStores::Like
   private
 
   def notify_author
-    # NotificationMailer.like(liker, likeable).deliver_later
+    NotificationMailer.like(liker, likeable).deliver_later
   end
 end

@@ -13,7 +13,10 @@ class ProcessTrackJob < ApplicationJob
     @blob = track.audio.blob
 
     download_blob_to_tempfile do |audio|
-      Processor.each do |processor|
+      [
+        WaveformProcessor,
+        SegmentProcessor
+      ].each do |processor|
         processor.process(track, audio)
       end
     end

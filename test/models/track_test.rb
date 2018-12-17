@@ -29,7 +29,6 @@ class TrackTest < ActiveSupport::TestCase
   end
 
   test 'analyze duration' do
-    assert_performed_jobs 2, only: ActiveStorage::AnalyzeJob
     assert @track.audio.attached?
     refute_nil @track.audio.metadata
     assert @track.audio.reload

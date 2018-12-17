@@ -39,7 +39,7 @@ module ActivityPub
             {
               rel: RELATIONSHIP,
               type: CONTENT_TYPE,
-              href: actor_id
+              href: href
             }
           ]
         }
