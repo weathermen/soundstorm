@@ -7,6 +7,8 @@ env:
 language: ruby
 services:
   - docker
+node_js:
+  - 8
 addons:
   apt:
     update: true
