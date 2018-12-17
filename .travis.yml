@@ -8,6 +8,7 @@ language: ruby
 services:
   - docker
 addons:
+  postgresql: '10.5'
   apt:
     update: true
     sources:
