@@ -1,11 +1,17 @@
 import { Controller } from "stimulus"
-import DialogTemplate from "../templates/dialog.html.haml"
+import { template } from "lodash"
+
+const DialogTemplate = ""
 
 /**
  * Modal Dialog Handlers
  */
 export default class Dialog extends Controller {
   static targets = ["overlay", "window"]
+
+  get template() {
+    return template(DialogTemplate)
+  }
 
   /**
    * Open the dialog with a remote link.
@@ -15,7 +21,7 @@ export default class Dialog extends Controller {
 
     if (status === 200) {
       const title = xhr.getResponseHeader("X-Page-Title")
-      const dialog = DialogTemplate({ title, content })
+      const dialog = this.template({ title, content })
       const body = document.querySelector("body")
 
       body.appendChild(dialog)

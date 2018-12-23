@@ -1,6 +1,7 @@
 import { Controller } from "stimulus"
-import { isEmpty } from "lodash"
-import FlashMessage from "../templates/flash_message.html.haml"
+import { isEmpty, template } from "lodash"
+
+const FlashMessageTemplate = ""
 
 /**
  * Render flash messages from the `X-Flash-Messages` header on Ajax
@@ -36,13 +37,17 @@ export default class Flash extends Controller {
     }
   }
 
+  get template() {
+    return template(FlashMessageTemplate)
+  }
+
   /**
    * Render flash message data to the UI by appending it to the current
    * element.
    */
   render(type, message) {
     this.element.append(
-      FlashMessage({ type, message })
+      this.template({ type, message })
     )
   }
 }
