@@ -4,6 +4,11 @@ Rails.application.configure do
   # Verifies that versions and hashed value of the package contents in the project's package.json
   config.webpacker.check_yarn_integrity = false
 
+  # TODO The async adapter doesn't seem to process all jobs, which can
+  #      cause problems when trying to upload tracks in development.
+  #      Switching the queue adapter to inline solves the issue...
+  config.active_storage.queue_adapter = :inline
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on
