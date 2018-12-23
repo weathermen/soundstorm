@@ -1,4 +1,4 @@
-%h2 Log in
+%h1= page_title unless request.xhr?
 = form_for(resource, as: resource_name, url: session_path(resource_name), class: 'form') do |f|
   %main.form__fields
     .form__field

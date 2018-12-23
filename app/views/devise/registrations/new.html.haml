@@ -1,5 +1,4 @@
-%h1= page_title
-
+%h1= page_title unless request.xhr?
 = form_for(resource, as: resource_name, url: registration_path(resource_name), class: 'form') do |f|
   %header.form__errors
     = devise_error_messages!

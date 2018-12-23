@@ -29,9 +29,20 @@ module ApplicationHelper
   end
 
   def splash_link_to(id, path)
-    link_to t(id, scope: %i[layouts application nav]), path, class: %w(
-      button
-      button--large
+    text = t(id, scope: %i[layouts application nav])
+
+    link_to(
+      text,
+      path,
+      remote: true,
+      class: %w(
+        button
+        button--large
+      ),
+      data: {
+        controller: 'dialog',
+        action: 'ajax:success->dialog#open'
+      }
     )
   end
 

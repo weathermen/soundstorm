@@ -1,10 +1,9 @@
 .dialog{ "data-controller": "dialog" }
-  .dialog__overlay{ "data-target": "dialog.overlay" }
-    / overlay for the rest of the page
-  .dialog__window{ "data-target": "dialog.window" }
+  .dialog__window
     .dialog__taskbar
-      %p.dialog__title= title
-      %a.dialog__close{ href: '#', "data-action": "click->dialog#close" }
-        / X
+      %p.dialog__title
+        <%= title %>
+      %a.dialog__close{ href: "#close", "data-action": "click->dialog#close" }
+        %i.flash-message__icon
     .dialog__content
-      = content
+      <%= content %>

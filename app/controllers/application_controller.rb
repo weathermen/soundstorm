@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
+  include ApplicationHelper
+
   before_action :cache_page, only: :splash
   before_action :doorkeeper_authorize!, if: :api?
   before_action :authorize_admin!, only: %w[index]
@@ -11,6 +13,8 @@ class ApplicationController < ActionController::Base
   after_action :set_headers
 
   helper_method :current_model
+
+  layout :use_layout?
 
   def index
     @query = params[:q] || '*'
@@ -49,12 +53,21 @@ class ApplicationController < ActionController::Base
 
   def set_headers
     response.headers['X-Flash-Messages'] = flash.to_json
+    response.headers['X-Page-Title'] = page_title
     response.headers['X-Requested-With'] = request.headers['X-Requested-With'] || ''
     response.headers['Vary'] = 'X-Requested-With, X-Flash-Messages'
   end
 
   def api?
     request.format == :json && !request.xhr?
+  end
+
+  def use_layout?
+    if request.xhr?
+      false
+    else
+      'application'
+    end
   end
 
   def configure_permitted_parameters

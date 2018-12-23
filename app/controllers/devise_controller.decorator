@@ -1,0 +1,13 @@
+decorate DeviseController do
+  decorated do
+    layout :use_layout?
+  end
+
+  def use_layout?
+    if request.xhr?
+      false
+    else
+      'application'
+    end
+  end
+end

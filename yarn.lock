@@ -3436,9 +3436,8 @@ gzip-size@^5.0.0:
     duplexer "^0.1.1"
     pify "^3.0.0"
 
-"hamljs-loader@https://github.com/weathermen/hamljs-loader":
+"hamljs-loader@file:../hamljs-loader":
   version "0.1.0"
-  resolved "https://github.com/weathermen/hamljs-loader#cbeb219cf57cbd5a77678c6009906809e747c02a"
   dependencies:
     hamljs "^0.6.2"
     loader-utils "0.2.x"
@@ -3593,6 +3592,11 @@ hosted-git-info@^2.1.4:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-2.7.1.tgz#97f236977bd6e125408930ff6de3eec6281ec047"
   integrity sha512-7T/BxH19zbcCTa8XkMlbK5lTo1WtgkFi3GvdWEyNuc4Vex7/9Dqbnpsf4JMydcfj9HCg4zUWFTL3Za6lapg5/w==
+
+hotkeys-js@^3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/hotkeys-js/-/hotkeys-js-3.4.1.tgz#231234030ed677449a0c5924becf8c58855d7ead"
+  integrity sha512-TgztcBNZlzwadbcU9KJNcHnpnI0o+ynpS+oQfeuz7lKC0B4rCkj5QaXRfnSmipsFC9QUIr6Bgu0/wl3C0kmJUA==
 
 hpack.js@^2.1.6:
   version "2.1.6"

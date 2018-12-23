@@ -221,6 +221,9 @@ en:
     registrations:
       edit:
         submit: Update
+  sessions:
+    new:
+      title: Log In
   searches:
     show:
       no_results: 'No %{type}s found matching "%{query}"'
