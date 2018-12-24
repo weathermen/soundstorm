@@ -1,0 +1,11 @@
+.released-track {
+}
+
+  .released-track--removed {
+    opacity: 0.3;
+    cursor: not-allowed;
+
+    input, textarea {
+      cursor: not-allowed;
+    }
+  }

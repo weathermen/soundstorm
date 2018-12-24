@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_16_021926) do
+ActiveRecord::Schema.define(version: 2018_12_23_214621) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -135,6 +135,27 @@ ActiveRecord::Schema.define(version: 2018_12_16_021926) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "released_tracks", force: :cascade do |t|
+    t.bigint "track_id"
+    t.bigint "release_id"
+    t.integer "number", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["number"], name: "index_released_tracks_on_number"
+    t.index ["release_id"], name: "index_released_tracks_on_release_id"
+    t.index ["track_id"], name: "index_released_tracks_on_track_id"
+  end
+
+  create_table "releases", force: :cascade do |t|
+    t.string "name"
+    t.bigint "user_id"
+    t.string "description"
+    t.citext "slug", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_releases_on_user_id"
+  end
+
   create_table "track_listens", force: :cascade do |t|
     t.inet "ip_address"
     t.bigint "user_id"
@@ -232,6 +253,9 @@ ActiveRecord::Schema.define(version: 2018_12_16_021926) do
   add_foreign_key "comments", "users"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
   add_foreign_key "oauth_access_tokens", "oauth_applications", column: "application_id"
+  add_foreign_key "released_tracks", "releases"
+  add_foreign_key "released_tracks", "tracks"
+  add_foreign_key "releases", "users"
   add_foreign_key "track_listens", "tracks"
   add_foreign_key "track_listens", "users"
   add_foreign_key "tracks", "users"

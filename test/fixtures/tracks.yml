@@ -11,3 +11,15 @@ two_hello_world:
   name: Hello World
   slug: hello-world
   duration: 230
+
+one_titled:
+  user: one
+  name: Titled
+  slug: titled
+  duration: 300
+
+one_released:
+  user: one
+  name: Released
+  slug: released
+  duration: 300

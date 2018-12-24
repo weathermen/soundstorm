@@ -37,6 +37,10 @@ en:
           attributes:
             audio:
               content_type: file type not supported
+        release:
+          attributes:
+            tracks:
+              blank: must be uploaded
         user:
           attributes:
             avatar:
@@ -228,3 +232,14 @@ en:
     show:
       no_results: 'No %{type}s found matching "%{query}"'
       nothing_found: 'Nothing found matching "%{query}"'
+  releases:
+    create:
+      success: 'New Release "%{name}" has been created'
+      failure: 'Error creating Release: %{errors}'
+    update:
+      success: 'Saved changes on Release "%{name}"'
+      failure: 'Error updating Release: %{errors}'
+    new:
+      basic_information: Basic Information
+      tracks: Tracks
+      submit: Create Release

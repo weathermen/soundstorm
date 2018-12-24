@@ -1,0 +1,28 @@
+= upload_form_with model: release do |f|
+  %main.form__fields
+    %fieldset.form__fieldset
+      %legend= t('.basic_information')
+      .form__field
+        = f.label :name
+        = f.text_field :name
+      .form_field
+        = f.label :description
+        = f.text_area :description
+    %fieldset.form__fieldset
+      %legend= t('.tracks')
+      .tracks{ data: { target: 'upload.fieldset' } }
+        = f.fields_for :released_tracks do |released_track|
+          .released-track{ data: { target: 'upload.item' } }
+            = released_track.number_field :number, value: 1
+            = released_track.hidden_field :_destroy, value: 0, data: { destroy_field: true }
+            = released_track.fields_for :track do |track|
+              = render 'tracks/fields', f: track
+            = link_to '#', data: { action: 'click->upload#remove' } do
+              - if f.object.new_record?
+                Undo
+              - else
+                Delete
+      = link_to 'Add', '#', data: { action: 'click->upload#add' }
+  %footer.form__controls
+    - disable = { disable_with: 'Release is uploading...' }
+    = f.submit 'Save'

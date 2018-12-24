@@ -14,8 +14,6 @@ class ApplicationController < ActionController::Base
 
   helper_method :current_model
 
-  layout :use_layout?
-
   def index
     @query = params[:q] || '*'
     @title = t(:admin, scope: %i[application], models: current_model.name.pluralize)
@@ -60,14 +58,6 @@ class ApplicationController < ActionController::Base
 
   def api?
     request.format == :json && !request.xhr?
-  end
-
-  def use_layout?
-    if request.xhr?
-      false
-    else
-      'application'
-    end
   end
 
   def configure_permitted_parameters

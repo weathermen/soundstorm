@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Track < ApplicationRecord
-  include Commentable
   include Federatable
   include Searchable
 
@@ -19,8 +18,12 @@ class Track < ApplicationRecord
   has_many :listens, class_name: 'TrackListen', dependent: :destroy
   has_many :comments, dependent: :destroy
 
+  has_one :released_track
+  has_one :release, through: :released_track
+
   validates :name, presence: true, uniqueness: { scope: :user }
-  validates :audio, presence: true, content_type: %w(audio/mpeg)
+  validates :audio, presence: true, content_type: %w(audio/mpeg), \
+    if: -> { audio.attached? }
 
   acts_as_likeable
 
@@ -29,6 +32,7 @@ class Track < ApplicationRecord
   after_save :process, unless: :processed?
 
   delegate :name, to: :user, prefix: true
+  delegate :number, to: :released_track, allow_nil: true
 
   attr_writer :username, :artist
 

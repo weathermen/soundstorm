@@ -1,0 +1,16 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  release: one
+  track: one_untitled
+  number: 1
+
+two:
+  release: one
+  track: one_titled
+  number: 2
+
+three:
+  release: one
+  track: one_released
+  number: 3

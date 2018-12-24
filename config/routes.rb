@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   # rest api
   resource :search, only: %i[show]
   resources :tracks, except: %i[index show]
+  resources :releases, except: %i[index show]
   resources :likes, only: %i[index]
   resources :comments, only: %i[index show]
   resources :translations
@@ -31,6 +32,7 @@ Rails.application.routes.draw do
     end
 
     resource :follow, only: %i[create destroy]
+    resources :releases, only: %i[show]
     resources :tracks, path: '', only: %i[show] do
       member do
         post :listen

@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: Release One
+  user: one
+  description: The First Release
+  slug: release-one
+
+two:
+  name: Release Two
+  user: two
+  description: Another Release
+  slug: release-two

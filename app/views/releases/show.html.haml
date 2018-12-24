@@ -1,0 +1,18 @@
+%article.release{ data: { controller: 'release' } }
+  %header.release__title.track-title
+    %h1.track-title__name= @release.name
+    %h2.track-title__artist= @release.artist
+  %main
+    %section.release__player{ data: { target: 'release.player' } }
+      = render 'tracks/player', track: @release.tracks.first
+    %section.release__description
+      %p= @release.description
+    %section.release__tracks
+      %ol
+        - @release.tracks_by_number.each do |track|
+          %li.release__track
+            = cue_link_to track.name, user_track_url(@user, track)
+  - if @release.user == current_user
+    %footer.release__controls
+      = link_to 'Edit', [:edit, @release]
+      = link_to 'Delete', @release, method: :delete
