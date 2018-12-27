@@ -9,4 +9,4 @@
         .form__field
           = f.text_area :content, class: 'comment-form__content-editor'
   %footer.form__controls.comment-form__controls
-    = f.submit t('.save', action: f.object.new_record? ? 'Add' : 'Edit')
+    = f.submit_button

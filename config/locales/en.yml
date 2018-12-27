@@ -103,6 +103,10 @@ en:
   comments:
     index:
       title: Comments Admin
+    new:
+      submit: Add Comment
+    edit:
+      submit: Edit Comment
     create:
       success: 'Comment on "%{track}" has been added'
       failure: 'Error commenting on %{track}: %{errors}'
@@ -118,8 +122,6 @@ en:
       edit: Edit Comment
       delete: Delete Comment
       commented: "commented %{date} ago"
-    form:
-      save: "%{action} Comment"
   likes:
     index:
       title: Library

@@ -23,5 +23,5 @@
       %span.player__stat{ data: { target: 'player.listens' } }
         = t('.listens', count: track.listens_count)
       - if track.downloadable?
-        = link_to track_download_url(track), class: 'player__link' do
+        = link_to track_download_url(track), class: 'player__link player__stat' do
           = t('.download')
