@@ -20,18 +20,12 @@ module Soundstorm
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 5.2
 
-    # Settings in config/environments/* take precedence over those specified here.
-    # Application configuration can go into files in config/initializers
-    # -- all .rb files in that directory are automatically loaded after loading
-    # the framework and any gems in your application.
     config.generators do |generate|
       generate.assets false
     end
 
-    # Set the host from the $HOST environment variable. Use this
-    # configuration for other settings like the GlobalID app name and
-    # ActionMailer base URL host
-    config.host = Soundstorm::HOST
+    # Set the host from the $SOUNDSTORM_HOST environment variable.
+    config.host = ENV.fetch('SOUNDSTORM_HOST', 'soundstorm.test')
     config.action_mailer.default_url_options = { host: config.host }
     config.global_id.app = config.host
 
@@ -45,7 +39,7 @@ module Soundstorm
       Doorkeeper::ApplicationsController.layout 'application'
     end
 
-    config.after_initialize { Soundstorm::Hub.ping }
+    config.after_initialize { Stormwatch.ping }
 
     # Allow admins to override any copy
     config.i18n.backend = I18n::Backend::Chain.new(

@@ -4,9 +4,9 @@
 - if f.object.new_record?
   .form__field
     = f.label :audio
-    = f.file_field :audio, required: true, direct_upload: true, data: { action: 'direct-upload:progress->upload#progress' }
+    = f.direct_upload_file_field :audio, required: true
     %span.form__hint.form__hint--hidden{ data: { target: 'upload.progress' } }
       Progress 0%
-.form__field
+.form__field.form__field--textarea
   = f.label :description
   = f.text_area :description

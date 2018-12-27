@@ -7,7 +7,7 @@
 .form__field {
   @extend %form-field-spacing;
 
-  label {
+  label, input, textarea {
     display: block;
   }
 }
@@ -27,6 +27,9 @@
     cursor: pointer;
   }
 }
+  .form__actions--right {
+    text-align: right;
+  }
 
 .form-links {
   margin-top: 2vh;

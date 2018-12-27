@@ -240,6 +240,15 @@ en:
       success: 'Saved changes on Release "%{name}"'
       failure: 'Error updating Release: %{errors}'
     new:
+      title: New Release
+      submit: Create
+      submitted: Creating release...
+      remove: Undo
+    edit:
+      title: Edit Release
+      submit: Save
+      submitted: Saving changes...
+      remove: Delete
+    form:
       basic_information: Basic Information
       tracks: Tracks
-      submit: Create Release
