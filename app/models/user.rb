@@ -4,6 +4,11 @@
 # like display name and private key information for identifying over
 # ActivityPub/Webfinger.
 class User < ApplicationRecord
+  class ResourceNotFound < ActiveRecord::RecordNotFound
+    def initialize(resource)
+      super "Couldn't find User from Webfinger resource #{resource}"
+    end
+  end
   extend FriendlyId
 
   include Federatable

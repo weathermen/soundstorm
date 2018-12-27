@@ -7,6 +7,7 @@ class Search
 
   attr_reader :query, :filters
 
+  delegate :count, to: :results
   delegate_missing_to :to_a
 
   def initialize(query:, **filters)
@@ -29,11 +30,6 @@ class Search
   # Total number of all items in the query, without filters applied.
   def total_count
     Search.new(query: query).count
-  end
-
-  # Total number of all items in the query matching filters.
-  def count
-    response['hits']['total']
   end
 
   def css_class
@@ -67,6 +63,10 @@ class Search
     } if filters[:type].present?
 
     json
+  end
+
+  def inspect
+    "#{super.gsub(/\>\Z/, '')} @results=#{to_a}>"
   end
 
   private

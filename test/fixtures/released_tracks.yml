@@ -2,7 +2,7 @@
 
 one:
   release: one
-  track: one_untitled
+  track: one_released_one
   number: 1
 
 two:
@@ -12,5 +12,5 @@ two:
 
 three:
   release: one
-  track: one_released
+  track: one_released_two
   number: 3

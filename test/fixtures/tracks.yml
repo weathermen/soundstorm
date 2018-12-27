@@ -18,8 +18,14 @@ one_titled:
   slug: titled
   duration: 300
 
-one_released:
+one_released_one:
   user: one
   name: Released
   slug: released
+  duration: 300
+
+one_released_two:
+  user: one
+  name: Released Remix
+  slug: released-remix
   duration: 300

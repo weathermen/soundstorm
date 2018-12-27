@@ -3,13 +3,15 @@
 class ActivityUpdate
   attr_reader :user, :activity
 
+  delegate :[], to: :attributes
+
   def initialize(user:, activity:)
     @user = user
     @activity = activity
   end
 
   def model
-    @model ||= case activity.type
+    @model ||= case activity.payload[:type]
                when 'Audio' then Track
                when 'Profile' then User
                when 'Note' then Comment
@@ -21,9 +23,9 @@ class ActivityUpdate
   end
 
   def item
-    @item ||= model&.find_or_create_by(id: model_id, user: user) do |record|
-      activity.payload.each do |param, value|
-        record[param] = value
+    @item ||= find_updated_record do |record|
+      params.each do |param, value|
+        record.public_send(:"#{param}=", value)
       end
       record.save!
     end
@@ -52,5 +54,23 @@ class ActivityUpdate
       whodunnit: user.to_global_id,
       object: metadata
     }
+  end
+
+  private
+
+  def params
+    activity.payload.except(:id, :type, :actor, :name)
+  end
+
+  def find_updated_record(&block)
+    record = if model.is_a? User
+      model.find_or_create_by(name: user.name)
+    elsif model.new.respond_to?(:slug)
+      model.find_or_create_by(slug: model_id, user: user)
+    else
+      model.find_or_create_by(id: model_id, user: user)
+    end
+
+    record.tap(&block)
   end
 end

@@ -6,7 +6,7 @@
 #
 one:
   name: one
-  host: <%= Rails.configuration.host %>
+  host: test.host
   slug: one
   display_name: User One
   email: one@example.com

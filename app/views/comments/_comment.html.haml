@@ -5,8 +5,9 @@
       = comment_date(comment)
   %main.comment__content
     %p
-      - avatar = comment.user.avatar.variant(resize: 50)
-      = image_tag avatar, class: 'comment__avatar'
+      - if comment.user.avatar.attached?
+        - avatar = comment.user.avatar.variant(resize: 50)
+        = image_tag avatar, class: 'comment__avatar'
       = comment.content
   %footer.comment__links
     %nav.navigation

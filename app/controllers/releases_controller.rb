@@ -82,6 +82,7 @@ class ReleasesController < ApplicationController
       :description,
       released_tracks_attributes: [
         :number,
+        :_destroy,
         track_attributes: %i[name audio description user_id]
       ]
     )

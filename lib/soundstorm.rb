@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'soundstorm/version'
+require 'soundstorm/hub'
 
 # Environment configuration that pertains to the Rails app
 module Soundstorm

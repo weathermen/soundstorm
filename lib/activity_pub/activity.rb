@@ -5,12 +5,12 @@ module ActivityPub
   class Activity
     include GlobalID::Identification
 
-    attr_reader :activity_id, :type, :actor, :payload
+    attr_reader :activity_id, :type, :actor, :payload, :ip
 
     delegate :to_json, to: :as_json
     delegate :id, to: :actor, prefix: true
 
-    def initialize(id:, type:, actor:, object:, host: nil, **_options)
+    def initialize(id:, type:, actor:, object:, host: nil, ip: nil, **_options)
       @activity_id = id
       @type = type
       @actor = case actor
@@ -18,8 +18,11 @@ module ActivityPub
                  Actor.find(actor)
                when Hash
                  Actor.from(actor, host: host)
+               when ActivityPub::Actor
+                 actor
       end
       @payload = object
+      @ip = ip
     end
 
     def id

@@ -13,14 +13,16 @@ class FormBuilder < ActionView::Helpers::FormBuilder
     )
   end
 
-  def direct_upload_file_field(name, required: nil)
+  def direct_upload_file_field(name, required: nil, **options)
     file_field(
       name,
-      required: required,
-      direct_upload: true,
-      data: {
-        action: DIRECT_UPLOAD_ACTION
-      }
+      options.merge(
+        required: required,
+        direct_upload: true,
+        data: {
+          action: DIRECT_UPLOAD_ACTION
+        }
+      )
     )
   end
 

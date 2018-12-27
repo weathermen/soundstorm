@@ -10,7 +10,7 @@ require 'vcr'
 VCR.configure do |config|
   config.cassette_library_dir = 'test/cassettes'
   config.hook_into :webmock
-  config.ignore_hosts('localhost', '127.0.0.1')
+  config.ignore_hosts('localhost', '127.0.0.1', 'test.host')
 end
 
 class ActiveSupport::TestCase

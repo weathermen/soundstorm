@@ -1,12 +1,12 @@
 .form__field
   = f.label :name
-  = f.text_field :name, required: true
+  = f.text_field :name, required: true, class: 'track-name'
 - if f.object.new_record?
   .form__field
     = f.label :audio
-    = f.direct_upload_file_field :audio, required: true
+    = f.direct_upload_file_field :audio, required: true, class: 'track-audio'
     %span.form__hint.form__hint--hidden{ data: { target: 'upload.progress' } }
       Progress 0%
 .form__field.form__field--textarea
   = f.label :description
-  = f.text_area :description
+  = f.text_area :description, class: 'track-description'

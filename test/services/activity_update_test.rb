@@ -6,8 +6,20 @@ class ActivityUpdateTest < ActiveSupport::TestCase
   setup do
     @user = users(:one)
     @track = @user.tracks.first
-    @activity = ActivityPub::Activity.new(**@track.as_activity)
-    @update = ActivityUpdate.new(@user, @activity)
+    audio = Rails.root.join('test', 'fixtures', 'files', 'one.mp3')
+    @track.audio.attach(
+      io: File.open(audio),
+      filename: 'one.mp3',
+      content_type: 'audio/mpeg'
+    )
+    @activity = ActivityPub::Activity.new(
+      id: @track.activity_id,
+      type: 'Create',
+      actor: @user.actor,
+      object: @track.as_activity,
+      host: @user.host
+    )
+    @update = ActivityUpdate.new(user: @user, activity: @activity)
   end
 
   test 'model' do
@@ -19,7 +31,6 @@ class ActivityUpdateTest < ActiveSupport::TestCase
   end
 
   test 'metadata' do
-    assert_equal @activity.ip, @update.metadata[:ip]
     assert_equal @activity.payload, @update.metadata[:activity]
   end
 
@@ -27,6 +38,7 @@ class ActivityUpdateTest < ActiveSupport::TestCase
     assert @update[:remote]
     assert_equal @update.item, @update[:item]
     assert_equal @update.event, @update[:event]
-    assert_equal @update.event, @update[:event]
+    assert_equal @user.to_global_id, @update[:whodunnit]
+    assert_equal @update.metadata, @update[:object]
   end
 end

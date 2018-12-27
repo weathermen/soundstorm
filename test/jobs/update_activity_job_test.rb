@@ -23,6 +23,7 @@ class UpdateActivityJobTest < ActiveJob::TestCase
         type: 'Note',
         actor: actor.id,
         object: {
+          type: 'Note',
           track_id: track.id,
           content: 'nice one bruva'
         }

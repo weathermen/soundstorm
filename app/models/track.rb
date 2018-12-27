@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'open-uri'
+
 class Track < ApplicationRecord
   include Federatable
   include Searchable
@@ -18,12 +20,12 @@ class Track < ApplicationRecord
   has_many :listens, class_name: 'TrackListen', dependent: :destroy
   has_many :comments, dependent: :destroy
 
-  has_one :released_track
+  has_one :released_track, dependent: :destroy
   has_one :release, through: :released_track
 
   validates :name, presence: true, uniqueness: { scope: :user }
-  validates :audio, presence: true, content_type: %w(audio/mpeg), \
-    if: -> { audio.attached? }
+  validates :audio, presence: true # , #content_type: %w(audio/mpeg), \
+  # if: -> { audio.attached? }
 
   acts_as_likeable
 
@@ -68,7 +70,21 @@ class Track < ApplicationRecord
   end
 
   def audio_url
-    Rails.application.routes.url_helpers.rails_blob_path(audio, host: user.host)
+    Rails.application.routes.url_helpers.rails_blob_url(audio, host: user.host)
+  end
+
+  # Attach audio from ActivityPub URL download.
+  def url=(href:, **params)
+    open(href) do |file|
+      filename = File.basename(href)
+
+
+      audio.attach(
+        io: file,
+        filename: filename,
+        content_type: params[:mediaType]
+      )
+    end
   end
 
   def activity_id

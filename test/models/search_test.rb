@@ -4,22 +4,31 @@ require 'test_helper'
 
 class SearchTest < ActiveSupport::TestCase
   setup do
-    @search = Search.new(query: '*')
+    User.__elasticsearch__.create_index! force: true
+    [User, Track, Comment].each(&:import)
+    User.__elasticsearch__.refresh_index!
   end
 
   test 'count' do
-    assert_equal 20, @search.count
+    search = Search.new(query: '*')
+    all_models = [User, Track, Comment].map { |m| m.all.to_a }.flatten
+
+    all_models.each do |model|
+      assert_includes search, model
+    end
   end
 
   test 'find track' do
     track = tracks(:one_untitled)
+    search = Search.new(query: track.name)
 
-    assert_includes @search, track
+    assert_includes search, track
   end
 
   test 'find user' do
     user = users(:one)
+    search = Search.new(query: user.display_name)
 
-    assert_includes @search, user
+    assert_includes search, user
   end
 end

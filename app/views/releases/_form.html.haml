@@ -18,6 +18,7 @@
                 = rt.number_field :number, value: 1, required: true
               .released-track__fields
                 = rt.fields_for :track do |track_fields|
+                  = track_fields.hidden_field :user_id, value: current_user.id
                   = render 'tracks/fields', f: track_fields
               .released-track__controls
                 = rt.destroy_field

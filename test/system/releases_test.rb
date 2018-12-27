@@ -8,25 +8,18 @@ class ReleasesTest < ApplicationSystemTestCase
   end
 
   test 'adding a new release' do
+    path = Rails.root.join('test', 'fixtures', 'files', 'one.mp3').to_s
+
     sign_in @user
     visit new_release_url
 
-    fill_in 'release[name]', with: 'Release Name'
-    fill_in 'release[description]', with: 'Release Description'
-
-    click_button 'Save'
-
-    assert_text 'Error creating Release: Tracks must be uploaded'
-
-    fill_in 'release[released_tracks_attributes][0][track_attributes][name]', \
+    fill_in 'release_name', with: 'Release Name'
+    fill_in 'release_description', with: 'Release Description'
+    fill_in 'release_released_tracks_attributes_0_track_attributes_name', \
       with: 'Track Name'
-    fill_in 'release[released_tracks_attributes][0][number]', \
-      with: 1
-    attach_file \
-      'release[released_tracks_attributes][0][track_attributes][audio]',
-      fixture_file_upload('files/one.mp3', 'audio/mpeg')
+    attach_file 'release_released_tracks_attributes_0_track_attributes_audio', path
 
-    click_button 'Save'
+    click_button 'Create'
 
     assert_text 'New Release "Release Name" has been created'
   end
