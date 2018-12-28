@@ -2,11 +2,11 @@
 # Caddy httpd configuration for Soundstorm
 #
 
-https://soundstorm.test {
-  log /var/log/access.log
-  errors /var/log/errors.log
+{$SOUNDSTORM_HOST} {
+  log stdout
+  errors stderr
 
-  tls soundstorm@psychedeli.ca
+  tls {$SOUNDSTORM_ADMIN_EMAIL}
 
   proxy / http://web:3000 {
     fail_timeout 300s
