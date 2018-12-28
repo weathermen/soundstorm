@@ -84,6 +84,7 @@ case "$1" in
     ;;
   # build a production image of Soundstorm and push to Docker Hub
   build)
+    getopt
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
       docker-compose build --build-arg RAILS_ENV=production web
   ;;
