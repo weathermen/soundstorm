@@ -29,7 +29,7 @@ Rails.application.configure do
   config.public_file_server.enabled = Soundstorm::SERVE_STATIC_FILES
 
   # Compress JavaScripts and CSS.
-  config.assets.js_compressor = :uglifier
+  config.assets.js_compressor = Uglifier.new(harmony: true)
   config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
@@ -62,11 +62,13 @@ Rails.application.configure do
   # Prepend all log lines with the following tags.
   config.log_tags = [:request_id]
 
-  # Use Redis to store the cache in production
-  config.cache_store = :redis_cache_store, "#{Soundstorm::REDIS_URL}/0/rails"
+  # Use Redis to store the fragment cache in production
+  config.cache_store = :redis_cache_store, { url: "#{Soundstorm::REDIS_URL}/0" }
+
+  # Use a separate Redis database for the page cache
   config.action_dispatch.rack_cache = {
-    metastore: "#{Soundstorm::REDIS_URL}/0/rack-metastore",
-    entitystore: "#{Soundstorm::REDIS_URL}/0/rack-entitystore"
+    metastore: "#{Soundstorm::REDIS_URL}/1/meta",
+    entitystore: "#{Soundstorm::REDIS_URL}/1/entity"
   }
 
   # Use Sidekiq for background jobs

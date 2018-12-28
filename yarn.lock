@@ -3436,8 +3436,10 @@ gzip-size@^5.0.0:
     duplexer "^0.1.1"
     pify "^3.0.0"
 
-"hamljs-loader@file:../hamljs-loader":
-  version "0.1.0"
+hamljs-loader@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/hamljs-loader/-/hamljs-loader-0.1.1.tgz#e6ae7809d7ab2d8779c67e05908f48ec550dd68f"
+  integrity sha512-wttp+RYPCzGrFlFJOo68puQA9tCU+5ijhnzxX4UWOH+KnqsNCMzEpIvohzQfeIAi3h+NIwo92kOv9fZhHHFC1g==
   dependencies:
     hamljs "^0.6.2"
     loader-utils "0.2.x"

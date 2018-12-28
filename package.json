@@ -6,7 +6,7 @@
     "@rails/webpacker": "3.5",
     "activestorage": "^5.2.1",
     "animate.css": "^3.7.0",
-    "hamljs-loader": "file:../hamljs-loader",
+    "hamljs-loader": "^0.1.1",
     "hls.js": "^0.11.0",
     "hotkeys-js": "^3.4.1",
     "moment": "^2.22.2",
