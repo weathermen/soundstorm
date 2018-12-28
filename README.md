@@ -128,7 +128,8 @@ For more information on making contributions to this project, read the
 [contributing guide][].
 
 [ActivityPub]: https://www.w3.org/TR/activitypub/
+[Mastodon]: https://joinmastodon.org
 [Docker]: https://www.docker.com/
-[Docker Compose]: https://docs.docker.com/compose/
-[Docker Machine]: https://docs.docker.com/machine/
+[Docker image]: https://cloud.docker.com/u/weathermen/repository/docker/weathermen/soundstorm
+[Caddy]: https://caddyserver.com
 [puma-dev]: https://github.com/puma/puma-dev
