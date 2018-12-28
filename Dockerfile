@@ -32,7 +32,7 @@ WORKDIR $APP_PATH
 COPY . $APP_PATH
 
 # Install application dependencies and precompile assets in production.
-RUN if [ "$RAILS_ENV" == "production" ]; then; ./bin/build; fi
+RUN ./bin/build
 
 # Precompile assets in production, install dependencies in development
 ENTRYPOINT ["sh", "bash ./bin/entrypoint.sh"]

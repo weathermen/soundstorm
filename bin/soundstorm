@@ -85,27 +85,34 @@ case "$1" in
   # build a production image of Soundstorm and push to Docker Hub
   build)
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
-      docker-compose build --build-arg RAILS_ENV=production web &&
-      docker image push "$DOCKER_IMAGE_NAME:latest"
-    ;;
-  # tag and release the production image(s) to Docker Hub
-  release)
+      docker-compose build --build-arg RAILS_ENV=production web
+  ;;
+  # push latest Soundstorm image to Docker Hub
+  push)
+    docker image push "$DOCKER_IMAGE_NAME:latest"
+  ;;
+  # tag latest Soundstorm image with its version and push to Docker Hub
+  cut)
     VERSIONED_IMAGE_NAME="$DOCKER_IMAGE_NAME:$(bin/soundstorm version)"
 
-    bin/soundstorm build &&
-      docker image tag "$DOCKER_IMAGE_NAME:latest" "$VERSIONED_IMAGE_NAME" &&
-      docker image push "$VERSIONED_IMAGE_NAME"
+    docker image tag "$DOCKER_IMAGE_NAME:latest" "$VERSIONED_IMAGE_NAME"
+    docker image push "$VERSIONED_IMAGE_NAME"
   ;;
-  # run ECS commands
+  # release production image to Docker Hub
+  release)
+    bin/soundstorm build && bin/soundstorm push && bin/soundstorm cut
+  ;;
+  # run docker-compose commands on ECS
   production)
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
-      ecs-cli compose --project-name soundstorm "$*" --cluster-config soundstorm
+      ecs-cli compose \
+        --project-name soundstorm \
+        "$*" \
+        --cluster-config soundstorm
   ;;
-  # deploy to ECS
+  # deploy latest changes to ECS
   deploy)
-    COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
-      ecs-cli compose --project-name soundstorm up --create-log-groups --cluster-config soundstorm
-      # ecs-cli compose --project-name soundstorm run --rm bin/rails --cluster-config soundstorm
+    bin/soundstorm production up --create-log-groups
   ;;
   # print version
   version)

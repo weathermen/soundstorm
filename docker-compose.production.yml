@@ -27,7 +27,6 @@ services:
         awslogs-region: us-east-1
         awslogs-stream-prefix: redis
 
-
   # Speed up application deployment by launching an image rather than
   # building a full container, such as in development. Dependencies are
   # also preloaded onto the image and the entrypoint script for
@@ -39,9 +38,7 @@ services:
       context: .
       args:
         - RAILS_ENV=production
-    image: tubbo/soundstorm
-    volumes:
-      - static:/srv/public
+    image: weathermen/soundstorm
     expose:
       - 3000
     depends_on:
@@ -56,7 +53,6 @@ services:
         awslogs-group: soundstorm
         awslogs-region: us-east-1
         awslogs-stream-prefix: web
-
 
   # Lock down Elasticsearch clients to other Docker hosts
   search:
@@ -74,7 +70,7 @@ services:
   # same image as +web+, ensuring that both services are launched with
   # the same codebase.
   queue:
-    image: tubbo/soundstorm
+    image: weathermen/soundstorm
     command: bin/sidekiq
     depends_on:
       - db
@@ -90,13 +86,22 @@ services:
         awslogs-region: us-east-1
         awslogs-stream-prefix: queue
 
-  # Outbound HTTP server
+  # Caddy outbound HTTP server for serving static files and terminating SSL.
+  # The app is proxied underneath this server so that all requests going
+  # to it are over HTTPS. It redirects all :80 requests to :443. This
+  # also uses the same image as +web+ so it can share static assets as
+  # well as a +Caddyfile+ configuration.
   httpd:
-    image: tubbo/soundstorm
-    command: caddy -agree
+    image: weathermen/soundstorm
+    command: caddy
+    depends_on:
+      - web
     ports:
       - "80:80"
       - "443:443"
+    env_file:
+      - .env.production
+      - .env.secrets
     logging:
       driver: awslogs
       options:
@@ -104,7 +109,5 @@ services:
         awslogs-region: us-east-1
         awslogs-stream-prefix: httpd
 
-
 volumes:
   redis:
-  static:
