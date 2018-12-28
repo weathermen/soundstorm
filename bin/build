@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+# This script is for building dependencies in the application with
+# Bundler and Yarn. It also precompiles assets (and compiles Webpacker
+# packs) for production usage if +$RAILS_ENV+ is set to "production",
+# like it is in the production Docker image.
+
+require 'fileutils'
+include FileUtils
+
+APP_ROOT = File.expand_path('..', __dir__)
+RAILS_ENV = ENV.fetch('RAILS_ENV', 'development')
+YARN_MODULE_PATH = ENV.fetch('YARN_MODULE_PATH', 'node_modules')
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+chdir APP_ROOT do
+  puts '== Installing dependencies =='
+  system! 'gem install bundler --conservative --no-ri --no-rdoc'
+  system('bundle check') || system!('bundle install')
+  system! "bin/yarn --module-path=#{YARN_MODULE_PATH}"
+
+  if RAILS_ENV == 'production'
+    puts "\n== Precompiling assets =="
+    system! 'bin/rails assets:precompile'
+  end
+end

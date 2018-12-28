@@ -19,6 +19,7 @@ ARG RAILS_ENV
 ENV BUNDLE_PATH=/gems \
     BUNDLE_BIN=/gems/bin \
     BUNDLE_JOBS=8 \
+    YARN_MODULE_PATH=/node_modules \
     APP_PATH=/srv \
     RAILS_ENV=$RAILS_ENV \
     PUMA_PIDFILE_PATH=/tmp/pids \
@@ -30,13 +31,8 @@ RUN mkdir -p $APP_PATH
 WORKDIR $APP_PATH
 COPY . $APP_PATH
 
-# Install application dependencies.
-RUN if [ "$RAILS_ENV" = "production" ]; then \
-      curl https://getcaddy.com | bash -s personal && \
-      ./bin/bundle && \
-      ./bin/yarn --module-path=/node_modules && \
-      ./bin/rails assets:precompile; \
-    fi
+# Install application dependencies and precompile assets in production.
+RUN if [ "$RAILS_ENV" == "production" ]; then; ./bin/build; fi
 
 # Precompile assets in production, install dependencies in development
-ENTRYPOINT ["sh", "bin/entrypoint.sh"]
+ENTRYPOINT ["sh", "bash ./bin/entrypoint.sh"]

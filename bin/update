@@ -1,6 +1,10 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+# For local, non-Docker development, run this script when new updates
+# are made to the schema/dependency tree to update your dependencies and
+# run migrations.
+
 require 'fileutils'
 include FileUtils
 
@@ -15,12 +19,8 @@ chdir APP_ROOT do
   # This script is a way to update your development environment automatically.
   # Add necessary update steps to this file.
 
-  puts '== Installing dependencies =='
-  system! 'gem install bundler --conservative'
-  system('bundle check') || system!('bundle install')
-
-  # Install JavaScript dependencies if using Yarn
-  # system('bin/yarn')
+  # Build dependencies
+  system! 'bin/build'
 
   puts "\n== Updating database =="
   system! 'bin/rails db:migrate'
