@@ -63,10 +63,10 @@ Rails.application.configure do
   config.log_tags = [:request_id]
 
   # Use Redis to store the cache in production
-  config.cache_store = :redis_cache_store, Soundstorm::REDIS_CONFIG.merge(database: 0)
+  config.cache_store = :redis_cache_store, "#{Soundstorm::REDIS_URL}/0/rails"
   config.action_dispatch.rack_cache = {
-    metastore: Soundstorm::REDIS_CONFIG.merge(database: 1, namespace: 'metastore'),
-    entitystore: Soundstorm::REDIS_CONFIG.merge(database: 1, namespace: 'entitystore')
+    metastore: "#{Soundstorm::REDIS_URL}/0/rack-metastore",
+    entitystore: "#{Soundstorm::REDIS_URL}/0/rack-entitystore"
   }
 
   # Use Sidekiq for background jobs
@@ -91,12 +91,12 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   ActionMailer::Base.smtp_settings = {
-    user_name: ENV['SMTP_USERNAME'],
-    password: ENV['SMTP_PASSWORD'],
-    domain: config.domain,
-    address: ENV.fetch('SMTP_HOST', 'smtp.sendgrid.net'),
-    port: ENV.fetch('SMTP_PORT', 587),
-    authentication: ENV.fetch('SMTP_AUTH', :plain).to_sym,
-    enable_starttls_auto: !!ENV.fetch('SMTP_TLS', true)
+    user_name: Soundstorm::SMTP_USERNAME,
+    password: Soundstorm::SMTP_PASSWORD,
+    domain: config.host,
+    address: Soundstorm::SMTP_HOST,
+    port: Soundstorm::SMTP_PORT,
+    authentication: Soundstorm::SMTP_AUTH,
+    enable_starttls_auto: Soundstorm::SMTP_TLS
   }
 end
