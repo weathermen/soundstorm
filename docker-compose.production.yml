@@ -75,7 +75,7 @@ services:
   # the same codebase.
   queue:
     image: tubbo/soundstorm
-    command: bin/bundle exec sidekiq -C config/sidekiq.yml
+    command: bin/sidekiq
     depends_on:
       - db
       - redis
