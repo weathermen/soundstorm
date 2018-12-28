@@ -19,7 +19,6 @@ ARG RAILS_ENV
 ENV BUNDLE_PATH=/gems \
     BUNDLE_BIN=/gems/bin \
     BUNDLE_JOBS=8 \
-    YARN_MODULE_PATH=/node_modules \
     APP_PATH=/srv \
     RAILS_ENV=$RAILS_ENV \
     PUMA_PIDFILE_PATH=/tmp/pids \
