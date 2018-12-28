@@ -63,14 +63,14 @@ class ActivityUpdate
   end
 
   def find_updated_record(&block)
-    record = if model.is_a? User
-      model.find_or_create_by(name: user.name)
-    elsif model.new.respond_to?(:slug)
-      model.find_or_create_by(slug: model_id, user: user)
+    query = if model.is_a? User
+      { name: user.name }
+    elsif model.column_names.include? 'slug'
+      { slug: model_id, user: user }
     else
-      model.find_or_create_by(id: model_id, user: user)
+      { id: model_id, user: user }
     end
 
-    record.tap(&block)
+    model.find_or_initialize_by(query).tap(&block)
   end
 end
