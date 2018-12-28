@@ -30,6 +30,8 @@ services:
       - .:/srv
       - node_modules:/node_modules
       - bundle:/gems
+    environment:
+      - YARN_MODULE_PATH=/node_modules
 
 volumes:
   bundle:
