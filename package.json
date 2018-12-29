@@ -6,6 +6,7 @@
     "@rails/webpacker": "3.5",
     "activestorage": "^5.2.1",
     "animate.css": "^3.7.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "hamljs-loader": "^0.1.1",
     "hls.js": "^0.11.0",
     "hotkeys-js": "^3.4.1",
@@ -15,12 +16,11 @@
     "rails-ujs": "^5.2.1",
     "stimulus": "^1.1.0",
     "stylelint-config-recommended-scss": "^3.2.0",
-    "turbolinks": "^5.2.0",
-    "babel-plugin-transform-runtime": "^6.23.0"
+    "turbolinks": "^5.2.0"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
-    "eslint": "^5.11.11",
+    "eslint": "^5.11.1",
     "eslint-config-standard": "^12.0.0",
     "stylelint": "^9.8.0",
     "stylelint-scss": "^3.4.0",
