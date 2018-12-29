@@ -46,7 +46,16 @@ services:
       - redis
     env_file:
       - .env.production
-      - .env.secrets
+    environment:
+      - SECRET_KEY_BASE
+      - SOUNDSTORM_HOST
+      - SOUNDSTORM_ADMIN_USERNAME
+      - SOUNDSTORM_ADMIN_PASSWORD
+      - SOUNDSTORM_ADMIN_EMAIL
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_REGION
+      - AWS_S3_BUCKET_NAME
     logging:
       driver: awslogs
       options:
@@ -78,7 +87,16 @@ services:
       - web
     env_file:
       - .env.production
-      - .env.secrets
+    environment:
+      - SECRET_KEY_BASE
+      - SOUNDSTORM_HOST
+      - SOUNDSTORM_ADMIN_USERNAME
+      - SOUNDSTORM_ADMIN_PASSWORD
+      - SOUNDSTORM_ADMIN_EMAIL
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_REGION
+      - AWS_S3_BUCKET_NAME
     logging:
       driver: awslogs
       options:
@@ -101,7 +119,9 @@ services:
       - "443:443"
     env_file:
       - .env.production
-      - .env.secrets
+    environment:
+      - SOUNDSTORM_HOST
+      - SOUNDSTORM_ADMIN_EMAIL
     logging:
       driver: awslogs
       options:

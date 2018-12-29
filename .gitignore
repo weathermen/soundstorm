@@ -32,5 +32,9 @@ yarn-debug.log*
 .env.secrets
 config/ssl
 
+# AWS ECS
 ecs-params.yml
 task-execution-assume-role.json
+
+# test coverage
+coverage
