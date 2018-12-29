@@ -6,12 +6,17 @@ require 'rails/test_help'
 require 'minitest/mock'
 require 'activity_pub'
 require 'vcr'
+require 'simplecov'
+require 'simplecov-console'
 
 VCR.configure do |config|
   config.cassette_library_dir = 'test/cassettes'
   config.hook_into :webmock
   config.ignore_hosts('localhost', '127.0.0.1', 'test.host')
 end
+
+SimpleCov.formatter = SimpleCov::Formatter::Console
+SimpleCov.start
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.

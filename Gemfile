@@ -101,6 +101,9 @@ group :test do
   # Save HTTP requests and mock them for use in later test runs
   gem 'vcr'
   gem 'webmock'
+  # Code coverage
+  gem 'simplecov'
+  gem 'simplecov-console'
 end
 
 group :production do
