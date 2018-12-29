@@ -25,14 +25,13 @@ cache:
   directories:
     - node_modules
 bundler_args: "--without development production"
-before_install:
+install:
+  - bin/bundle
+  - bin/yarn
   - wget ${ES_DOWNLOAD_URL}
   - tar -xzf elasticsearch-${ES_VERSION}.tar.gz
   - ./elasticsearch-${ES_VERSION}/bin/elasticsearch &
   - wget -q --waitretry=1 --retry-connrefused -T 15 -O - http://127.0.0.1:9200
-install:
-  - bin/bundle
-  - bin/yarn
 before_script: bin/rails db:setup ci:setup
 after_script: bin/rails ci:report
 deploy:
