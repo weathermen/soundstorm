@@ -38,11 +38,6 @@ case "$1" in
       echo "SECRET_KEY_BASE=$SECRET_KEY_BASE" >> "$PWD"/.env
     fi
 
-    if [ ! -f "$PWD/.env.secrets" ]; then
-      echo "Edit .env.secrets to configure production credentials"
-      cp "$PWD/.env.secrets.example" "$PWD/.env.secrets"
-    fi
-
     ;;
   # view logs for a given service, default is "web"
   logs)
