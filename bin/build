@@ -19,7 +19,7 @@ end
 
 chdir APP_ROOT do
   puts '== Installing dependencies =='
-  system! 'gem install bundler --conservative --no-rdoc'
+  system! 'gem install bundler --conservative'
   system('bundle check') || system!('bundle install')
   system! "bin/yarn --module-path=#{YARN_MODULE_PATH}"
 
