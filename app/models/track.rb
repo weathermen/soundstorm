@@ -48,8 +48,12 @@ class Track < ApplicationRecord
   def as_indexed_json(options = {})
     as_json.merge(
       username: user.name,
-      artist: user.display_name
+      artist: artist
     )
+  end
+
+  def artist
+    user.display_name
   end
 
   def duration

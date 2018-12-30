@@ -2,8 +2,10 @@
 
 class TracksController < ApplicationController
   before_action :authenticate_user!, except: %i[index show listen]
-  skip_before_action :doorkeeper_authorize!, only: %i[listen]
   before_action :cache_page, only: :show
+  before_action :find_variant_from_content_type, only: :show
+
+  skip_before_action :doorkeeper_authorize!, only: %i[show listen]
 
   def show
     @user = User.find_by(name: params[:user_id])
@@ -13,15 +15,15 @@ class TracksController < ApplicationController
     respond_to do |format|
       format.html # show.html.haml
       format.m3u8 # show.m3u8.erb
+      format.json # show.json.jbuilder
+      format.xml  # show.xml.builder
       format.mp3 do
-        if @track.downloadable?
-          send_data @track.audio.download,
-            content_type: :mp3,
-            filename: @track.filename,
-            disposition: 'attachment'
-        else
-          head :unauthorized
-        end
+        return head :unauthorized unless @track.downloadable?
+
+        send_data @track.audio.download,
+          content_type: :mp3,
+          filename: @track.filename,
+          disposition: 'attachment'
       end
     end
   end
@@ -113,5 +115,19 @@ class TracksController < ApplicationController
 
   def edit_track_params
     params.require(:track).permit(:name, :description)
+  end
+
+  def variant_request?
+    request.content_type.include('+')
+  end
+
+  def find_variant_from_content_type
+    variant = if request.media_type.include? '+'
+      request.media_type.split('+').last
+    elsif params[:variant].present?
+      request.variant = params[:variant].to_sym
+    end
+
+    request.variant = variant if variant.present?
   end
 end

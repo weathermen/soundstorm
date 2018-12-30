@@ -11,9 +11,40 @@ class TracksControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'view track' do
+    file = Rails.root.join('test', 'fixtures', 'files', 'waveform.png')
+    @track.waveform.attach(io: file.open, filename: file.basename.to_s)
+
     get user_track_url(@track.user, @track)
 
     assert_response :success
+
+    get user_track_url(@track.user, @track, variant: :oembed)
+
+    assert_response :success
+
+    get user_track_url(@track.user, @track, format: :json, variant: :oembed)
+    json = JSON.parse(response.body)
+
+    assert_response :success
+    assert_equal @track.title, json['title']
+    assert_equal 1.0, json['version']
+
+    get user_track_url(@track.user, @track, format: :xml, variant: :oembed)
+    xml = Nokogiri::XML.parse(response.body)
+
+    assert_response :success
+    assert_equal @track.title, xml.css('oembed > title').text
+    assert_equal 'video', xml.css('oembed > type').text
+
+    get user_track_url(@track.user, @track, format: :mp3)
+
+    assert_response :unauthorized
+
+    get user_track_url(@track.user, @track, format: :m3u8)
+    m3u8 = response.body
+
+    assert_response :success
+    assert_includes m3u8, '#EXTM3U'
   end
 
   test 'create new track' do

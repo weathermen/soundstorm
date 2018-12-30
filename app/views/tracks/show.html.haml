@@ -1,28 +1,29 @@
-%article.track
-  %header.track__title.track-title
-    %h1.track-title__name
-      = @track.name
-    %h2.track-title__artist
-      = link_to @track.user do
-        = t('.by', user: @track.user.name)
-  %main
-    %section.track__player
-      = render 'player', track: @track
-    %section.track__description
-      %p= @track.description
-    %section.track__comments
-      %h3= t('.comments')
-      - if @track.comments.none?
-        %p.empty No comments.
-      - else
-        - @track.comments.each do |comment|
-          = render 'comments/comment', comment: comment
-    - if user_signed_in?
-      %section.track__new-comment
-        - new_comment = @track.comments.build(user: current_user)
-        = render 'comments/form', comment: new_comment
-  - if @track.user == current_user
-    %footer.track__controls
-      %nav.navigation
-        = link_to t('.edit'), [:edit, @track]
-        = link_to t('.delete'), @track, method: :delete
+- cache @track, expires_in: 90.minutes do
+  %article.track
+    %header.track__title.track-title
+      %h1.track-title__name
+        = @track.name
+      %h2.track-title__artist
+        = link_to @track.user do
+          = t('.by', user: @track.user.name)
+    %main
+      %section.track__player
+        = render 'player', track: @track
+      %section.track__description
+        %p= @track.description
+      %section.track__comments
+        %h3= t('.comments')
+        - if @track.comments.none?
+          %p.empty No comments.
+        - else
+          - @track.comments.each do |comment|
+            = render 'comments/comment', comment: comment
+      - if user_signed_in?
+        %section.track__new-comment
+          - new_comment = @track.comments.build(user: current_user)
+          = render 'comments/form', comment: new_comment
+    - if @track.user == current_user
+      %footer.track__controls
+        %nav.navigation
+          = link_to t('.edit'), [:edit, @track]
+          = link_to t('.delete'), @track, method: :delete
