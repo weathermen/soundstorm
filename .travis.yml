@@ -34,12 +34,15 @@ install:
 - wget -q --waitretry=1 --retry-connrefused -T 15 -O - http://127.0.0.1:9200
 before_script: bin/rails db:setup ci:setup
 after_script: bin/rails ci:report
+before_deploy: bin/soundstorm build
 deploy:
+  # Release Git tags as tagged, versioned images on Docker Hub
 - provider: script
   script: bash bin/soundstorm release
   on:
     tags: true
+  # Deploy all changes on 'master' to https://soundstorm.social
 - provider: script
   script: bash bin/soundstorm deploy
   on:
-    tags: true
+    branch: master
