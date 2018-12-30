@@ -1,7 +1,19 @@
+#
+# Example ECS configuration for Soundstorm setups.
+#
+
 version: 1
 task_definition:
+  # Create the task execution role with the following command:
+  #
+  #   aws iam --region us-east-1 create-role --role-name ecsTaskExecutionRole --assume-role-policy-document file://task-execution-assume-role.json
+  #
+  # Make sure the role-name matches the name specified below.
   task_execution_role: ecsTaskExecutionRole
+  # Keep all containers firewalled behind the VPC created by `ecs-cli up`
   ecs_network_mode: awsvpc
+  # Recommended RAM and CPU limits for the Fargate machine(s) used to run
+  # this application.
   task_size:
     mem_limit: 8GB
     cpu_limit: 2048
