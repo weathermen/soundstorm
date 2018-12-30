@@ -28,63 +28,37 @@ First, pull down the latest version:
 docker pull tubbo/soundstorm:latest
 ```
 
-Create a `.env` file for your configuration:
+Create a `.env` file in the local dir for your configuration:
 
 ```bash
-SOUNDSTORM_HOST=soundstorm.domain
+SOUNDSTORM_HOST=your.soundstorm.domain
 SOUNDSTORM_ADMIN_USERNAME=your-username
 SOUNDSTORM_ADMIN_PASSWORD=your-password
 SOUNDSTORM_ADMIN_EMAIL=valid@email.address
-DATABASE_URL=postgres://url@to.your.database:5432
-REDIS_URL=rediss://url@to.your.redis:6379
+#DATABASE_URL=postgres://url@to.your.database:5432
+#REDIS_URL=rediss://url@to.your.redis:6379
 CDN_URL=https://cdn.soundstorm.domain
 SMTP_USERNAME=your-smtp-server-user
 SMTP_PASSWORD=your-smtp-server-password
 SMTP_HOST=smtp.server.if.not.using.sendgrid.net
-RAILS_MAX_THREADS=20
 ```
 
 Then, run the setup task:
 
 ```bash
-docker run --rm --env-file .env tubbo/soundstorm rails db:setup
+RAILS_ENV=production bin/soundstorm rails db:setup
 ```
 
-This will create the database so you can start the server. Run the app
-server and worker containers like so:
+This will create the database and set up its schema. You can now start
+all containers by running the following command:
 
 ```bash
-docker run -d -p 3000:3000 --env-file .env tubbo/soundstorm rails server
-docker run -d --env-file .env tubbo/soundstorm sidekiq -C config/sidekiq.yml
+RAILS_ENV=production bin/soundstorm start
 ```
 
-This launches the server at `:3000`, but it requires SSL. If you have
-[Caddy][], you can set that up right now with the following `Caddyfile`:
-
-```caddy
-https://soundstorm.domain {
-  tls your@valid.email.address
-
-  proxy / http://127.0.0.1:3000 {
-    fail_timeout 300s
-    transparent
-    websocket
-    header_upstream X-Forwarded-Ssl on
-  }
-}
-```
-
-You can now pull down a Caddy image from Docker and start the HTTP
-server, proxying to your local app server...and with that, Soundstorm is
-ready to go!
-
-```bash
-docker run -d \
-  -p 80:80 \
-  -p 443:443 \
-  -v $(pwd)/Caddyfile:/etc/Caddyfile
-  abiosoft/caddy
-```
+If DNS is set up correctly, you should now be able to access your
+Soundstorm instance at the domain specified by `$SOUNDSTORM_HOST` in
+your `.env` configuration.
 
 ## Development
 
