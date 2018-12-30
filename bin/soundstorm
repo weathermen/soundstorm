@@ -81,7 +81,8 @@ case "$1" in
   build)
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
       docker-compose build \
-      --build-arg RAILS_ENV=production RAILS_SECRET="$SECRET_KEY_BASE" \
+      --build-arg RAILS_ENV=production \
+      --build-arg RAILS_SECRET="$SECRET_KEY_BASE" \
       web
   ;;
   # push latest Soundstorm image to Docker Hub
