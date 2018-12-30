@@ -12,8 +12,9 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
     && apt-get update -qq \
     && apt-get install -y build-essential libpq-dev nodejs yarn libsndfile1-dev ffmpeg
 
-# Define build arguments and their defaults
+# Define build arguments
 ARG RAILS_ENV
+ARG RAILS_SECRET
 
 # Set up environment
 ENV BUNDLE_PATH=/gems \
@@ -21,6 +22,7 @@ ENV BUNDLE_PATH=/gems \
     BUNDLE_JOBS=8 \
     APP_PATH=/srv \
     RAILS_ENV=$RAILS_ENV \
+    SECRET_KEY_BASE=$RAILS_SECRET \
     PUMA_PIDFILE_PATH=/tmp/pids \
     ACME_AGREE=true \
     PATH=/usr/local/bundle/bin:/srv/bin:/gems/bin:$PATH

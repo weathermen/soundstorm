@@ -79,24 +79,26 @@ case "$1" in
     ;;
   # build a production image of Soundstorm and push to Docker Hub
   build)
-    getopt
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
-      docker-compose build --build-arg RAILS_ENV=production web
+      docker-compose build \
+      --build-arg RAILS_ENV=production RAILS_SECRET="$SECRET_KEY_BASE" \
+      web
   ;;
   # push latest Soundstorm image to Docker Hub
   push)
     docker image push "$DOCKER_IMAGE_NAME:latest"
   ;;
-  # tag latest Soundstorm image with its version and push to Docker Hub
-  cut)
+  # build and push
+  publish)
+    bin/soundstorm build && bin/soundstorm push
+  ;;
+  # tag latest Soundstorm image with its version and push versioned
+  # image to Docker Hub
+  release)
     VERSIONED_IMAGE_NAME="$DOCKER_IMAGE_NAME:$(bin/soundstorm version)"
 
     docker image tag "$DOCKER_IMAGE_NAME:latest" "$VERSIONED_IMAGE_NAME"
     docker image push "$VERSIONED_IMAGE_NAME"
-  ;;
-  # release production image to Docker Hub
-  release)
-    bin/soundstorm build && bin/soundstorm push && bin/soundstorm cut
   ;;
   # run docker-compose commands on ECS
   production)
