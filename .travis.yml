@@ -30,7 +30,7 @@ install: bin/setup
 before_script: bin/rails ci:setup
 after_script: bin/rails ci:report
 before_deploy:
-  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
   - bin/soundstorm publish
 deploy:
 - provider: script
