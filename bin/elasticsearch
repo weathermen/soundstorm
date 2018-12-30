@@ -1,0 +1,24 @@
+#!/usr/bin/env ruby
+
+# frozen_string_literal: true
+
+# Install and start Elasticsearch within Travis CI.
+
+require 'fileutils'
+include FileUtils
+
+APP_ROOT = File.expand_path('..', __dir__)
+ES_VERSION = ENV.fetch('ES_VERSION', '5.6.3')
+ES_DOWNLOAD_URL = "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-#{ES_VERSION}.tar.gz"
+
+def system!(*args)
+  system(*args) || abort("\n== Command #{args} failed ==")
+end
+
+chdir APP_ROOT do
+  puts "== Installing Elasticsearch #{ES_VERSION} =="
+  system! "wget #{ES_DOWNLOAD_URL}"
+  system! "tar -xzf elasticsearch-#{ES_VERSION}.tar.gz"
+  system "./elasticsearch-#{ES_VERSION}/bin/elasticsearch &"
+  system! 'wget -q --waitretry=1 --retry-connrefused -T 15 -O - http://127.0.0.1:9200'
+end

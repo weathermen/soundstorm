@@ -4,9 +4,6 @@
 
 env:
   global:
-  - ES_VERSION=5.6.3
-  - ES_DOWNLOAD_URL=https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${ES_VERSION}.tar.gz
-
    # The following settings are encrypted and not meant to be used with
    # any other repository. They are used to deploy the Soundstorm
    # image to production when it is fully built and pushed.
@@ -40,21 +37,13 @@ cache:
   bundler: true
   yarn: true
   directories:
-  - node_modules
-install:
-  # Install dependencies without the :development or :production groups
-  # into the +vendor/bundle+ folder.
-  - bin/bundle --path=vendor/bundle --jobs=20 --retry=3 --without development production
-  # Install Yarn dependencies to node_modules
-  - bin/yarn
-  # Install Elasticsearch manually and wait for it to start before
-  # continuing.
-  - wget ${ES_DOWNLOAD_URL}
-  - tar -xzf elasticsearch-${ES_VERSION}.tar.gz
-  - "./elasticsearch-${ES_VERSION}/bin/elasticsearch &"
-  - wget -q --waitretry=1 --retry-connrefused -T 15 -O - http://127.0.0.1:9200
-# Set up the database and test coverage reporting
-before_script: bin/rails db:setup ci:setup
+    - node_modules
+# Install Elasticsearch manually
+before_install: bin/elasticsearch
+# Install application dependencies and set up the database
+install: bin/setup
+# Set up test coverage reporting
+before_script: bin/rails ci:setup
 # Report test coverage to CodeClimate
 after_script: bin/rails ci:report
 # Build and push the production image to the Docker hub
