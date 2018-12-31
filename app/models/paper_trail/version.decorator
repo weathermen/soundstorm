@@ -1,7 +1,7 @@
 module PaperTrail
   decorate Version do
     decorated do
-      after_create :broadcast
+      # after_create :broadcast
 
       delegate :actor, to: :user
       delegate :activity_id, :as_activity, to: :item

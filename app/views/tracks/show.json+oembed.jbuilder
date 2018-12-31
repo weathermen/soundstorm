@@ -13,4 +13,4 @@ json.thumbnail_width @track.waveform.metadata[:width]
 json.thumbnail_height @track.waveform.metadata[:height]
 json.width @track.waveform.metadata[:width]
 json.height @track.waveform.metadata[:height]
-json.html render('player.html', track: @track)
+json.html render('embedded.html', track: @track)

@@ -3,6 +3,17 @@
   padding: 10px;
   border-radius: 3px;
 }
+  .player--disabled {
+    .player__bar {
+      visibility: hidden;
+    }
+  }
+.player__placeholder {
+  p {
+    padding: 20px 0;
+    text-align: center;
+  }
+}
 .player__interface {
   display: grid;
   grid-template-columns: 1fr 12fr;

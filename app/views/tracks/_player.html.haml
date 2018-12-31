@@ -1,19 +1,23 @@
 = player_for track do
-  %main.player__interface
-    %video.player__media{ data: track_video_tag_options }
-      / this is where the media goes
-    .player__transport
-      .player__button
-        = track_player_button track
-      .player__duration
-        .player__elapsed{ data: { target: 'player.elapsed' } } 00:00
-        - unless track.duration.blank?
-          .player__left
-            = track.formatted_duration
-    .player__waveform{ data: { action: 'click->player#seek' } }
-      - if track.waveform.attached?
-        = image_tag track.waveform
-      %span.player__progress{ data: { target: 'player.progress' } }
+  - if track.processed?
+    %main.player__interface
+      %video.player__media{ data: track_video_tag_options }
+        / this is where the media goes
+      .player__transport
+        .player__button
+          = track_player_button track
+        .player__duration
+          .player__elapsed{ data: { target: 'player.elapsed' } } 00:00
+          - unless track.duration.blank?
+            .player__left
+              = track.formatted_duration
+      .player__waveform{ data: { action: 'click->player#seek' } }
+        - if track.waveform.attached?
+          = image_tag track.waveform
+        %span.player__progress{ data: { target: 'player.progress' } }
+  - else
+    .player__placeholder
+      %p= t('.disabled')
   %footer.player__bar
     %nav.navigation.player__stats
       = link_to track_comments_url(track), class: 'player__stat' do

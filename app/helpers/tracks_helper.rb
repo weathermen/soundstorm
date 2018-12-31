@@ -43,8 +43,10 @@ module TracksHelper
       'player-duration': track.duration,
       'player-seek-position': 0
     }
+    styles = %w(player)
+    styles << 'player--disabled' unless track.processed?
 
-    content_tag :section, class: 'player', data: data, &block
+    content_tag :section, class: styles, data: data, &block
   end
 
   def player_link_to(href)
