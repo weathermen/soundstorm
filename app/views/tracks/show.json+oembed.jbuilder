@@ -9,8 +9,8 @@ json.provider_name 'Soundstorm'
 json.provider_url root_url
 json.cache_age 90.minutes
 json.thumbnail_url url_for(@track.waveform)
-json.thumbnail_width @track.waveform.metadata[:width]
-json.thumbnail_height @track.waveform.metadata[:height]
-json.width @track.waveform.metadata[:width]
-json.height @track.waveform.metadata[:height]
+json.thumbnail_width 1000
+json.thumbnail_height 200
+json.width Rails.configuration.oembed_width
+json.height Rails.configuration.oembed_height
 json.html render('embedded.html', track: @track)

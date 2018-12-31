@@ -1,2 +1,12 @@
-/ Contents of the <iframe> generated in the JSON response.
+%header.track-title.track-title--embedded
+  %h1.track-title__name
+    = @track.name
+  %h2.track-title__artist
+    = link_to @track.user do
+      = t('.by', user: @track.user.name)
+  %h3.track-title__provider
+    .track-title__provider-message
+      = t('.listen_on')
+    .header__logo
+      = link_to t(:title, scope: %i[layouts application]), root_url
 = render 'player', track: @track

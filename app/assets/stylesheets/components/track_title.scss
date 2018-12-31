@@ -1,5 +1,10 @@
-.track-title {}
-.track-title__name, .track-title__artist {
+.track-title {
+  clear: both;
+}
+  .track-title--embedded {
+    padding-left: 10px;
+  }
+.track-title__name, .track-title__artist, .track-title__provider {
   display: inline-block;
 }
 .track-title__name {
@@ -18,4 +23,13 @@
   .track-title__artist {
     display: none;
   }
+}
+
+.track-title__provider {
+  float: right;
+}
+
+.track-title__provider-message {
+  text-align: right;
+  padding-right: 10px;
 }

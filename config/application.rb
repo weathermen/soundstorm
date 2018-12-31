@@ -52,5 +52,8 @@ module Soundstorm
 
     # Add custom audio analyzer for ActiveStorage track uploads
     config.active_storage.analyzers.append(ActiveStorage::Analyzer::AudioAnalyzer)
+
+    config.oembed_width = 1000
+    config.oembed_height = 265
   end
 end
