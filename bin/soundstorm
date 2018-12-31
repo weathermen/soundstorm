@@ -8,6 +8,10 @@ if [[ -z "$RAILS_ENV" ]]; then
   RAILS_ENV=development
 fi
 
+if [[ -z "$ECS_CLI" ]]; then
+  ECS_CLI=ecs-cli
+fi
+
 DOCKER_IMAGE_NAME="weathermen/soundstorm"
 
 case "$1" in
@@ -104,7 +108,7 @@ case "$1" in
   # run docker-compose commands on ECS
   production)
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
-      ecs-cli compose \
+      "$ECS_CLI" compose \
         --project-name soundstorm \
         "$*" \
         --cluster-config soundstorm
