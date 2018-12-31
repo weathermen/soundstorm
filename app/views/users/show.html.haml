@@ -2,7 +2,7 @@
   %header.profile__cover
     %section.profile__title
       - if @user.avatar.attached?
-        - avatar = @user.avatar.variant(resize: '150x150')
+        - avatar = @user.avatar_image(resize: 150)
         = image_tag avatar, class: 'profile__avatar'
       %h1.profile__name
         = @user.display_name

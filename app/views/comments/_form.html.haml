@@ -3,7 +3,7 @@
   %main.comment-form__content
     %aside.comment-form__sidebar
       - if comment.user.avatar.attached?
-        = image_tag comment.user.avatar.variant(resize: '50x50')
+        = image_tag comment.user.avatar_image(resize: 50)
     %fieldset.comment-form__fieldset
       .form__fields
         .form__field

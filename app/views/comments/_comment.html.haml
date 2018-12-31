@@ -6,7 +6,7 @@
   %main.comment__content
     %p
       - if comment.user.avatar.attached?
-        - avatar = comment.user.avatar.variant(resize: 50)
+        - avatar = comment.user.avatar_image(resize: 50)
         = image_tag avatar, class: 'comment__avatar'
       = comment.content
   %footer.comment__links

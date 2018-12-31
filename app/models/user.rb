@@ -186,12 +186,12 @@ class User < ApplicationRecord
     devise_mailer.send(notification, self, *args).deliver_later
   end
 
-  def avatar_image
-    if avatar.attached?
-      avatar.variant(resize: 100)
-    else
-      'https://via.placeholder.com/100'
+  def avatar_image(resize: 100)
+    unless avatar.attached?
+      return "https://api.adorable.io/avatars/#{resize}/#{name}.png"
     end
+
+    avatar.variant(resize: resize)
   end
 
   # All activity by users this user follows.
