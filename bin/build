@@ -12,6 +12,7 @@ include FileUtils
 APP_ROOT = File.expand_path('..', __dir__)
 RAILS_ENV = ENV.fetch('RAILS_ENV', 'development')
 YARN_MODULE_PATH = ENV.fetch('YARN_MODULE_PATH', 'node_modules')
+BUNDLE_PATH = ENV.fetch('BUNDLE_PATH', 'vendor/bundle')
 
 def system!(*args)
   system(*args) || abort("\n== Command #{args} failed ==")
@@ -20,7 +21,7 @@ end
 chdir APP_ROOT do
   puts '== Installing dependencies =='
   system! 'gem install bundler --conservative'
-  system('bundle check') || system!('bundle install')
+  system('bundle check') || system!("bundle install --path #{BUNDLE_PATH}")
   system! "bin/yarn --module-path=#{YARN_MODULE_PATH}"
 
   if RAILS_ENV == 'production'
