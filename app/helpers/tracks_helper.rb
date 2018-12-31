@@ -81,6 +81,15 @@ module TracksHelper
     }
   end
 
+  def oembed_link_tag(format:)
+    type = Mime::Type.lookup_by_extension(format)
+
+    tag :link, \
+      rel: 'alternate',
+      type: "#{type}+oembed",
+      href: url_for(host: Rails.configuration.host, format: format)
+  end
+
   private
 
   def player_link(&block)

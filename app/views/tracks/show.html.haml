@@ -1,3 +1,6 @@
+- content_for :head do
+  = oembed_link_tag format: :json
+  = oembed_link_tag format: :xml
 - cache @track, expires_in: 90.minutes do
   %article.track
     %header.track__title.track-title
