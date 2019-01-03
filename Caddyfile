@@ -5,8 +5,9 @@
 {$SOUNDSTORM_HOST} {
   log stdout
   errors stderr
-
   tls {$SOUNDSTORM_ADMIN_EMAIL}
+  root /srv/public
+
 
   proxy / http://web:3000 {
     fail_timeout 300s
