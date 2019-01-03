@@ -11,6 +11,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update -qq \
     && apt-get install -y build-essential libpq-dev nodejs yarn libsndfile1-dev ffmpeg
+RUN curl https://getcaddy.com | bash -s personal
 
 # Define build arguments
 ARG RAILS_ENV
@@ -24,7 +25,6 @@ ENV BUNDLE_PATH=/gems \
     RAILS_ENV=$RAILS_ENV \
     SECRET_KEY_BASE=$RAILS_SECRET \
     PUMA_PIDFILE_PATH=/tmp/pids \
-    ACME_AGREE=true \
     PATH=/usr/local/bundle/bin:/srv/bin:/gems/bin:$PATH
 
 # Copy in application code
@@ -33,7 +33,4 @@ WORKDIR $APP_PATH
 COPY . $APP_PATH
 
 # Install application dependencies and precompile assets in production.
-RUN ./bin/build
-
-# Precompile assets in production, install dependencies in development
-ENTRYPOINT ["sh", "bash ./bin/entrypoint.sh"]
+RUN ./bin/dependencies.sh
