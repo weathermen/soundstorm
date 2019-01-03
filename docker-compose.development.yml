@@ -14,9 +14,14 @@ services:
 
   # Expose Elasticsearch port 9200 to all users in development for
   # debugging purposes.
-  search:
-    ports:
-      - '9200:9200'
+  # search:
+  #   ports:
+  #     - '9200:9200'
+  #   ulimits:
+  #     memlock:
+  #       soft: -1
+  #       hard: -1
+  #   mem_limit: 1g
 
   # Cache application dependencies and use the local database in
   # development
@@ -32,6 +37,7 @@ services:
       - bundle:/gems
     environment:
       - YARN_MODULE_PATH=/node_modules
+    entrypoint: ./bin/entrypoint.sh
 
 volumes:
   bundle:

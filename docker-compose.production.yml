@@ -64,15 +64,15 @@ services:
         awslogs-stream-prefix: web
 
   # Lock down Elasticsearch clients to other Docker hosts
-  search:
-    expose:
-      - 9200
-    logging:
-      driver: awslogs
-      options:
-        awslogs-group: soundstorm
-        awslogs-region: us-east-1
-        awslogs-stream-prefix: search
+  # search:
+  #   expose:
+  #     - 9200
+  #   logging:
+  #     driver: awslogs
+  #     options:
+  #       awslogs-group: soundstorm
+  #       awslogs-region: us-east-1
+  #       awslogs-stream-prefix: search
 
   # Background job processor for the application, running background
   # jobs within the Rails context. This container will always use the
@@ -111,7 +111,7 @@ services:
   # well as a +Caddyfile+ configuration.
   httpd:
     image: weathermen/soundstorm
-    command: caddy
+    command: caddy --log stdout --agree=true
     depends_on:
       - web
     ports:
