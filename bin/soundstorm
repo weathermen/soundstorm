@@ -110,7 +110,7 @@ case "$1" in
     COMPOSE_FILE="docker-compose.yml:docker-compose.production.yml" \
       "$ECS_CLI" compose \
         --project-name soundstorm \
-        "$*" \
+        "${@:2}" \
         --cluster-config soundstorm
   ;;
   # deploy latest changes to ECS
