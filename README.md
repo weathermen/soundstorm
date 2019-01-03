@@ -25,7 +25,7 @@ default.
 First, pull down the latest version:
 
 ```bash
-docker pull tubbo/soundstorm:latest
+docker pull weathermen/soundstorm:latest
 ```
 
 Create a `.env` file in the local dir for your configuration:
