@@ -11,7 +11,7 @@ RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - \
     && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
     && apt-get update -qq \
     && apt-get install -y build-essential libpq-dev nodejs yarn libsndfile1-dev ffmpeg
-RUN curl https://getcaddy.com | bash -s personal
+RUN curl https://getcaddy.com | bash -s personal http.realip,tls.dns.route53
 
 # Define build arguments
 ARG RAILS_ENV

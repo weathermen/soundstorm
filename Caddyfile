@@ -5,7 +5,9 @@
 {$SOUNDSTORM_HOST} {
   log stdout
   errors stderr
-  tls {$SOUNDSTORM_ADMIN_EMAIL}
+  tls {
+    dns route53
+  }
   root /srv/public
 
 
