@@ -31,8 +31,8 @@ before_script: bin/rails ci:setup
 after_script: bin/rails ci:report
 before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
-  - bin/soundstorm publish
   - curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-darwin-amd64-latest
+  - bin/soundstorm publish
 deploy:
 - provider: script
   script: bash bin/soundstorm release
