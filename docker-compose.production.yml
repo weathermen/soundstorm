@@ -80,7 +80,7 @@ services:
   # the same codebase.
   queue:
     image: weathermen/soundstorm
-    command: bin/sidekiq
+    command: bundle exec sidekiq -C config/sidekiq.yml
     depends_on:
       - db
       - redis
