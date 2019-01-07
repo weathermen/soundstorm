@@ -14,14 +14,27 @@ services:
 
   # Expose Elasticsearch port 9200 to all users in development for
   # debugging purposes.
-  # search:
-  #   ports:
-  #     - '9200:9200'
-  #   ulimits:
-  #     memlock:
-  #       soft: -1
-  #       hard: -1
-  #   mem_limit: 1g
+  search:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.5.3
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data
+    environment:
+      - cluster.name=soundstorm
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - '9200:9200'
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+
 
   # Cache application dependencies and use the local database in
   # development
@@ -31,6 +44,8 @@ services:
       - "${RAILS_PORT}:3000"
     links:
       - mailcatcher
+    depends_on:
+      - search
     volumes:
       - .:/srv
       - node_modules:/node_modules
@@ -42,3 +57,4 @@ services:
 volumes:
   bundle:
   node_modules:
+  elasticsearch:

@@ -259,16 +259,38 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-  config.omniauth :mastodon, scopes: 'read write follow', credentials: lambda { |domain, callback_url|
-    Rails.logger.info "Requested credentials for #{domain} with callback URL #{callback_url}"
+  config.omniauth :mastodon, \
+    scopes: 'read write follow',
+    credentials: lambda { |domain, callback_url|
+      Rails.logger.info(
+        "Requested Mastodon creds for #{domain} with callback URL #{callback_url}"
+      )
 
-    Rails.cache.fetch("mastodon/#{domain}") do
-      client = Mastodon::REST::Client.new(base_url: "https://#{domain}")
-      app = client.create_app('Soundstorm', callback_url)
+      Rails.cache.fetch("oauth/mastodon/#{domain}") do
+        client = Mastodon::REST::Client.new(base_url: "https://#{domain}")
+        app = client.create_app('Soundstorm', callback_url)
 
-      [app.client_id, app.client_secret]
-    end
-  }
+        [app.client_id, app.client_secret]
+      end
+    }
+  config.omniauth :soundstorm, \
+    scopes: 'read write follow',
+    credentials: lambda { |domain, callback_url|
+      Rails.logger.info(
+        "Requested Soundstorm creds for #{domain} with callback URL #{callback_url}"
+      )
+
+      Rails.cache.fetch("oauth/soundstorm/#{domain}") do
+        soundstorm = Soundstorm.connect("https://#{domain}")
+        app = soundstorm.apps.create(
+          host: Rails.configuration.host,
+          callback_url: callback_url
+        )
+
+        [app.client_id, app.client_secret]
+      end
+    }
+
 
   # ==> Warden configuration
   # If you want to use other strategies, that are not supported by Devise, or

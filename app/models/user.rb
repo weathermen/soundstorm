@@ -52,7 +52,7 @@ class User < ApplicationRecord
   before_validation :ensure_host
   before_validation :ensure_display_name
 
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true, uniqueness: { if: :local? }
   validates :host, presence: true
   validates :display_name, presence: true
   validates :key_pem, presence: true, uniqueness: true
@@ -219,6 +219,10 @@ class User < ApplicationRecord
 
   def following_count
     following_users.count
+  end
+
+  def local?
+    host == Rails.configuration.host
   end
 
   private

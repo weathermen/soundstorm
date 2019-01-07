@@ -55,5 +55,7 @@ module Soundstorm
 
     config.oembed_width = 1000
     config.oembed_height = 265
+
+    config.middleware.insert_before 0, 'EnforceHostMiddleware'
   end
 end

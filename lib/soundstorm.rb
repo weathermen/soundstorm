@@ -1,12 +1,20 @@
 # frozen_string_literal: true
 
 require 'soundstorm/version'
-require 'soundstorm/hub'
 
 # The constants in this top-level module are configuration passed into
 # the app from environment variables. Here is where their defaults are
 # expressed and documented.
 module Soundstorm
+  extend ActiveSupport::Autoload
+
+  autoload :Hub
+  autoload :Client
+
+  def self.connect(host)
+    Client.new(base_url: host)
+  end
+
   # Hostname to the Soundstorm server
   HOST = ENV.fetch('SOUNDSTORM_HOST', 'soundstorm.test')
 
