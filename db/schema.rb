@@ -37,6 +37,25 @@ ActiveRecord::Schema.define(version: 2018_12_23_214621) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "activities", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "federatable_type"
+    t.bigint "federatable_id"
+    t.jsonb "actor", null: false
+    t.jsonb "payload", null: false
+    t.string "host", null: false
+    t.string "href", null: false
+    t.string "event", null: false
+    t.string "kind", null: false
+    t.datetime "applied_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["federatable_type", "federatable_id"], name: "index_activities_on_federatable_type_and_federatable_id"
+    t.index ["host"], name: "index_activities_on_host"
+    t.index ["kind"], name: "index_activities_on_kind"
+    t.index ["user_id"], name: "index_activities_on_user_id"
+  end
+
   create_table "comments", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "track_id"
@@ -44,6 +63,7 @@ ActiveRecord::Schema.define(version: 2018_12_23_214621) do
     t.text "content", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "activity_id", null: false
     t.index ["parent_id"], name: "index_comments_on_parent_id"
     t.index ["track_id"], name: "index_comments_on_track_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
@@ -178,6 +198,7 @@ ActiveRecord::Schema.define(version: 2018_12_23_214621) do
     t.integer "likers_count", default: 0
     t.string "description"
     t.boolean "downloadable", default: false, null: false
+    t.string "activity_id", null: false
     t.index ["slug"], name: "index_tracks_on_slug"
     t.index ["user_id"], name: "index_tracks_on_user_id"
   end
@@ -225,6 +246,7 @@ ActiveRecord::Schema.define(version: 2018_12_23_214621) do
     t.integer "likees_count", default: 0
     t.string "biography"
     t.boolean "admin", default: false, null: false
+    t.string "activity_id", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -249,6 +271,7 @@ ActiveRecord::Schema.define(version: 2018_12_23_214621) do
     t.index ["remote"], name: "index_versions_on_remote"
   end
 
+  add_foreign_key "activities", "users"
   add_foreign_key "comments", "tracks"
   add_foreign_key "comments", "users"
   add_foreign_key "oauth_access_grants", "oauth_applications", column: "application_id"
