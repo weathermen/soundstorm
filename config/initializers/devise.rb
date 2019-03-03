@@ -273,23 +273,23 @@ Devise.setup do |config|
         [app.client_id, app.client_secret]
       end
     }
-  config.omniauth :soundstorm, \
-    scopes: 'read write follow',
-    credentials: lambda { |domain, callback_url|
-      Rails.logger.info(
-        "Requested Soundstorm creds for #{domain} with callback URL #{callback_url}"
-      )
+  # config.omniauth :soundstorm, \
+  #   scopes: 'read write follow',
+  #   credentials: lambda { |domain, callback_url|
+  #     Rails.logger.info(
+  #       "Requested Soundstorm creds for #{domain} with callback URL #{callback_url}"
+  #     )
 
-      Rails.cache.fetch("oauth/soundstorm/#{domain}") do
-        soundstorm = Soundstorm.connect("https://#{domain}")
-        app = soundstorm.apps.create(
-          host: Rails.configuration.host,
-          callback_url: callback_url
-        )
+  #     Rails.cache.fetch("oauth/soundstorm/#{domain}") do
+  #       soundstorm = Soundstorm.connect("https://#{domain}")
+  #       app = soundstorm.apps.create(
+  #         host: Rails.configuration.host,
+  #         callback_url: callback_url
+  #       )
 
-        [app.client_id, app.client_secret]
-      end
-    }
+  #       [app.client_id, app.client_secret]
+  #     end
+  #   }
 
 
   # ==> Warden configuration
