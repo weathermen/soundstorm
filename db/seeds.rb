@@ -16,13 +16,25 @@ if Rails.env.development?
     email: 'fan@example.com',
     password: Soundstorm::ADMIN_PASSWORD,
     display_name: 'Fan',
-    confirmed_at: Time.current,
+    confirmed_at: Time.current
   )
-  track = fan.tracks.create!(
-    name: 'Listerine Dreams',
-    audio: Rails.root.join('test', 'fixtures', 'files', 'one.mp3').open
+  artist = User.create!(
+    name: 'artist',
+    email: 'artist@example.com',
+    password: Soundstorm::ADMIN_PASSWORD,
+    display_name: 'Another Artist',
+    confirmed_at: Time.current
   )
+  PaperTrail.request.whodunnit = artist.id
+  track = artist.tracks.build(name: 'Listerine Dreams')
+  audio = Rails.root.join('test', 'fixtures', 'files', 'one.mp3')
 
-  fan.follow!(admin)
+  track.audio.attach(io: audio.open, filename: audio.basename)
+  track.save!
+  ProcessTrackJob.perform_now(track)
+  PaperTrail.request.whodunnit = admin.id
+  admin.follow!(artist)
   admin.like!(track)
+  PaperTrail.request.whodunnit = fan.id
+  fan.follow!(admin)
 end
