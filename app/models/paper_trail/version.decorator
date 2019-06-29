@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 module PaperTrail
   decorate Version do
     decorated do
-      # after_create :broadcast
+      after_create :broadcast
 
       delegate :actor, to: :user
       delegate :activity_id, :as_activity, to: :item
@@ -9,34 +11,58 @@ module PaperTrail
       scope :unpublished, -> { where(broadcasted_at: nil) }
     end
 
+    # Users that are following this change.
+    #
+    # @return [ActiveRecord::Relation<User>]
     def followers
       return [] if user.blank?
       user.followers(User)
     end
 
+    # User who performed this change.
+    #
+    # @return [User] or `nil` if the whodunnit field is blank.
     def user
       return if whodunnit.blank?
       GlobalID::Locator.locate(whodunnit)
     end
 
+    # Test if this change is a track upload.
+    #
+    # @return [Boolean] Whether the item being changed is a Track
+    #                   and event is "create".
     def upload?
       item.is_a?(Track) && event == 'create'
     end
 
+    # Test if this change is not meant for federating outside the
+    # server. When all changes are local, federation of the activity
+    # should not occur.
+    #
+    # @return [Boolean] whether the user's host is local
     def local?
       return true unless user.present?
       user&.host == ::Rails.configuration.host
     end
 
+    # Denote what kind of change this is on the frontend.
+    #
+    # @return [String] "uploaded" or "created"
     def verb
       return 'uploaded' if upload?
       "#{event}ed"
     end
 
+    # Type of the event being braodcast.
+    #
+    # @return [String] Class name of the event type.
     def type
       event.classify
     end
 
+    # The message object used to broadcast over ActivityPub.
+    #
+    # @return [ActivityPub::Message]
     def message
       ActivityPub::Message.new(
         id: activity_id,
@@ -47,12 +73,20 @@ module PaperTrail
       )
     end
 
+    # Whether this activity has been broadcast.
+    #
+    # @return [Boolean] whether `broadcasted_at` is present.
     def broadcasted?
       broadcasted_at.present?
     end
 
+    private
+
+    # Publish this event to all ActivityPub subscribers.
+    #
+    # @return [BroadcastMessageJob] or `nil` if not broadcasting
     def broadcast
-      BroadcastMessageJob.perform_later(self) unless broadcasted?
+      BroadcastMessageJob.perform_later(self) unless broadcasted? || local?
     end
   end
 end

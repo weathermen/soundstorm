@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+# Functionality for ActivityPub federation in model classes. Uses
+# PaperTrail to log changes for each request.
 module Federatable
   extend ActiveSupport::Concern
 

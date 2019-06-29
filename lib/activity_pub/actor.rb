@@ -22,6 +22,7 @@ module ActivityPub
     # Find an +Actor+ remotely by its ID, a fully-qualified path to the
     # JSON for this actor on a remote server.
     #
+    # @param [String] id - URL to the remote actor's profile
     # @return [Actor] or +nil+ if none can be found
     def self.find(id)
       response = HTTP.get(id)
@@ -30,6 +31,12 @@ module ActivityPub
       from(response.parse)
     end
 
+    # Parse a JSON response from a federated ActivityPub-speaking
+    # instance to create a new Actor object.
+    #
+    # @param [Hash] json - JSON response
+    # @option [String] host - Host the actor lives on
+    # @return [ActivityPub::Actor]
     def self.from(json = {}, **options)
       params = json.deep_symbolize_keys
       params.merge!(options)
@@ -38,10 +45,17 @@ module ActivityPub
       new(key: key, secret: nil, **params)
     end
 
+    # ID of this actor, corresponding to the URL where their profile is
+    # located.
+    #
+    # @return [String] URL to this user's profile
     def id
       @id ||= "https://#{host}/#{name}"
     end
 
+    # Attributes for this Actor.
+    #
+    # @return [Hash] The `:name`, `:type`, `:host`, and `:key`
     def attributes
       {
         name: name,
@@ -53,7 +67,7 @@ module ActivityPub
 
     # Webfinger response for this Actor.
     #
-    # @return [Actor::Finger]
+    # @return [Actor::Finger] Wrapped Webfinger attributes
     def webfinger
       Finger.new(
         name: name,
@@ -69,6 +83,9 @@ module ActivityPub
       webfinger.as_json
     end
 
+    # Full JSON representation of this Actor.
+    #
+    # @return [Hash]
     def as_json
       {
         '@context': [ACTIVITYSTREAMS_NAMESPACE, W3ID_NAMESPACE],
@@ -90,6 +107,10 @@ module ActivityPub
       }
     end
 
+    # URL to a given sub-entity of this Actor.
+    #
+    # @param [String] path - Path to the JSON resource.
+    # @return [String] Full URL of the resource.
     def url_for(path)
       params[path.to_sym] || "#{id}/#{path}.json"
     end

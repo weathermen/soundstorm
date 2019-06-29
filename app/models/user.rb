@@ -33,6 +33,7 @@ class User < ApplicationRecord
   acts_as_mentionable
 
   has_one_attached :avatar
+  has_secure_token
 
   has_many :tracks
   has_many :releases
@@ -151,10 +152,14 @@ class User < ApplicationRecord
   end
 
   # ActivityPub representation of this User.
+  #
+  # @return [ActivityPub::Actor] Object for representing this User in
+  #                              ActivityPub requests.
   def actor
     ActivityPub::Actor.new(as_actor)
   end
 
+  # Email is only required for local users when they are created.
   def email_required?
     host == Rails.configuration.host
   end
@@ -166,7 +171,7 @@ class User < ApplicationRecord
       summary: display_name,
       host: host,
       key: key_pem,
-      secret: encrypted_password
+      secret: token
     }
   end
 
