@@ -2,11 +2,10 @@
 
 # Send email notifications to users.
 class NotificationMailer < ApplicationMailer
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
+  # Sent when a user mentions another user in a comment.
   #
-  #   en.notification_mailer.mention.subject
-  #
+  # @param [Comment] comment - Posted comment
+  # @param [User] user - User who was mentioned
   def mention(comment, user)
     @comment = comment
     @user = user
@@ -15,11 +14,10 @@ class NotificationMailer < ApplicationMailer
     mail to: @user.email, subject: @subject
   end
 
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
+  # Sent when a user likes someone else's track.
   #
-  #   en.notification_mailer.like.subject
-  #
+  # @param [User] user - User who liked the track
+  # @param [Track] track - Track that was liked
   def like(user, track)
     @user = user
     @track = track
@@ -28,11 +26,10 @@ class NotificationMailer < ApplicationMailer
     mail to: @track.user.email, subject: @subject
   end
 
-  # Subject can be set in your I18n file at config/locales/en.yml
-  # with the following lookup:
+  # Sent when a user replies to another user's comment.
   #
-  #   en.notification_mailer.reply.subject
-  #
+  # @param [Comment] comment - Posted comment
+  # @param [User] user - User that was replied to
   def reply(comment, user)
     @comment = comment
     @user = user

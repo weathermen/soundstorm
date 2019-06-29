@@ -122,6 +122,10 @@ class User < ApplicationRecord
   end
 
   # Append additional data to the session when logged in from OAuth.
+  #
+  # @param [ActionController::Parameters] params - Request params
+  # @param [ActionDispatch::Session] session - Session data for the request
+  # @return [User]
   def self.new_with_session(params, session)
     super.tap do |user|
       if data = session['devise.mastodon_data'] && session['devise.mastodon_data']['extra']['raw_info']
@@ -132,6 +136,9 @@ class User < ApplicationRecord
     end
   end
 
+  # All tracks that this User has liked.
+  #
+  # @return [Array<Track>]
   def likes
     likees(Track)
   end
@@ -146,10 +153,6 @@ class User < ApplicationRecord
   # ActivityPub representation of this User.
   def actor
     ActivityPub::Actor.new(as_actor)
-  end
-
-  def activity_id
-    Rails.application.routes.url_helpers.user_url(self, host: host)
   end
 
   def email_required?
@@ -223,6 +226,10 @@ class User < ApplicationRecord
 
   def local?
     host == Rails.configuration.host
+  end
+
+  def activity_id
+    Rails.application.routes.url_helpers.user_url(self, host: host)
   end
 
   private

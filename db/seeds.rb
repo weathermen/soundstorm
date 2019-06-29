@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 # Create initial admin user
-User.create!(
+admin = User.create!(
   name: Soundstorm::ADMIN_USERNAME,
   email: Soundstorm::ADMIN_EMAIL,
   password: Soundstorm::ADMIN_PASSWORD,
@@ -9,3 +9,20 @@ User.create!(
   confirmed_at: Time.current,
   admin: true
 )
+
+if Rails.env.development?
+  fan = User.create!(
+    name: 'fan',
+    email: 'fan@example.com',
+    password: Soundstorm::ADMIN_PASSWORD,
+    display_name: 'Fan',
+    confirmed_at: Time.current,
+  )
+  track = fan.tracks.create!(
+    name: 'Listerine Dreams',
+    audio: Rails.root.join('test', 'fixtures', 'files', 'one.mp3').open
+  )
+
+  fan.follow!(admin)
+  admin.like!(track)
+end

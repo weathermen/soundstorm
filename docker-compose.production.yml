@@ -15,17 +15,42 @@ services:
         awslogs-region: us-east-1
         awslogs-stream-prefix: db
 
-  # Redis stores the ephemeral Rails/HTTP cache and Sidekiq job queue
-  redis:
-    image: redis
-    volumes:
-      - redis:/data
+  # Use CloudWatch logs for Elasticsearch
+  search:
     logging:
       driver: awslogs
       options:
         awslogs-group: soundstorm
         awslogs-region: us-east-1
-        awslogs-stream-prefix: redis
+        awslogs-stream-prefix: search
+
+  # Ephemeral Rails/HTTP cache storage with Redis using LRU cache
+  # configuration
+  cache:
+    image: redis
+    command: redis-server /etc/redis/cache.conf
+    volumes:
+      - redis_cache:/data
+      - ./config/redis:/etc/redis
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: soundstorm
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: cache
+
+  # Background job queue storage with Redis using default configuration
+  queue:
+    image: redis
+    command: redis-server /etc/redis/queue.conf
+    volumes:
+      - redis_queue:/data
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: soundstorm
+        awslogs-region: us-east-1
+        awslogs-stream-prefix: queue
 
   # Speed up application deployment by launching an image rather than
   # building a full container, such as in development. Dependencies are
@@ -33,29 +58,22 @@ services:
   # installing deps is disabled. Migrations still occur in the
   # ENTRYPOINT, however, so as not to depend the entire app on the
   # database being fully up.
+  # Build the web application for production by supplying the RAILS_ENV
+  # build argument. This will precompile assets onto the image and
+  # configure the application for production usage.
   web:
     build:
       context: .
       args:
         - RAILS_ENV=production
     image: weathermen/soundstorm
-    expose:
-      - 3000
     depends_on:
       - db
       - redis
+    environment:
+      - RAILS_MASTER_KEY
     env_file:
       - .env.production
-    environment:
-      - SECRET_KEY_BASE
-      - SOUNDSTORM_HOST
-      - SOUNDSTORM_ADMIN_USERNAME
-      - SOUNDSTORM_ADMIN_PASSWORD
-      - SOUNDSTORM_ADMIN_EMAIL
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
-      - AWS_REGION
-      - AWS_S3_BUCKET_NAME
     logging:
       driver: awslogs
       options:
@@ -63,46 +81,27 @@ services:
         awslogs-region: us-east-1
         awslogs-stream-prefix: web
 
-  # Lock down Elasticsearch clients to other Docker hosts
-  # search:
-  #   expose:
-  #     - 9200
-  #   logging:
-  #     driver: awslogs
-  #     options:
-  #       awslogs-group: soundstorm
-  #       awslogs-region: us-east-1
-  #       awslogs-stream-prefix: search
-
   # Background job processor for the application, running background
   # jobs within the Rails context. This container will always use the
   # same image as +web+, ensuring that both services are launched with
   # the same codebase.
-  queue:
+  sidekiq:
     image: weathermen/soundstorm
     command: bundle exec sidekiq -C config/sidekiq.yml
     depends_on:
       - db
       - redis
       - web
+    environment:
+      - RAILS_MASTER_KEY
     env_file:
       - .env.production
-    environment:
-      - SECRET_KEY_BASE
-      - SOUNDSTORM_HOST
-      - SOUNDSTORM_ADMIN_USERNAME
-      - SOUNDSTORM_ADMIN_PASSWORD
-      - SOUNDSTORM_ADMIN_EMAIL
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
-      - AWS_REGION
-      - AWS_S3_BUCKET_NAME
     logging:
       driver: awslogs
       options:
         awslogs-group: soundstorm
         awslogs-region: us-east-1
-        awslogs-stream-prefix: queue
+        awslogs-stream-prefix: sidekiq
 
   # Caddy outbound HTTP server for serving static files and terminating SSL.
   # The app is proxied underneath this server so that all requests going
@@ -117,11 +116,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    env_file:
-      - .env.production
     environment:
       - SOUNDSTORM_HOST
-      - SOUNDSTORM_ADMIN_EMAIL
     logging:
       driver: awslogs
       options:
@@ -130,4 +126,5 @@ services:
         awslogs-stream-prefix: httpd
 
 volumes:
-  redis:
+  redis_cache:
+  redis_queue:

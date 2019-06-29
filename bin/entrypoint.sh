@@ -1,9 +1,8 @@
-#!/bin/bash
-#
-# ENTRYPOINT script for Docker containers. This script is run prior to
-# any command `exec`-ed or `run` in a container, and ensures the
-# database schema and all dependencies are up-to-date.
+#!/bin/sh
+set -e
 
-if [ "$RAILS_ENV" != "production" ]; then ./bin/build; fi
+# Remove a potentially pre-existing server.pid for Rails.
+rm -f /usr/src/app/tmp/pids/server.pid
 
+# Then exec the container's main process (what's set as CMD in the Dockerfile).
 exec "$@"

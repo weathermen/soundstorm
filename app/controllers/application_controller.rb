@@ -33,6 +33,11 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def health
+    @title = 'Health Check'
+    head :no_content
+  end
+
   protected
 
   def info_for_paper_trail

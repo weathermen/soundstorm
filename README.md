@@ -35,62 +35,54 @@ SOUNDSTORM_HOST=your.soundstorm.domain
 SOUNDSTORM_ADMIN_USERNAME=your-username
 SOUNDSTORM_ADMIN_PASSWORD=your-password
 SOUNDSTORM_ADMIN_EMAIL=valid@email.address
-#DATABASE_URL=postgres://url@to.your.database:5432
-#REDIS_URL=rediss://url@to.your.redis:6379
+DATABASE_URL=postgres://url@to.your.database.server:5432
+REDIS_URL=rediss://url@to.your.redis.server:6379
 CDN_URL=https://cdn.soundstorm.domain
 SMTP_USERNAME=your-smtp-server-user
 SMTP_PASSWORD=your-smtp-server-password
 SMTP_HOST=smtp.server.if.not.using.sendgrid.net
 ```
 
-Then, run the setup task:
+Create the database, set up its schema, and load in seed data:
 
 ```bash
-RAILS_ENV=production bin/soundstorm rails db:setup
+docker run --env-file .env weathermen/soundstorm rails db:setup
 ```
 
-This will create the database and set up its schema. You can now start
-all containers by running the following command:
+Start the server:
 
 ```bash
-RAILS_ENV=production bin/soundstorm start
+docker create --env-file .env --publish 3000:3000 weathermen/soundstorm
 ```
 
-If DNS is set up correctly, you should now be able to access your
-Soundstorm instance at the domain specified by `$SOUNDSTORM_HOST` in
-your `.env` configuration.
+You should now be able to access the app at <http://localhost:3000>.
+It's recommended that you proxy dynamic requests from an httpd running
+on `:80` and/or `:443`, but this is optional to keep static asset
+requests from hitting the app server.
 
 ## Development
 
 The above goes into installing Soundstorm for real-world use, but you
-may also want to contribute to the project in some way. For this, it's
-recommended that you install dependencies locally.
+may also want to contribute to the project in some way. Developing on
+Soundstorm also requires the use of Docker.
 
-If you're on a Mac, run this command to install hard dependencies:
+First, make sure your `$COMPOSE_FILE` is set, so that development-level
+configuration is included whenever `docker-compose` is in use:
 
 ```bash
-brew bundle
+export COMPOSE_FILE="docker-compose.yml:docker-compose.development.yml"
 ```
 
-On Linux, make sure you have the following packages installed:
-
-- libsndfile-dev
-- ffmpeg
-- nodejs
-- yarn
-
-Next, you can run the setup script to install all application
-dependencies onto your machine:
+Next, set up the database:
 
 ```bash
-bin/setup
+docker-compose run --rm web rails db:setup
 ```
 
-If you're using [puma-dev][], the next step would be to link to
-https://soundstorm.test:
+You can now start all servers:
 
 ```bash
-puma-dev link
+docker-compose up
 ```
 
 You should now be able to visit the server and log in with username
@@ -100,6 +92,29 @@ environment variables when running `bin/setup`.
 
 For more information on making contributions to this project, read the
 [contributing guide][].
+
+## Deployment
+
+Soundstorm can be easily deployed to your **Docker Machine** by setting
+the `$DOCKER_HOST` to that of your machine's IP and running the
+following command:
+
+```bash
+docker-machine create soundstorm
+eval "$(docker-machine env soundstorm)"
+docker-compose -f docker-compose.yml -f docker-compose.production.yml up
+```
+
+The production config also works with AWS ECS, which is how
+https://soundstorm.com is deployed:
+
+```bash
+ecs-cli compose -f docker-compose.yml -f docker-compose.production.yml up
+```
+
+(This assumes that ECS CLI is configured properly and your AWS credentials
+are included in the shell as `$AWS_ACCESS_KEY_ID` and
+`$AWS_SECRET_ACCESS_KEY`)
 
 [ActivityPub]: https://www.w3.org/TR/activitypub/
 [Mastodon]: https://joinmastodon.org

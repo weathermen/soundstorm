@@ -12,6 +12,12 @@ services:
     volumes:
       - postgresql:/var/lib/postgresql/data
 
+  # Elasticsearch is used as a global search index
+  search:
+    image: elasticsearch:5.6
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data
+
   # The "majestic monolith" that powers Soundstorm, a Rails application
   # serving HTML (for the most part) and containing all of the logic
   # needed to run a Soundstorm instance.
@@ -19,13 +25,12 @@ services:
     command: bin/rails server -p 3000 -b '0.0.0.0'
     depends_on:
       - db
+      - search
     volumes:
+      - bundle:/usr/local/bundle/
+      - yarn:/usr/src/app/node_modules
       - yarn_cache:/root/.yarn
     environment:
-      - BUNDLE_APP_CONFIG=/srv/.bundle
-      - BUNDLE_GEMS=/gems
-      - DATABASE_URL=postgres://postgres@db:5432
-      - ELASTICSEARCH_URL=http://elastic:changeme@search:9200
       - SOUNDSTORM_HOST
       - SOUNDSTORM_ADMIN_USERNAME
       - SOUNDSTORM_ADMIN_PASSWORD
@@ -33,5 +38,7 @@ services:
 
 volumes:
   postgresql:
+  elasticsearch:
+  bundle:
+  yarn:
   yarn_cache:
-  # elasticsearch:

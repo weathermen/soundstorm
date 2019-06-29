@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   resources :likes, only: %i[index]
   resources :comments, only: %i[index show]
   resources :translations
+  get :health, to: 'application#health'
   get '/users', to: 'users#index', as: :users
   resources :users, path: '', only: %i[show] do
     member do

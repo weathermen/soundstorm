@@ -7,10 +7,6 @@ module Federatable
     has_paper_trail meta: { activity: :as_activity }
   end
 
-  def activity_id
-    raise NotImplementedError, "#{self.class.name}#activity_id"
-  end
-
   def actor_id
     if is_a? User
       actor.id

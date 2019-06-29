@@ -17,6 +17,7 @@
                 = t('.nav.profile', name: current_user.name)
             = nav_link_to :timeline, root_path
             = nav_link_to :library, likes_path
+            = nav_link_to :upload, new_track_path
             = nav_link_to :settings, edit_user_registration_path
             = nav_link_to :logout, destroy_user_session_path, method: :delete
           - else

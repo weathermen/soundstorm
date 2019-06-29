@@ -63,7 +63,6 @@ ActiveRecord::Schema.define(version: 2018_12_23_214621) do
     t.text "content", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "activity_id", null: false
     t.index ["parent_id"], name: "index_comments_on_parent_id"
     t.index ["track_id"], name: "index_comments_on_track_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
@@ -198,7 +197,6 @@ ActiveRecord::Schema.define(version: 2018_12_23_214621) do
     t.integer "likers_count", default: 0
     t.string "description"
     t.boolean "downloadable", default: false, null: false
-    t.string "activity_id", null: false
     t.index ["slug"], name: "index_tracks_on_slug"
     t.index ["user_id"], name: "index_tracks_on_user_id"
   end
@@ -246,7 +244,6 @@ ActiveRecord::Schema.define(version: 2018_12_23_214621) do
     t.integer "likees_count", default: 0
     t.string "biography"
     t.boolean "admin", default: false, null: false
-    t.string "activity_id", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
