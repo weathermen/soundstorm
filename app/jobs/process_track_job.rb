@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-# After a track has been processed, perform post-processing tasks such
-# as segmentization and waveform generation.
+# After a track has been processed by ActiveStorage, perform
+# post-processing tasks such as segmentization and waveform generation.
 class ProcessTrackJob < ApplicationJob
   include ActiveStorage::Downloading
 
