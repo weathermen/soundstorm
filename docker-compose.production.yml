@@ -45,6 +45,7 @@ services:
     command: redis-server /etc/redis/queue.conf
     volumes:
       - redis_queue:/data
+      - ./config/redis:/etc/redis
     logging:
       driver: awslogs
       options:
@@ -69,11 +70,26 @@ services:
     image: weathermen/soundstorm
     depends_on:
       - db
-      - redis
+      - cache
+      - queue
     environment:
-      - RAILS_MASTER_KEY
-    env_file:
-      - .env.production
+      - SOUNDSTORM_HOST
+      - SOUNDSTORM_CDN_URL
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_REGION
+      - AWS_S3_BUCKET_NAME
+      - DATABASE_URL=postgres://postgres@db:5432
+      - REDIS_CACHE_URL=redis://cache:6379
+      - REDIS_QUEUE_URL=redis://queue:6379
+      - RAILS_SERVE_STATIC_FILES=false
+      - RAILS_LOG_TO_STDOUT=true
+      - SMTP_HOST
+      - SMTP_PORT
+      - SMTP_USERNAME
+      - SMTP_PASSWORD
+      - SMTP_AUTH
+      - SMTP_TLS
     logging:
       driver: awslogs
       options:
@@ -90,12 +106,26 @@ services:
     command: bundle exec sidekiq -C config/sidekiq.yml
     depends_on:
       - db
-      - redis
+      - queue
       - web
     environment:
-      - RAILS_MASTER_KEY
-    env_file:
-      - .env.production
+      - SOUNDSTORM_HOST
+      - SOUNDSTORM_CDN_URL
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_REGION
+      - AWS_S3_BUCKET_NAME
+      - DATABASE_URL=postgres://postgres@db:5432
+      - REDIS_CACHE_URL=redis://cache:6379
+      - REDIS_QUEUE_URL=redis://queue:6379
+      - RAILS_SERVE_STATIC_FILES=false
+      - RAILS_LOG_TO_STDOUT=true
+      - SMTP_HOST
+      - SMTP_PORT
+      - SMTP_USERNAME
+      - SMTP_PASSWORD
+      - SMTP_AUTH
+      - SMTP_TLS
     logging:
       driver: awslogs
       options:

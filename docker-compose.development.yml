@@ -17,7 +17,7 @@ services:
   web:
     build: .
     ports:
-      - "${RAILS_PORT}:3000"
+      - "${RAILS_PORT:-3000}:3000"
     links:
       - mailcatcher
     volumes:

@@ -20,8 +20,7 @@ Rails.application.configure do
   config.action_controller.perform_caching = true
   config.action_mailer.perform_caching     = true
 
-  # Ensures that a master key has been made available in either ENV["RAILS_MASTER_KEY"]
-  # or in config/master.key. This key is used to decrypt credentials (and other encrypted files).
+  # Don't require a master key, read secrets from the environment
   config.require_master_key = false
 
   # Disable serving static files from the `/public` folder by default since
@@ -63,12 +62,14 @@ Rails.application.configure do
   config.log_tags = [:request_id]
 
   # Use Redis to store the fragment cache in production
-  config.cache_store = :redis_cache_store, { url: "#{Soundstorm::REDIS_URL}/0" }
+  config.cache_store = :redis_cache_store, {
+    url: "#{Soundstorm::REDIS_CACHE_URL}/0"
+  }
 
   # Use a separate Redis database for the page cache
   config.action_dispatch.rack_cache = {
-    metastore: "#{Soundstorm::REDIS_URL}/1/meta",
-    entitystore: "#{Soundstorm::REDIS_URL}/1/entity"
+    metastore: "#{Soundstorm::REDIS_CACHE_URL}/1/metastore",
+    entitystore: "#{Soundstorm::REDIS_CACHE_URL}/1/entitystore"
   }
 
   # Use Sidekiq for background jobs
@@ -95,7 +96,7 @@ Rails.application.configure do
   ActionMailer::Base.smtp_settings = {
     user_name: Soundstorm::SMTP_USERNAME,
     password: Soundstorm::SMTP_PASSWORD,
-    domain: config.host,
+    domain: Soundstorm::HOST,
     address: Soundstorm::SMTP_HOST,
     port: Soundstorm::SMTP_PORT,
     authentication: Soundstorm::SMTP_AUTH,

@@ -32,9 +32,6 @@ services:
       - yarn_cache:/root/.yarn
     environment:
       - SOUNDSTORM_HOST
-      - SOUNDSTORM_ADMIN_USERNAME
-      - SOUNDSTORM_ADMIN_PASSWORD
-      - SOUNDSTORM_ADMIN_EMAIL
 
 volumes:
   postgresql:

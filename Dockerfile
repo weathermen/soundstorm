@@ -16,7 +16,8 @@ RUN apk add --no-cache --update build-base \
                                 yarn \
                                 tzdata \
                                 postgresql-dev \
-                                libsndfile-dev
+                                libsndfile-dev \
+                                caddy
 
 # Define build arguments
 ARG RAILS_ENV=development

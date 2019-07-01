@@ -20,45 +20,88 @@ Soundstorm is distributed as a [Docker image][] for deployment ease. The
 reference instance, https://soundstorm.social, uses Amazon ECS for
 deployment, but the image is self-contained and can be run on any
 infrastructure. This image runs in `RAILS_ENV=production` mode by
-default.
+default, and comes pre-loaded with compiled assets and everything you'll
+need to run a Soundstorm instance in production.
 
-First, pull down the latest version:
+First, pull down the latest production image:
 
 ```bash
-docker pull weathermen/soundstorm:latest
+docker pull weathermen/soundstorm
 ```
 
 Create a `.env` file in the local dir for your configuration:
 
 ```bash
 SOUNDSTORM_HOST=your.soundstorm.domain
-SOUNDSTORM_ADMIN_USERNAME=your-username
-SOUNDSTORM_ADMIN_PASSWORD=your-password
-SOUNDSTORM_ADMIN_EMAIL=valid@email.address
 DATABASE_URL=postgres://url@to.your.database.server:5432
 REDIS_URL=rediss://url@to.your.redis.server:6379
 CDN_URL=https://cdn.soundstorm.domain
 SMTP_USERNAME=your-smtp-server-user
 SMTP_PASSWORD=your-smtp-server-password
 SMTP_HOST=smtp.server.if.not.using.sendgrid.net
+RAILS_SERVE_STATIC_FILES=true
 ```
 
 Create the database, set up its schema, and load in seed data:
 
 ```bash
-docker run --env-file .env weathermen/soundstorm rails db:setup
+docker run --rm -it \
+           --env-file .env \
+           --env SOUNDSTORM_ADMIN_USERNAME=your-username \
+           --env SOUNDSTORM_ADMIN_PASSWORD=your-password \
+           --env SOUNDSTORM_ADMIN_EMAIL=valid@email.address \
+           weathermen/soundstorm \
+           rails db:setup
 ```
 
-Start the server:
+You can now start the app server using the default container command.
+Make sure you have a Docker Network created so the container can talk to
+other neighboring containers:
 
 ```bash
-docker create --env-file .env --publish 3000:3000 weathermen/soundstorm
+docker network create soundstorm
+docker create --env-file .env --network soundstorm weathermen/soundstorm
 ```
 
-You should now be able to access the app at <http://localhost:3000>.
-It's recommended that you proxy dynamic requests from an httpd running
-on `:80` and/or `:443`, but this is optional to keep static asset
-requests from hitting the app server.
+You'll still need to proxy requests from an HTTP server to the app
+server in order to process and terminate SSL. The soundstorm image does
+not come with SSL certificates built in, you'll need to either obtain
+one yourself or use the [Caddy][] server to obtain them for you via
+LetsEncrypt.
+
+Here's an example Caddyfile you can use:
+
+```caddy
+your.soundstorm.host {
+  log stdout
+  errors stderr
+  tls {
+    dns route53
+  }
+  root /srv/public
+
+
+  proxy / http://web:3000 {
+    fail_timeout 300s
+    transparent
+    websocket
+    header_upstream X-Forwarded-Ssl on
+  }
+}
+```
+
+Start the Caddy server like this:
+
+```bash
+docker pull abiosoft/caddy
+docker create \
+  --volume $(pwd)/Caddyfile:/etc/Caddyfile \
+  --volume $HOME/.caddy:/root/.caddy \
+  --publish 80:80 \
+  --publish 443:443 \
+  --network soundstorm
+  abisoft/caddy
+```
 
 ## Development
 
@@ -79,25 +122,24 @@ Next, set up the database:
 docker-compose run --rm web rails db:setup
 ```
 
-You can now start all servers:
+You can now start all services:
 
 ```bash
 docker-compose up
 ```
 
-You should now be able to visit the server and log in with username
-**admin** and password **Password1!**. This is configurable by setting
-`$SOUNDSTORM_ADMIN_USERNAME` and `$SOUNDSTORM_ADMIN_PASSWORD` as
-environment variables when running `bin/setup`.
+Once the web app loads, browse to <http://localhost:3000> and log in with
+username **admin** and password **Password1!**. This is configurable by
+setting `$SOUNDSTORM_ADMIN_USERNAME` and `$SOUNDSTORM_ADMIN_PASSWORD` as
+environment variables when running `db:setup`.
 
 For more information on making contributions to this project, read the
 [contributing guide][].
 
 ## Deployment
 
-Soundstorm can be easily deployed to your **Docker Machine** by setting
-the `$DOCKER_HOST` to that of your machine's IP and running the
-following command:
+Soundstorm can be easily deployed to your **Docker Machine** with the
+provided production configuration:
 
 ```bash
 docker-machine create soundstorm

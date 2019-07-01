@@ -47,8 +47,11 @@ module Soundstorm
   # URL to the PostgreSQL server
   DATABASE_URL = ENV['DATABASE_URL']
 
-  # URL to the Redis server
-  REDIS_URL = ENV['REDIS_URL']
+  # URL to the Redis server for storing the cache
+  REDIS_CACHE_URL = ENV['REDIS_CACHE_URL']
+
+  # URL to the Redis server for storing the background job queue
+  REDIS_QUEUE_URL = ENV['REDIS_QUEUE_URL']
 
   # Whether to serve static files in production. Defaults to +false+.
   SERVE_STATIC_FILES = ENV['RAILS_SERVE_STATIC_FILES'].present?
