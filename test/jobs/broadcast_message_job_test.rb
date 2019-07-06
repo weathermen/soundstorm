@@ -13,6 +13,7 @@ class BroadcastMessageJobTest < ActiveJob::TestCase
     )
 
     assert_enqueued_jobs 1, only: BroadcastMessageJob
+    refute version.broadcasted?
     assert BroadcastMessageJob.perform_now(version)
     assert version.broadcasted?
   end

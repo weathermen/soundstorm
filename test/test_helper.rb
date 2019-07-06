@@ -12,7 +12,7 @@ require 'simplecov-console'
 VCR.configure do |config|
   config.cassette_library_dir = 'test/cassettes'
   config.hook_into :webmock
-  config.ignore_hosts('localhost', '127.0.0.1', 'test.host')
+  config.ignore_hosts('localhost', '127.0.0.1', 'test.host', 'search')
 end
 
 SimpleCov.formatter = SimpleCov::Formatter::Console
@@ -46,7 +46,7 @@ class ActiveSupport::TestCase
   private
 
   def index_existing_models
-    [User, Track, Comment].each(&:import)
+    [User, Track, Comment].each { |model| model.import(force: true) }
   end
 end
 
