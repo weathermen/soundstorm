@@ -5,7 +5,7 @@ module ActivityPub
   class Actor
     DEFAULT_TYPE = 'Person'
 
-    attr_reader :name, :type, :host, :secret, :summary, :private_key, :params
+    attr_reader :name, :type, :host, :secret, :summary, :params
 
     delegate :public_key, to: :private_key
     delegate :to_json, to: :as_json
@@ -15,8 +15,14 @@ module ActivityPub
       @type = type
       @host = host
       @summary = summary
-      @private_key = OpenSSL::PKey::RSA.new(key, secret)
+      @key = key
+      @secret = secret
+      @private_key = 
       @params = params
+    end
+
+    def private_key
+      OpenSSL::PKey::RSA.new(@key, @secret)
     end
 
     # Find an +Actor+ remotely by its ID, a fully-qualified path to the
