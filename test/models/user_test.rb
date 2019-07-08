@@ -8,6 +8,7 @@ class UserTest < ActiveSupport::TestCase
     domain = Rails.configuration.host
     user = User.new(name: name)
 
+    assert user.valid?, user.errors.full_messages.to_sentence
     assert_equal "#{name}@#{domain}", user.handle
   end
 

@@ -23,7 +23,7 @@ module PaperTrail
     # change.
     def remote_followers
       followers.reject do |follower|
-        follower.host == Rails.configuration.host
+        follower.host == ::Rails.configuration.host
       end
     end
 
@@ -47,11 +47,17 @@ module PaperTrail
     #
     # @return [String] "uploaded" or "created"
     def verb
-      return 'uploaded' if upload?
-      "#{event}ed"
+      case event
+      when 'create'
+        upload? ? 'uploaded' : 'created'
+      when 'update'
+        'updated'
+      when 'destroy'
+        'deleted'
+      end
     end
 
-    # Type of the event being braodcast.
+    # Type of the event being broadcast.
     #
     # @return [String] Class name of the event type.
     def type

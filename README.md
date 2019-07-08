@@ -142,6 +142,7 @@ Soundstorm can be easily deployed to your **Docker Machine** with the
 provided production configuration:
 
 ```bash
+source .env # see "Installation" above
 docker-machine create soundstorm
 eval "$(docker-machine env soundstorm)"
 docker-compose -f docker-compose.yml -f docker-compose.production.yml up

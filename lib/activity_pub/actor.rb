@@ -21,12 +21,11 @@ module ActivityPub
       @summary = summary
       @key = key
       @secret = secret
-      @private_key = 
       @params = params
     end
 
     def private_key
-      OpenSSL::PKey::RSA.new(@key, @secret)
+      @private_key ||= OpenSSL::PKey::RSA.new(@key, @secret)
     end
 
     # Find an +Actor+ remotely by its ID, a fully-qualified path to the

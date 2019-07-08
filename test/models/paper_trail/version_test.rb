@@ -5,62 +5,64 @@ require 'test_helper'
 module PaperTrail
   class VersionTest < ActiveSupport::TestCase
     setup do
-      @user = users(:one).tap do |u|
-        u.follow!(remote)
-      end
+      @user = users(:one)
       @track = tracks(:one_untitled)
-      @version = PaperTrail::Version.create!(
+      mp3 = ::Rails.root.join('test', 'fixtures', 'files', 'one.mp3')
+      @track.audio.attach(io: mp3.open, filename: mp3.basename)
+      @create = PaperTrail::Version.create!(
         whodunnit: @user,
         item: @track,
         event: 'create'
+      )
+      @update = PaperTrail::Version.create!(
+        whodunnit: @user,
+        item: @track,
+        event: 'update'
       )
     end
 
     test 'remote followers' do
       remote = users(:remote)
-      @user.follow!(remote)
 
-      assert_includes(remote, @version.followers)
-      assert_includes(remote, @version.remote_followers)
+      remote.follow! @user
+
+      assert_includes(@create.followers, remote)
+      assert_includes(@create.remote_followers, remote)
     end
 
     test 'user' do
-      assert_equal(@user, @version.user)
+      assert_equal(@user, @create.user)
     end
 
     test 'upload?' do
-      update = PaperTrail::Version.create!(
-        whodunnit: @user,
-        item: @track,
-        action: 'update'
-      )
-
-      assert(@version.upload?)
-      refute(update.upload?)
+      assert(@create.upload?)
+      refute(@update.upload?)
     end
 
     test 'verb' do
-      assert_equal('created', @version.verb)
+      assert_equal('uploaded', @create.verb)
+      assert_equal('updated', @update.verb)
     end
 
     test 'type' do
-      assert_equal('Create', @version.type)
+      assert_equal('Create', @create.type)
+      assert_equal('Update', @update.type)
     end
 
     test 'message' do
-      assert_equal(@version.activity_id, @version.message.id)
-      assert_equal(@version.type, @version.message.type)
-      assert_equal(@version.created_at, @version.message.published)
-      assert_equal(@version.actor, @version.message.actor)
-      assert_equal(@version.as_activity, @version.message.payload)
+      assert_equal(@create.activity_id, @create.message.id)
+      assert_equal(@create.type, @create.message.type)
+      assert_equal(@create.created_at, @create.message.published)
+      assert_equal(@create.actor.id, @create.message.actor.id)
+      assert_equal(@create.as_activity, @create.message.payload)
     end
 
     test 'broadcasted?' do
-      refute(@version.broadcasted?)
+      refute(@create.broadcasted?)
 
-      @version.update!(broadcasted_at: Time.current)
+      @create.update!(broadcasted_at: Time.current)
 
-      assert(@version.broadcasted?)
+      assert(@create.broadcasted?)
     end
   end
 end
