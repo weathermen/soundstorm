@@ -3,6 +3,10 @@
 module ActivityPub
   # Represents the entity that creates activity messages.
   class Actor
+    extend ActiveSupport::Autoload
+
+    autoload :Finger
+
     DEFAULT_TYPE = 'Person'
 
     attr_reader :name, :type, :host, :secret, :summary, :params

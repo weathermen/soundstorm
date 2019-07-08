@@ -9,7 +9,7 @@ module ActivityPub
         @finger = Finger.new(
           name: 'lester',
           host: 'test.host',
-          href: 'https://test.host/lester'
+          href: @href
         )
       end
 
@@ -20,10 +20,10 @@ module ActivityPub
       test 'json' do
         link = @finger.as_json[:links].first
 
-        assert_equal @finger.id, @finger.as_json[:id]
+        assert_equal @finger.id, @finger.as_json[:subject]
         assert_equal Finger::RELATIONSHIP, link[:rel]
         assert_equal Finger::CONTENT_TYPE, link[:type]
-        assert_equal @finger.href, link[:href]
+        assert_equal 'https://test.host/lester', link[:href]
       end
     end
   end

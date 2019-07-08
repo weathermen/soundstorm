@@ -9,7 +9,7 @@ class TranslationTest < ActiveSupport::TestCase
   end
 
   test 'slug' do
-    assert_equal Base64.encode(@translation.key), @translation.slug
+    assert_equal Base64.encode64(@translation.key), @translation.slug
   end
 
   test 'find by slug' do
