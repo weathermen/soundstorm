@@ -65,6 +65,7 @@ gem 'elasticsearch-model', '~> 5', require: 'elasticsearch/model'
 gem 'omniauth'
 gem 'omniauth-mastodon'
 gem 'mastodon-api', github: 'tubbo/mastodon-api', branch: 'upgrade-to-http-v4'
+gem 'omniauth-rails_csrf_protection'
 # Custom Translations
 gem 'i18n-active_record', require: 'i18n/active_record'
 
