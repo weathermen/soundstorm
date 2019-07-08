@@ -19,6 +19,14 @@ module PaperTrail
       user.followers(User)
     end
 
+    # Users from remote Soundstorm instances that are following this
+    # change.
+    def remote_followers
+      followers.reject do |follower|
+        follower.host == Rails.configuration.host
+      end
+    end
+
     # User who performed this change.
     #
     # @return [User] or `nil` if the whodunnit field is blank.
@@ -33,16 +41,6 @@ module PaperTrail
     #                   and event is "create".
     def upload?
       item.is_a?(Track) && event == 'create'
-    end
-
-    # Test if this change is not meant for federating outside the
-    # server. When all changes are local, federation of the activity
-    # should not occur.
-    #
-    # @return [Boolean] whether the user's host is local
-    def local?
-      return true unless user.present?
-      user&.host == ::Rails.configuration.host
     end
 
     # Denote what kind of change this is on the frontend.
@@ -86,7 +84,7 @@ module PaperTrail
     #
     # @return [BroadcastMessageJob] or `nil` if not broadcasting
     def broadcast
-      BroadcastMessageJob.perform_later(self) unless broadcasted? || local?
+      BroadcastMessageJob.perform_later(self) unless broadcasted?
     end
   end
 end

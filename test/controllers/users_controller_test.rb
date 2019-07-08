@@ -49,5 +49,9 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_equal ActivityPub::Actor::Finger::RELATIONSHIP, link[:rel]
     assert_equal ActivityPub::Actor::Finger::CONTENT_TYPE, link[:type]
     assert_equal @user.actor.id, link[:href]
+
+    get webfinger_url, params: { resource: 'acct:bogus@test.host' }
+
+    assert_response :not_found
   end
 end

@@ -31,4 +31,10 @@ class UserTest < ActiveSupport::TestCase
       assert user.update!(password: 'TotallyN3wPassword$')
     end
   end
+
+  test 'find by webfinger resource' do
+    user = users(:one)
+
+    assert_equal user, User.find_by_resource("acct:#{user.handle}")
+  end
 end

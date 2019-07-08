@@ -25,6 +25,17 @@ module ActivityPub
         assert_equal Finger::CONTENT_TYPE, link[:type]
         assert_equal 'https://test.host/lester', link[:href]
       end
+
+      test 'find' do
+        skip 'until we can figure out local VCR requests'
+        VCR.use_cassette :webfinger do
+          finger = Finger.find('acct:admin@soundstorm.test')
+
+          refute_nil(finger)
+          assert_equal('acct:admin@soundstorm.test', finger.id)
+          assert_equal('https://soundstorm.test/admin', finger.links.first[:href])
+        end
+      end
     end
   end
 end

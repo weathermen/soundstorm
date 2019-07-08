@@ -75,15 +75,6 @@ class User < ApplicationRecord
     end
   end
 
-  # Find a given +User+ record by its Webfinger resource string, and
-  # throw an exception when the User cannot be found.
-  #
-  # @throws [ResourceNotFound] when User cannot be found.
-  # @return [User] from resource string.
-  def self.find_by_resource!(resource)
-    find_by_resource(resource) || raise(User::ResourceNotFound, resource)
-  end
-
   # Find a given +User+ record by its Webfinger resource string. Does
   # not attempt to find users that are not from the local server.
   #
@@ -148,7 +139,7 @@ class User < ApplicationRecord
   #
   # @return [String] +username@domain.host+
   def handle
-    "#{name}@#{Rails.configuration.host}"
+    "#{name}@#{host}"
   end
 
   # ActivityPub representation of this User.

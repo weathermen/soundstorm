@@ -32,7 +32,7 @@ deploy:
   on:
     tags: true
 # Deploy production image to AWS ECS
-- provider: script
-  script: ecs-cli compose -f docker-compose.yml -f docker-compose.production.yml up
-  on:
-    branch: master
+# - provider: script
+#   script: ecs-cli compose -f docker-compose.yml -f docker-compose.production.yml up
+#   on:
+#     branch: master

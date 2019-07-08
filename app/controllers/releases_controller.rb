@@ -3,10 +3,6 @@
 class ReleasesController < ApplicationController
   before_action :authenticate_user!, except: %i[show]
 
-  def index
-    @releases = Release.all
-  end
-
   def show
     @user = User.find_by(name: params[:user_id])
     @release = @user.releases.find(params[:id])

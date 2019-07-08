@@ -5,9 +5,7 @@ class BroadcastMessageJob < ApplicationJob
   queue_as :federation
 
   def perform(version)
-    version.followers.each do |follower|
-      next if follower.host == Rails.configuration.host
-
+    version.remote_followers.each do |follower|
       ActivityPub.deliver(version.message, to: follower.host)
     end
 
