@@ -16,7 +16,9 @@ VCR.configure do |config|
 end
 
 SimpleCov.formatter = SimpleCov::Formatter::Console
-SimpleCov.start unless ENV['CI']
+SimpleCov.start do
+  add_filter %r{^/test}
+end unless ENV['CI']
 
 class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.

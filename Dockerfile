@@ -17,7 +17,8 @@ RUN apk add --no-cache --update build-base \
                                 tzdata \
                                 postgresql-dev \
                                 libsndfile-dev \
-                                caddy
+                                caddy \
+                                imagemagick
 
 # Define build arguments
 ARG RAILS_ENV=development

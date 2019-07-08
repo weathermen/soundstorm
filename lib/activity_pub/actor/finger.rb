@@ -10,7 +10,7 @@ module ActivityPub
       # HTTP Content-Type for this data.
       CONTENT_TYPE = 'application/activity+json'
 
-      attr_reader :name, :host, :href
+      attr_reader :name, :host, :links
 
       # @param [String] name - Actor name
       # @param [String] host - Actor host

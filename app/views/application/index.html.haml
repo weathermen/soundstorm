@@ -15,7 +15,7 @@
         - unless current_model == Comment
           = link_to t('.new', model: current_model.name), class: 'button'
   %tbody.table__results
-    - @models.each do |model|
+    - @search.results.each do |model|
       %tr{ id: admin_row_id(model), class: admin_row_class }
         - admin_fields.each do |field|
           %td{ class: admin_column_class(field) }

@@ -17,11 +17,10 @@ class ApplicationController < ActionController::Base
   def index
     @query = params[:q] || '*'
     @title = t(:admin, scope: %i[application], models: current_model.name.pluralize)
-    @models = if current_model.respond_to? :search
-      current_model.search(@query).records
-    else
-      current_model.all
-    end
+    @models = AdminSearch.new(
+      query: @query,
+      model: current_model
+    )
   end
 
   def splash
