@@ -12,7 +12,7 @@ services:
 install: docker-compose run web bin/rails db:setup ci:setup
 script:
   - docker-compose run web bin/rails test
-  - docker-compose run web bin/rails test:system
+  #- docker-compose run web bin/rails test:system
 after_script: docker-compose run --rm web bin/rails ci:report
 # Build the production image
 after_success: docker-compose -f docker-compose.yml -f docker-compose.production.yml build web

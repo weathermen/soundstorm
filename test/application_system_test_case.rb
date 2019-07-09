@@ -2,6 +2,7 @@
 
 require 'test_helper'
 require 'socket'
+require 'capybara'
 
 Capybara.server = :puma, { Silent: true }
 
