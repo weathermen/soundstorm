@@ -22,12 +22,12 @@ RUN apk add --no-cache --update build-base \
 
 # Define build arguments
 ARG RAILS_ENV=development
+ARG SECRET_KEY_BASE
 
 # Set up environment
 ENV APP_PATH=/usr/src/app \
     RAILS_LOG_TO_STDOUT=true \
-    NODE_ENV=$RAILS_ENV \
-    RAILS_ENV=$RAILS_ENV
+    NODE_ENV=$RAILS_ENV
 
 RUN mkdir -p $APP_PATH
 WORKDIR $APP_PATH
