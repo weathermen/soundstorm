@@ -26,6 +26,7 @@ class ReleasesTest < ApplicationSystemTestCase
   end
 
   test 'viewing and editing an existing release' do
+    skip
     release = @user.releases.first
     description = 'A new description of the release'
 

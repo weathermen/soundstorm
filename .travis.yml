@@ -8,28 +8,44 @@ env:
   - secure: rTfMsbZRmlau7BaSyzmk+NViAeThge7E+5DLrNce0wQguaU9elS38VBNz9YMOZA6fryG7NqzpBXNnC1UxbYFe29vW8M+MtnIHgt7HrxypUAwXv9wbeivUX5+BbjHqasyMil5BYqBRgZPpXkWg9Ggr5Ngg1J9dOZ49JTgS0n4LBjUWNpXYR9HkQRfdInQUbo8ykQ2p5WKp6nuyRZDuCt7OyLSR1kOdyXRxpUHE5C3tbuF8t9bXGTL9Ux3vvwECGN6+gFpMoMkpCYepiTcQ6zZDGOlBfJUK+TXLLGJKcyqSCEyjfqZ65tWmvBWmiVLHT54amrfki2ZjXORhtTHQfMcubzamwcuVke1Db9EHjJM7KuvCO9x+ewuHjM6SbZRASGiJOPX3fCwDV6B6ndt4/GTc9T99c5WD+C1hQCcZzzfTezoC55IqljEeuheiU+5IzCaMjFpwy7Dzn/kaYnaBMJv4mh0eitdBn4mvwb323AoeIrkgArCShuFf1fOBi9yFZTxRu6u7EaPMlS8Q8yl/jwVZyBAjE0n846sjuB0UySOQotWBuQwYQq6F8q+VjhQv08dzssVH1VJbIJtuIqseDK2+ibhttXfWbbk0Jxq+poDcHuT2pzgfUetqKo2D3Z8aoaYo8iAyPURAqqHTsc4XBuDJdm1p9wN468S224NeQVpbVg=
 services:
   - docker
+
 # Build the test environment image
 install: docker-compose run web bin/rails db:setup ci:setup
+
+# Run tests
 script:
   - docker-compose run web bin/rails test
-  #- docker-compose run web bin/rails test:system
+  - docker-compose run web bin/rails test:system
+
+# Generate code coverage reports
 after_script: docker-compose run --rm web bin/rails ci:report
+
 # Build the production image
 after_success: docker-compose -f docker-compose.yml -f docker-compose.production.yml build web
+
+# Log in to Docker Hub
 before_deploy:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
-  - curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-darwin-amd64-latest
-  - docker tag weathermen/soundstorm:latest weathermen/soundstorm:${TRAVIS_TAG}
+
+# Deploy the built production image to Docker Hub
 deploy:
-# Publish production image to Docker Hub
-- provider: script
-  script:
-    - docker push weathermen/soundstorm:latest
-    - docker push weathermen/soundstorm:${TRAVIS_TAG}
-  on:
-    tags: true
-# Deploy production image to AWS ECS
-# - provider: script
-#   script: ecs-cli compose -f docker-compose.yml -f docker-compose.production.yml up
-#   on:
-#     branch: master
+  # Always publish 'master' branch as the 'latest' tag on Docker Hub
+  - provider: script
+    script:
+      - docker push weathermen/soundstorm:latest
+    on:
+      branch: master
+  # Publish new releases using their tag name
+  - provider: script
+    script:
+      - docker tag weathermen/soundstorm:latest weathermen/soundstorm:${TRAVIS_TAG}
+      - docker push weathermen/soundstorm:${TRAVIS_TAG}
+    on:
+      tags: true
+  # Deploy production image to AWS ECS
+  - provider: script
+    script:
+      - curl -o /usr/local/bin/ecs-cli https://s3.amazonaws.com/amazon-ecs-cli/ecs-cli-darwin-amd64-latest
+      - ecs-cli compose -f docker-compose.yml -f docker-compose.production.yml up
+    on:
+      branch: master
