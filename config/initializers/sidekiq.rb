@@ -4,7 +4,7 @@ if defined? Sidekiq
   common = Proc.new do |config|
     # Use a separate Redis database for the Sidekiq queue
     config.redis = {
-      url: "#{Soundstorm::REDIS_URL}/2"
+      url: "#{Soundstorm::REDIS_QUEUE_URL}/0"
     }
   end
 
