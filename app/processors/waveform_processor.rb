@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_dependency 'processor'
+
 # Create a waveform image from an uploaded Track.
 class WaveformProcessor < Processor
   IMAGE_TYPE = 'png'

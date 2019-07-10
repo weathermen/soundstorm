@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_dependency 'processor'
+
 # Process a Track's full audio file into transport segments for
 # streaming.
 class SegmentProcessor < Processor
