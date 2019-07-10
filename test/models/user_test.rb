@@ -6,7 +6,11 @@ class UserTest < ActiveSupport::TestCase
   test 'compute handle from configured host' do
     name = 'test'
     domain = Rails.configuration.host
-    user = User.new(name: name)
+    user = User.new(
+      name: name,
+      email: "#{name}@example.com",
+      password: 'Password1!'
+    )
 
     assert user.valid?, user.errors.full_messages.to_sentence
     assert_equal "#{name}@#{domain}", user.handle
