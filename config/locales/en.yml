@@ -48,6 +48,8 @@ en:
     attributes:
       user:
         name: Username
+      track:
+        downloadable: Available for Download?
   layouts:
     application:
       title: Soundstorm

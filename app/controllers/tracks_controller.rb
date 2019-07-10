@@ -13,10 +13,10 @@ class TracksController < ApplicationController
     @title = "#{@track.name} by #{@user.name}"
 
     respond_to do |format|
-      format.html # show.html.haml
-      format.m3u8 # show.m3u8.erb
-      format.json # show.json.jbuilder
-      format.xml  # show.xml.builder
+      format.html # show.html.haml      - Web Page
+      format.m3u8 # show.m3u8.erb       - Stream
+      format.json # show.json.jbuilder  - JSON API Response
+      format.xml  # show.xml.builder    - OEmbed API Response
       format.mp3 do
         return head :unauthorized unless @track.downloadable?
 
