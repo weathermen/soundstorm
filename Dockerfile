@@ -20,15 +20,6 @@ RUN apk add --no-cache --update build-base \
                                 caddy \
                                 imagemagick
 
-# Define build arguments
-ARG RAILS_ENV=development
-ARG SECRET_KEY_BASE
-
-# Set up environment
-ENV APP_PATH=/usr/src/app \
-    RAILS_LOG_TO_STDOUT=true \
-    NODE_ENV=$RAILS_ENV
-
 RUN mkdir -p $APP_PATH
 WORKDIR $APP_PATH
 
@@ -42,6 +33,15 @@ COPY yarn.lock $APP_PATH/yarn.lock
 RUN gem update bundler
 RUN bundle install --jobs `expr $(cat /proc/cpuinfo | grep -c "cpu cores") - 1` --retry 3
 RUN yarn install --check-files
+
+# Define build arguments
+ARG RAILS_ENV=development
+ARG SECRET_KEY_BASE
+
+# Set up environment
+ENV APP_PATH=/usr/src/app \
+    RAILS_LOG_TO_STDOUT=true \
+    NODE_ENV=$RAILS_ENV
 
 # Copy in application source code
 COPY . $APP_PATH
