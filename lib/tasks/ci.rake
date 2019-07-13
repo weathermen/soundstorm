@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :ci do
-  TRAVIS_TEST_RESULT = ENV['TRAVIS_TEST_RESULT']
+  TRAVIS_TEST_RESULT = ENV.fetch('TRAVIS_TEST_RESULT', '0')
 
   desc 'Set up CodeClimate test coverage reporter in CI'
   task :setup do

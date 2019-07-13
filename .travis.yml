@@ -13,8 +13,8 @@ install: docker-compose run web bin/rails db:setup ci:setup
 script:
 - docker-compose run web bin/rails test
 - docker-compose run web bin/rails test:system
-after_script: docker-compose run --rm web bin/rails ci:report
 after_success: docker-compose -f docker-compose.yml -f docker-compose.production.yml build web
+after_script: docker-compose run --rm web bin/rails ci:report
 # before_deploy:
 # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
 # deploy:
