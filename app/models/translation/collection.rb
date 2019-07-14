@@ -8,8 +8,8 @@ class Translation::Collection
   end
 
   def each
-    @translations.each do |key, value|
-      yield Translation.new(key: key, value: value)
+    @translations.each do |*translation|
+      yield Translation.get(*translation)
     end
   end
 

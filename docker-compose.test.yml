@@ -10,3 +10,5 @@ services:
       - chrome
     volumes:
       - .:/usr/src/app
+    environment:
+      - CC_TEST_REPORTER_ID
