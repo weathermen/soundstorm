@@ -12,8 +12,7 @@ script:
 - docker-compose run web bin/rails test test/**/*_test.rb
 - docker-compose run web bin/rails ci:report
 after_success: docker-compose -f docker-compose.yml -f docker-compose.production.yml build web
-before_deploy:
-- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_LOGIN" --password-stdin
+before_deploy: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
 deploy:
 - provider: script
   script:
