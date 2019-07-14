@@ -20,3 +20,9 @@ deploy:
   - docker push weathermen/soundstorm:latest
   on:
     branch: master
+- provider: script
+  script:
+  - docker tag weathermen/soundstorm:latest weathermen/soundstorm:$TRAVIS_TAG
+  - docker push weathermen/soundstorm:$TRAVIS_TAG
+  on:
+    tags: true
