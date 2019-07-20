@@ -13,11 +13,17 @@ script:
 - docker-compose run web bin/rails ci:report
 after_success: docker-compose -f docker-compose.yml -f docker-compose.production.yml
   build web
-before_deploy: docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+before_deploy:
+  - docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
+  - docker login -u _ -p $HEROKU_API_KEY registry.heroku.com
 deploy:
 - provider: script
   script:
+  - docker tag weathermen/soundstorm:latest registry.heroku.com/soundstorm-social/web
+  - docker build -t registry.heroku.com/soundstorm-social/worker -f Dockerfile.worker .
   - docker push weathermen/soundstorm:latest
+  - docker push registry.heroku.com/soundstorm-social/web
+  - docker push registry.heroku.com/soundstorm-social/worker
   on:
     branch: master
 - provider: script

@@ -1,0 +1,6 @@
+# This miniature Dockerfile lets us run Sidekiq in the app context on
+# Heroku as the `worker` process.
+
+FROM weathermen/soundstorm:latest
+
+CMD ["bundle exec sidekiq", "-C config/sidekiq.yml"]

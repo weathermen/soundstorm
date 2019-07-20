@@ -56,6 +56,6 @@ RUN chmod +x /usr/bin/entrypoint.sh
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 
 # Set up container defaults
-CMD ["bundle exec rails server", "-p 3000", "-b 0.0.0.0"]
+CMD ["bundle exec rails server", "-b 0.0.0.0"]
 EXPOSE 3000
 HEALTHCHECK CMD curl --fail "http://localhost:3000/health" || exit 1
