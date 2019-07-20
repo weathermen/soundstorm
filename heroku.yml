@@ -1,0 +1,29 @@
+setup:
+  addons:
+    - plan: heroku-postgresql
+      as: DATABASE
+    - plan: heroku-redis
+      as: REDIS
+    - plan: bonsai
+      as: ELASTICSEARCH
+    - plan: sendgrid
+  config:
+    SOUNDSTORM_HOST: soundstorm.social
+    SOUNDSTORM_CDN_URL: cdn.soundstorm.social
+    RAILS_ENV: production
+    NODE_ENV: production
+    RAILS_LOG_TO_STDOUT: true
+    RAILS_SERVE_STATIC_FILES: true
+    SOUNDSTORM_ADMIN_USERNAME: tubbo
+    SOUNDSTORM_ADMIN_EMAIL: soundstorm@psychedeli.ca
+build:
+  docker:
+    web: Dockerfile
+release:
+  command:
+    - rails db:migrate
+run:
+  web: rails server -p $PORT -b 0.0.0.0
+  worker:
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    image: web

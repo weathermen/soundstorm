@@ -48,10 +48,10 @@ module Soundstorm
   DATABASE_URL = ENV['DATABASE_URL']
 
   # URL to the Redis server for storing the cache
-  REDIS_CACHE_URL = ENV['REDIS_CACHE_URL']
+  REDIS_CACHE_URL = ENV['REDIS_CACHE_URL'] || ENV['REDIS_URL']
 
   # URL to the Redis server for storing the background job queue
-  REDIS_QUEUE_URL = ENV['REDIS_QUEUE_URL']
+  REDIS_QUEUE_URL = ENV['REDIS_QUEUE_URL'] || ENV['REDIS_URL']
 
   # Whether to serve static files in production. Defaults to +false+.
   SERVE_STATIC_FILES = ENV['RAILS_SERVE_STATIC_FILES'].present?
@@ -76,10 +76,10 @@ module Soundstorm
   SMTP_PORT     = ENV.fetch('SMTP_PORT', 587)
 
   # Username for authenticating to SMTP server
-  SMTP_USERNAME = ENV['SMTP_USERNAME']
+  SMTP_USERNAME = ENV['SMTP_USERNAME'] || ENV['SENDGRID_USERNAME']
 
   # Password for authenticating to SMTP server
-  SMTP_PASSWORD = ENV['SMTP_PASSWORD']
+  SMTP_PASSWORD = ENV['SMTP_PASSWORD'] || ENV['SENDGRID_PASSWORD']
 
   # Authentication type that SMTP server supports, defaults to +:plain+.
   SMTP_AUTH     = ENV.fetch('SMTP_AUTH', :plain).to_sym
