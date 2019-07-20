@@ -7,28 +7,18 @@ env:
   - secure: BkrreCbd3COLCJly1XgpctHWJCapqlHrePx84hpAAZ9gR5x5I+2hMH8JO7P3MkFFD7UBaT+7Z1phgyRQYzxC4z6WSt61D+HLk0NL1/uIXH4rwKmywlf/Ypj7ZobrkdY/aLmuAFuZKLK9uv5h/BoR46jX0Kmo40gV/pXXlJ2bEsnVGXNdX7dbl4JLbQddSktSUZqPJgAzuClrcP/FyM8AGdBBX61GoxhJ0KZjh7XWOK3GuI/T3e20wGzhQZzBMS34wSdvB6ocsUsexpNl8cR18d343S8EIn42Bt2SSpJW+xCMg7ZK+tfjIADH9IoNyS6rM9+yK9besihtzFAIwmxTNePlEVAMkeIx+JA8Ygzbz461kXdYLppynlIySqj2Q8VNF9Ddvs9t7KZOrPY+JbgLqowEx4XK6OaOu05YooufGAQjNpGGnCWJ0O4LbudWKDWihXbNoP1KJOTWk/Db6a41T6Yqv85WY5kPoemUOAs+2tsCrBDEf7Y4++YNNFzFbk0TZb9cn7XENRvubLhk3haDaQlUt5LldxYKdIJsI11Hj0cFd6TKhQiRn8HxRUMxPUGDVZKydlXYguidbv7uKDuFPU5MRYxAUVxjZa+J1Y1f0CXCYLiAU6y2aU2zjOLSHcX5Kqc6eSyIY/qCWodOdFVBY5RtsoG5U5qwP8SCFITwBec=
 services:
 - docker
-install: docker-compose run web bin/rails db:setup ci:setup
-script:
-- docker-compose run web bin/rails test test/**/*_test.rb
-- docker-compose run web bin/rails ci:report
-after_success: docker-compose -f docker-compose.yml -f docker-compose.production.yml
-  build web
+install: make install
+script: make ci
+after_success: RAILS_ENV=production make
 before_deploy:
   - docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-  - docker login -u _ -p $HEROKU_API_KEY registry.heroku.com
+  - docker login -u _ -p $HEROKU_API_KEY
 deploy:
 - provider: script
-  script:
-  - docker tag weathermen/soundstorm:latest registry.heroku.com/soundstorm-social/web
-  - docker build -t registry.heroku.com/soundstorm-social/worker -f Dockerfile.worker .
-  - docker push weathermen/soundstorm:latest
-  - docker push registry.heroku.com/soundstorm-social/web
-  - docker push registry.heroku.com/soundstorm-social/worker
+  script: SOUNDSTORM_HOST=soundstorm.social make push deploy
   on:
     branch: master
 - provider: script
-  script:
-  - docker tag weathermen/soundstorm:latest weathermen/soundstorm:$TRAVIS_TAG
-  - docker push weathermen/soundstorm:$TRAVIS_TAG
+  script: make dist
   on:
     tags: true
