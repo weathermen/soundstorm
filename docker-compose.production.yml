@@ -1,12 +1,20 @@
 #
 # Production services configuration for Soundstorm. Adds the `redis` and
-# `sidekiq` services, and disables `mailcatcher`. All services in
-# production are created using released images from the registry, which
-# have been ostensibly verified as working.
-
+# `sidekiq` services for background job processing and cache storage,
+# and tags the `web` image to that of its production variant. This also
+# builds the production image with a hard-coded RAILS_ENV=production to
+# ensure the image builds with assets correctly.
+#
 version: '3'
 services:
+  redis:
+    image: redis
   web:
+    build:
+      context: .
+      args:
+        - RAILS_ENV=production
+        - SECRET_KEY_BASE
     image: weathermen/soundstorm
     environment:
       - SOUNDSTORM_HOST
@@ -15,7 +23,31 @@ services:
       - AWS_SECRET_ACCESS_KEY
       - AWS_REGION
       - AWS_S3_BUCKET_NAME
-      - RAILS_SERVE_STATIC_FILES=false
+      - DATABASE_URL=postgres://postgres@db:5432/soundstorm_production
+      - ELASTICSEARCH_URL=http://search:9200
+      - REDIS_URL=redis://redis:6379
+      - RAILS_SERVE_STATIC_FILES=true
+      - RAILS_LOG_TO_STDOUT=true
+      - SMTP_HOST
+      - SMTP_PORT
+      - SMTP_USERNAME
+      - SMTP_PASSWORD
+      - SMTP_AUTH
+      - SMTP_TLS
+  sidekiq:
+    image: weathermen/soundstorm
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    environment:
+      - SOUNDSTORM_HOST
+      - SOUNDSTORM_CDN_URL
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_REGION
+      - AWS_S3_BUCKET_NAME
+      - DATABASE_URL=postgres://postgres@db:5432/soundstorm_production
+      - ELASTICSEARCH_URL=http://search:9200
+      - REDIS_URL=redis://redis:6379
+      - RAILS_SERVE_STATIC_FILES=true
       - RAILS_LOG_TO_STDOUT=true
       - SMTP_HOST
       - SMTP_PORT
