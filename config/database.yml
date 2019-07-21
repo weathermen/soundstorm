@@ -20,12 +20,12 @@ default: &default
   # For details on connection pooling, see Rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  host: db
-  user: postgres
 
 development:
   <<: *default
   database: soundstorm_development
+  host: db
+  user: postgres
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -60,6 +60,8 @@ development:
 test:
   <<: *default
   database: soundstorm_test
+  host: db
+  user: postgres
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -82,4 +84,4 @@ test:
 #
 production:
   <<: *default
-  database: soundstorm_production
+  url: <%= ENV["DATABASE_URL"] %>
