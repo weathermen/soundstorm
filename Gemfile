@@ -59,8 +59,8 @@ gem 'socialization'
 gem 'waveform'
 gem 'oily_png'
 # Search users and tracks with Elasticsearch
-gem 'elasticsearch-rails', '~> 5', require: 'elasticsearch/rails'
-gem 'elasticsearch-model', '~> 5', require: 'elasticsearch/model'
+gem 'elasticsearch-rails', '7.0.0.pre', require: 'elasticsearch/rails'
+gem 'elasticsearch-model', '7.0.0.pre', require: 'elasticsearch/model'
 # Sign in with Mastodon
 gem 'omniauth'
 gem 'omniauth-mastodon'

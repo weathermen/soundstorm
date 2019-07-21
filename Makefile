@@ -8,7 +8,7 @@ all:
 
 # Set up the database in the Docker environment
 install:
-	@docker-compose -f docker-compose.yml -f docker-compose.$(RAILS_ENV).yml run --rm web bin/rails db:setup
+	@docker-compose -f docker-compose.yml -f docker-compose.$(RAILS_ENV).yml run --rm web bin/rails db:setup elasticsearch
 
 # Begin CodeClimate statistics reporting in CI
 # ci-before: /usr/local/bin/cc-test-reporter

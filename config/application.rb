@@ -25,7 +25,7 @@ module Soundstorm
     end
 
     # Set the host from the $SOUNDSTORM_HOST environment variable.
-    config.host = ENV.fetch('SOUNDSTORM_HOST', 'soundstorm.test')
+    config.host = Soundstorm::HOST
     config.action_mailer.default_url_options = { host: config.host }
     config.global_id.app = config.host
 

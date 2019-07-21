@@ -8,15 +8,26 @@ version: '3'
 services:
   # PostgreSQL is the primary persistent data store for the application.
   db:
-    image: postgres
+    image: postgres:11
     volumes:
       - postgresql:/var/lib/postgresql/data
 
   # Elasticsearch is used as a global search index
   search:
-    image: elasticsearch:5.6
+    image: elasticsearch:7.2.0
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
+    environment:
+      - node.name=search
+      - discovery.seed_hosts=search
+      - cluster.initial_master_nodes=search
+      - cluster.name=soundstorm
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
 
   # The "majestic monolith" that powers Soundstorm, a Rails application
   # serving HTML (for the most part) and containing all of the logic
