@@ -21,7 +21,7 @@ check: test
 
 # Report code coverage statistics to CodeClimate
 ci-after: /usr/local/bin/cc-test-reporter
-	@cc-test-reporter after-build --exit-code ${TRAVIS_TEST_RESULT}
+	@cc-test-reporter after-build --exit-code 0
 
 # Run tests on CI
 ci: ci-before test ci-after
