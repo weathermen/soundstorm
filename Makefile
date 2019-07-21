@@ -1,5 +1,6 @@
-RAILS_ENV?="development"
+RAILS_ENV?=development
 TRAVIS_TEST_RESULT?=0
+HEROKU_APP?=soundstorm-social
 
 # Build the Docker image for the current environment.
 all: /usr/local/bin/docker-compose
@@ -31,11 +32,12 @@ push: /usr/local/bin/docker
 
 # Deploy https://soundstorm.social to Heroku
 deploy: /usr/local/bin/docker /usr/local/bin/heroku
-	@docker build -t registry.heroku.com/soundstorm-social/worker -f Dockerfile.worker .
-	@docker tag weathermen/soundstorm:latest registry.heroku.com/soundstorm-social/web
-	@docker push registry.heroku.com/soundstorm-social/web
-	@docker push registry.heroku.com/soundstorm-social/worker
-	@heroku container:release web worker
+	@docker build -t registry.heroku.com/${HEROKU_APP}/worker -f Dockerfile.worker .
+	@docker tag weathermen/soundstorm:latest registry.heroku.com/${HEROKU_APP}/web
+	@docker push registry.heroku.com/${HEROKU_APP}/web
+	@docker push registry.heroku.com/${HEROKU_APP}/worker
+	@heroku container:release web worker -a ${HEROKU_APP}
+	@heroku run rails db:migrate -a ${HEROKU_APP}
 
 # Release a tagged version to Docker Hub
 dist: /usr/local/bin/docker
