@@ -17,7 +17,6 @@ RUN apk add --no-cache --update build-base \
                                 tzdata \
                                 postgresql-dev \
                                 libsndfile-dev \
-                                caddy \
                                 imagemagick
 
 # Create working directory

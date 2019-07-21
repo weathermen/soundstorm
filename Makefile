@@ -56,15 +56,10 @@ distclean:
 tags:
 	@ctags -R .
 
-/usr/local/bin/kubectl:
-	@curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-	@chmod +x ./kubectl
-	@sudo mv ./kubectl /usr/local/bin/kubectl
-
 /usr/local/bin/cc-test-reporter:
 	@curl -Lo cc-test-reporter https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
 	@chmod +x ./cc-test-reporter
-	@sudo mv ./kubectl /usr/local/bin/cc-test-reporter
+	@sudo mv ./cc-test-reporter /usr/local/bin/cc-test-reporter
 
 # Raise an error when Docker binaries can't be found
 /usr/local/bin/docker-compose:
