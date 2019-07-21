@@ -13,7 +13,7 @@ script: make ci
 after_success: RAILS_ENV=production make
 before_deploy:
 - docker login -u $DOCKER_LOGIN -p $DOCKER_PASSWORD
-- docker login -u _ -p $HEROKU_API_KEY
+- docker login -u _ -p $HEROKU_API_KEY registry.heroku.com
 deploy:
 - provider: script
   script: make push deploy
