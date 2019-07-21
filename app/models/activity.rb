@@ -15,7 +15,7 @@ class Activity
   end
 
   def action
-    I18n.t(:action, scope: i18n_scope)
+    I18n.t(action, scope: i18n_scope)
   end
 
   def object_name
@@ -38,7 +38,7 @@ class Activity
   end
 
   def object
-    I18n.t(:object, name: object_name, scope: i18n_scope)
+    I18n.t(:object, name: object_name, scope: [item_type.tableize, event])
   end
 
   def exist?
@@ -52,6 +52,6 @@ class Activity
   private
 
   def i18n_scope
-    [item_type.tableize, item_type.downcase]
+    [item_type.tableize, event]
   end
 end

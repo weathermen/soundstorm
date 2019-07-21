@@ -88,11 +88,12 @@ en:
       success: "Uploaded Track '%{name}'"
       failure: "Error Uploading Track: %{errors}"
       submit: Upload Track
+      action: uploaded
+      object: a new track
     update:
       success: "Successfully edited Track '%{name}'"
       failure: "Error uploading Track: %{errors}"
       submit: Save Track
-      activity: "%{user} updated track %{track}"
       action: edited
       object: 'track "%{name}"'
     show:
@@ -186,9 +187,13 @@ en:
     create:
       success: 'Successfully created new user account "%{user}"'
       failure: 'Error creating user account: %{errors}'
+      action: signed up
+      object: for an account
     update:
       success: 'Updated user account "%{user}"'
       failure: 'Error updating user account: %{errors}'
+      action: edited
+      object: user profile
   user_mailer:
     mentioned:
       subject: '@%{author} mentioned you in a comment'
