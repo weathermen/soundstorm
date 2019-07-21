@@ -30,11 +30,12 @@ push: /usr/local/bin/docker
 	@docker push weathermen/soundstorm:latest
 
 # Deploy https://soundstorm.social to Heroku
-deploy: /usr/local/bin/docker
+deploy: /usr/local/bin/docker /usr/local/bin/heroku
 	@docker build -t registry.heroku.com/soundstorm-social/worker -f Dockerfile.worker .
 	@docker tag weathermen/soundstorm:latest registry.heroku.com/soundstorm-social/web
 	@docker push registry.heroku.com/soundstorm-social/web
 	@docker push registry.heroku.com/soundstorm-social/worker
+	@heroku container:release web worker
 
 # Release a tagged version to Docker Hub
 dist: /usr/local/bin/docker
@@ -68,5 +69,8 @@ tags:
 /usr/local/bin/docker:
 	@echo "Error: Docker is not installed, and is required to build this project."
 	@exit 1
+
+/usr/local/bin/heroku:
+	@curl https://cli-assets.heroku.com/install.sh | sh
 
 .PHONY: all database ci-before test check ci-after ci deploy dist clean distclean
