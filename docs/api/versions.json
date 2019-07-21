@@ -1,0 +1,165 @@
+{
+  "apiVersion": "0.1",
+  "swaggerVersion": "1.2",
+  "basePath": "/api",
+  "resourcePath": "versions",
+  "apis": [
+    {
+      "path": "/{id}/inbox.json",
+      "operations": [
+        {
+          "summary": "Add Remote Activity",
+          "parameters": [
+            {
+              "paramType": "header",
+              "name": "Signature",
+              "type": "string",
+              "description": "Verification Signature",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Date",
+              "type": "string",
+              "description": "Current httpdate",
+              "required": true
+            },
+            {
+              "paramType": "header",
+              "name": "Host",
+              "type": "string",
+              "description": "Valid host pointing back to the server that sent the request",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "actor[@context]",
+              "type": "string",
+              "description": null,
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "actor[type]",
+              "type": "string",
+              "description": null,
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "actor[id]",
+              "type": "string",
+              "description": null,
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "actor[preferredUsername]",
+              "type": "string",
+              "description": null,
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "actor[name]",
+              "type": "string",
+              "description": null,
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "actor[summary]",
+              "type": "string",
+              "description": null,
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "actor[publicKey][id]",
+              "type": "string",
+              "description": null,
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "actor[publicKey][owner]",
+              "type": "string",
+              "description": null,
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "actor[publicKey][publicKeyPem]",
+              "type": "string",
+              "description": null,
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "activity[@context]",
+              "type": "string",
+              "description": null,
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "activity[id]",
+              "type": "string",
+              "description": null,
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "activity[type]",
+              "type": "string",
+              "description": null,
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "object",
+              "type": "hash",
+              "description": "The object to send",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "when activity has been enqueued for processing"
+            },
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "if signature cannot be verified"
+            }
+          ],
+          "nickname": "Versions#create",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/{id}/outbox.json",
+      "operations": [
+        {
+          "summary": "View all activities a User has left to transmit",
+          "parameters": [
+
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "Shows the activities in JSON"
+            }
+          ],
+          "nickname": "Versions#index",
+          "method": "get"
+        }
+      ]
+    }
+  ],
+  "authorizations": null
+}

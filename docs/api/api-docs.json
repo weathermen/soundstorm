@@ -1,0 +1,32 @@
+{
+  "apiVersion": "0.1",
+  "swaggerVersion": "1.2",
+  "basePath": "/api",
+  "apis": [
+    {
+      "path": "/tracks.{format}",
+      "description": "Track Management and Uploading"
+    },
+    {
+      "path": "/releases.{format}",
+      "description": "Release Management"
+    },
+    {
+      "path": "/likes.{format}",
+      "description": "Liking Tracks"
+    },
+    {
+      "path": "/users.{format}",
+      "description": "User Profiles and Webfinger"
+    },
+    {
+      "path": "/versions.{format}",
+      "description": "ActivityPub Implementation"
+    }
+  ],
+  "authorizations": null,
+  "info": {
+    "title": "Soundstorm API",
+    "description": "The REST API for Soundstorm"
+  }
+}

@@ -17,7 +17,8 @@ RUN apk add --no-cache --update build-base \
                                 tzdata \
                                 postgresql-dev \
                                 libsndfile-dev \
-                                imagemagick
+                                imagemagick \
+                                yajl
 
 # Create working directory
 ENV APP_PATH=/usr/src/app

@@ -3,6 +3,17 @@
 class ReleasesController < ApplicationController
   before_action :authenticate_user!, except: %i[show]
 
+  swagger_controller :releases, 'Release Management'
+
+  swagger_api :show do
+    summary 'View Release Details'
+
+    param :path, :user_id, :string, :required, 'Name of the user'
+    param :path, :id, :string, :required, 'Release slug or ID'
+
+    response :ok, 'The Release Details'
+    response :not_found, 'when release cannot be found'
+  end
   def show
     @user = User.find_by(name: params[:user_id])
     @release = @user.releases.find(params[:id])
@@ -19,6 +30,16 @@ class ReleasesController < ApplicationController
     @release = current_user.releases.find(params[:id])
   end
 
+  swagger_api :create do
+    summary 'Create a New Release'
+
+    param :form, 'release[name]', :string, :required, 'Name of the release'
+    param :form, 'release[description]', :string, :optional, 'Description'
+    param :form, 'release[released_tracks_attributes][number]', :string, :optional, 'Track Number'
+    param :form, 'release[released_tracks_attributes][track_attributes][name]', :string, :optional, 'Track Name'
+    param :form, 'release[released_tracks_attributes][track_attributes][description]', :string, :optional, 'Track Description'
+    param :form, 'release[released_tracks_attributes][track_attributes][downloadable]', :boolean, :optional, 'Downloadable?'
+  end
   def create
     @release = current_user.releases.build(create_params)
 
@@ -36,6 +57,19 @@ class ReleasesController < ApplicationController
     end
   end
 
+  swagger_api :update do
+    summary 'Edit an existing release'
+
+    param :form, 'release[name]', :string, :required, 'Name of the release'
+    param :form, 'release[description]', :string, :optional, 'Description'
+    param :form, 'release[released_tracks_attributes][number]', :string, :optional, 'Track Number'
+    param :form, 'release[released_tracks_attributes][_destroy]', :boolean, :optional, 'Remove this Track from Release?'
+    param :form, 'release[released_tracks_attributes][track_attributes][name]', :string, :optional, 'Track Name'
+    param :form, 'release[released_tracks_attributes][track_attributes][description]', :string, :optional, 'Track Description'
+    param :form, 'release[released_tracks_attributes][track_attributes][downloadable]', :boolean, :optional, 'Downloadable?'
+
+    param :path, :id, :string, :required, 'ID of the Release'
+  end
   def update
     @release = current_user.releases.find(params[:id])
 
@@ -53,6 +87,14 @@ class ReleasesController < ApplicationController
     end
   end
 
+  swagger_api :destroy do
+    summary 'Destroy an existing release'
+
+    param :path, :id, :string, :required, 'ID of the Release'
+
+    response :ok, 'when release is destroyed'
+    response :unprocessable_entity, 'when a problem occurs'
+  end
   def destroy
     @release = current_user.releases.find(params[:id])
 
@@ -60,7 +102,7 @@ class ReleasesController < ApplicationController
       if @release.destroy
         flash[:notice] = t('.success', name: @release.name)
         format.html { redirect_back fallback_location: @release.user }
-        format.json { render json: @release, status: :created }
+        format.json { render json: @release, status: :ok }
       else
         errors = @release.errors.full_messages.to_sentence
         flash[:alert] = t('.failure', errors: errors)

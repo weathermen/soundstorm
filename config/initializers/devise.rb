@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'mastodon'
-
 # Use this hook to configure devise mailer, warden hooks and so forth.
 # Many of these configuration options can be set straight in your model.
 Devise.setup do |config|
@@ -259,20 +257,21 @@ Devise.setup do |config|
   # Add a new OmniAuth provider. Check the wiki for more information on setting
   # up on your models and hooks.
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
-  config.omniauth :mastodon, \
-    scopes: 'read write follow',
-    credentials: lambda { |domain, callback_url|
-      Rails.logger.info(
-        "Requested Mastodon creds for #{domain} with callback URL #{callback_url}"
-      )
+  # require 'mastodon'
+  # config.omniauth :mastodon, \
+  #   scopes: 'read write follow',
+  #   credentials: lambda { |domain, callback_url|
+  #     Rails.logger.info(
+  #       "Requested Mastodon creds for #{domain} with callback URL #{callback_url}"
+  #     )
 
-      Rails.cache.fetch("oauth/mastodon/#{domain}") do
-        client = Mastodon::REST::Client.new(base_url: "https://#{domain}")
-        app = client.create_app('Soundstorm', callback_url)
+  #     Rails.cache.fetch("oauth/mastodon/#{domain}") do
+  #       client = Mastodon::REST::Client.new(base_url: "https://#{domain}")
+  #       app = client.create_app('Soundstorm', callback_url)
 
-        [app.client_id, app.client_secret]
-      end
-    }
+  #       [app.client_id, app.client_secret]
+  #     end
+  #   }
   # config.omniauth :soundstorm, \
   #   scopes: 'read write follow',
   #   credentials: lambda { |domain, callback_url|

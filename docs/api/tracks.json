@@ -1,0 +1,177 @@
+{
+  "apiVersion": "0.1",
+  "swaggerVersion": "1.2",
+  "basePath": "/api",
+  "resourcePath": "tracks",
+  "apis": [
+    {
+      "path": "/tracks.json",
+      "operations": [
+        {
+          "summary": "Upload a new track",
+          "parameters": [
+            {
+              "paramType": "form",
+              "name": "track[name]",
+              "type": "string",
+              "description": "Name of the track",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "track[audio]",
+              "type": "string",
+              "description": "Audio file",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "track[description]",
+              "type": "string",
+              "description": "Description of the track",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "track[downloadable]",
+              "type": "boolean",
+              "description": "Whether the track can be downloaded (default: true)",
+              "required": false
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Tracks#create",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/tracks/{id}.json",
+      "operations": [
+        {
+          "summary": "Edit an existing track",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "ID of the Track",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "track[name]",
+              "type": "string",
+              "description": "Name of the track",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "track[description]",
+              "type": "string",
+              "description": "Description of the track",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "track[downloadable]",
+              "type": "boolean",
+              "description": "Whether the track can be downloaded",
+              "required": false
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Tracks#update",
+          "method": "patch"
+        }
+      ]
+    },
+    {
+      "path": "/tracks/{id}.json",
+      "operations": [
+        {
+          "summary": "Delete a track",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "ID of the Track",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "Unprocessable Entity"
+            }
+          ],
+          "nickname": "Tracks#destroy",
+          "method": "delete"
+        }
+      ]
+    },
+    {
+      "path": "/{user_id}/{id}.json",
+      "operations": [
+        {
+          "summary": "View a track's information",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "user_id",
+              "type": "string",
+              "description": "Username",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "string",
+              "description": "Track Name",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            }
+          ],
+          "nickname": "Tracks#show",
+          "method": "get"
+        }
+      ]
+    }
+  ],
+  "authorizations": null
+}

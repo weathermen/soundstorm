@@ -1,0 +1,60 @@
+{
+  "apiVersion": "0.1",
+  "swaggerVersion": "1.2",
+  "basePath": "/api",
+  "resourcePath": "users",
+  "apis": [
+    {
+      "path": "/{id}.json",
+      "operations": [
+        {
+          "summary": "View a user's profile",
+          "parameters": [
+
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            }
+          ],
+          "nickname": "Users#show",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/.well-known/webfinger.json",
+      "operations": [
+        {
+          "summary": "Perform a Webfinger request on a User",
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "resource",
+              "type": "string",
+              "description": "Webfinger Resource Name",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 401,
+              "responseModel": null,
+              "message": "Unauthorized"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "Not Found"
+            }
+          ],
+          "nickname": "Users#webfinger",
+          "method": "get"
+        }
+      ]
+    }
+  ],
+  "authorizations": null
+}

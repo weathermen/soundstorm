@@ -1,0 +1,200 @@
+{
+  "apiVersion": "0.1",
+  "swaggerVersion": "1.2",
+  "basePath": "/api",
+  "resourcePath": "releases",
+  "apis": [
+    {
+      "path": "/releases.json",
+      "operations": [
+        {
+          "summary": "Create a New Release",
+          "parameters": [
+            {
+              "paramType": "form",
+              "name": "release[name]",
+              "type": "string",
+              "description": "Name of the release",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "release[description]",
+              "type": "string",
+              "description": "Description",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "release[released_tracks_attributes][number]",
+              "type": "string",
+              "description": "Track Number",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "release[released_tracks_attributes][track_attributes][name]",
+              "type": "string",
+              "description": "Track Name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "release[released_tracks_attributes][track_attributes][description]",
+              "type": "string",
+              "description": "Track Description",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "release[released_tracks_attributes][track_attributes][downloadable]",
+              "type": "boolean",
+              "description": "Downloadable?",
+              "required": false
+            }
+          ],
+          "nickname": "Releases#create",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/releases/{id}.json",
+      "operations": [
+        {
+          "summary": "Edit an existing release",
+          "parameters": [
+            {
+              "paramType": "form",
+              "name": "release[name]",
+              "type": "string",
+              "description": "Name of the release",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "release[description]",
+              "type": "string",
+              "description": "Description",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "release[released_tracks_attributes][number]",
+              "type": "string",
+              "description": "Track Number",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "release[released_tracks_attributes][_destroy]",
+              "type": "boolean",
+              "description": "Remove this Track from Release?",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "release[released_tracks_attributes][track_attributes][name]",
+              "type": "string",
+              "description": "Track Name",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "release[released_tracks_attributes][track_attributes][description]",
+              "type": "string",
+              "description": "Track Description",
+              "required": false
+            },
+            {
+              "paramType": "form",
+              "name": "release[released_tracks_attributes][track_attributes][downloadable]",
+              "type": "boolean",
+              "description": "Downloadable?",
+              "required": false
+            },
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "string",
+              "description": "ID of the Release",
+              "required": true
+            }
+          ],
+          "nickname": "Releases#update",
+          "method": "patch"
+        }
+      ]
+    },
+    {
+      "path": "/releases/{id}.json",
+      "operations": [
+        {
+          "summary": "Destroy an existing release",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "string",
+              "description": "ID of the Release",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "when release is destroyed"
+            },
+            {
+              "code": 422,
+              "responseModel": null,
+              "message": "when a problem occurs"
+            }
+          ],
+          "nickname": "Releases#destroy",
+          "method": "delete"
+        }
+      ]
+    },
+    {
+      "path": "/{user_id}/releases/{id}.json",
+      "operations": [
+        {
+          "summary": "View Release Details",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "user_id",
+              "type": "string",
+              "description": "Name of the user",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "string",
+              "description": "Release slug or ID",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "The Release Details"
+            },
+            {
+              "code": 404,
+              "responseModel": null,
+              "message": "when release cannot be found"
+            }
+          ],
+          "nickname": "Releases#show",
+          "method": "get"
+        }
+      ]
+    }
+  ],
+  "authorizations": null
+}

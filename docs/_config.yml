@@ -1,0 +1,18 @@
+---
+title: Soundstorm Documentation
+description: The Federated Social Audio Platform
+permalink: /blog/:year/:month/:day/:title:output_ext
+version: 4.0.0
+url: https://docs.soundstorm.social
+author: Tom Scott
+twitter:
+  username: tubbo
+  card: summary
+sass:
+  style: compressed
+exclude:
+  - CNAME
+  - ".jekyll-cache"
+plugins:
+  - jekyll-mentions
+  - jekyll-seo-tag

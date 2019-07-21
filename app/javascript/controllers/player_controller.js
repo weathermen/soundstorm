@@ -2,7 +2,10 @@ import { Controller } from "stimulus"
 import HLS from "hls.js"
 import moment from "moment"
 import momentDurationFormatSetup from "moment-duration-format"
+
 import { csrfToken } from "rails-ujs"
+import { each } from "lodash"
+import { consumer } from "../channels"
 
 momentDurationFormatSetup(moment)
 
@@ -35,6 +38,15 @@ export default class Player extends Controller {
 
     this.videoTarget.addEventListener("play", this.start)
     this.videoTarget.addEventListener("pause", this.stop)
+
+    const received = this.updateListens.bind(this)
+    const id = this.data.get("id")
+
+    consumer.subscriptions.create({ channel: "TrackChannel", id }, { received })
+  }
+
+  received({ listens }) {
+    this.listensTarget.innerText = listens
   }
 
   /**

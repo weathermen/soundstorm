@@ -63,8 +63,6 @@ gem 'elasticsearch-rails', '7.0.0.pre', require: 'elasticsearch/rails'
 gem 'elasticsearch-model', '7.0.0.pre', require: 'elasticsearch/model'
 # Sign in with Mastodon
 gem 'omniauth'
-gem 'omniauth-mastodon'
-gem 'mastodon-api', github: 'tubbo/mastodon-api', branch: 'fix-http-and-tests'
 gem 'omniauth-rails_csrf_protection'
 # Custom Translations
 gem 'i18n-active_record', require: 'i18n/active_record'
@@ -93,6 +91,8 @@ group :development do
   gem 'brakeman', require: false
   # Annotate models with schema comments
   gem 'annotate'
+  # Document APIs with the OpenAPI/Swagger spec
+  gem 'swagger-docs'
 end
 
 group :test do
@@ -120,4 +120,16 @@ group :production do
   gem 'aws-sdk-s3'
   # Report exceptions to Sentry
   gem 'sentry-raven'
+end
+
+group :jekyll_plugins do
+  # Set up local development to match GitHub Pages
+  gem 'github-pages'
+  gem 'jekyll', '~> 3.3'
+  # Add SEO tags to docs site
+  gem 'jekyll-seo-tag'
+  # Automatically link @-mentions of GitHub users
+  gem 'jekyll-mentions'
+  # Use GitHub emojis in Jekyll
+  gem 'jemoji'
 end

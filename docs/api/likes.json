@@ -1,0 +1,61 @@
+{
+  "apiVersion": "0.1",
+  "swaggerVersion": "1.2",
+  "basePath": "/api",
+  "resourcePath": "likes",
+  "apis": [
+    {
+      "path": "/{user_id}/{track_id}/like.json",
+      "operations": [
+        {
+          "summary": "Unlike a Track",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "track_id",
+              "type": "string",
+              "description": "Track to unlike",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "Renders the amount of likes a Track has received"
+            }
+          ],
+          "nickname": "Likes#destroy",
+          "method": "delete"
+        }
+      ]
+    },
+    {
+      "path": "/{user_id}/{track_id}/like.json",
+      "operations": [
+        {
+          "summary": "Like a Track",
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "track_id",
+              "type": "string",
+              "description": "Track to like",
+              "required": true
+            }
+          ],
+          "responseMessages": [
+            {
+              "code": 200,
+              "responseModel": null,
+              "message": "Renders the amount of likes a Track has received"
+            }
+          ],
+          "nickname": "Likes#create",
+          "method": "post"
+        }
+      ]
+    }
+  ],
+  "authorizations": null
+}

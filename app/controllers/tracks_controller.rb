@@ -1,24 +1,40 @@
 # frozen_string_literal: true
 
 class TracksController < ApplicationController
+  swagger_controller :tracks, 'Track Management and Uploading'
+
   before_action :authenticate_user!, except: %i[index show listen]
   before_action :cache_page, only: :show
   before_action :find_variant_from_content_type, only: :show
 
   skip_before_action :doorkeeper_authorize!, only: %i[show listen]
 
+  swagger_api :show do
+    summary "View a track's information"
+
+    param :path, :user_id, :string, :required, 'Username'
+    param :path, :id, :string, :required, 'Track Name'
+
+    response :unauthorized
+  end
   def show
     @user = User.find_by!(name: params[:user_id])
     @track = @user.tracks.find(params[:id])
     @title = "#{@track.name} by #{@user.name}"
 
     respond_to do |format|
-      format.html # show.html.haml      - Web Page
-      format.m3u8 # show.m3u8.erb       - Stream
-      format.json # show.json.jbuilder  - JSON API Response
-      format.xml  # show.xml.builder    - OEmbed API Response
-      format.mp3 do
+      format.html     # show.html.haml      - Web Page
+      format.m3u8 do  # show.m3u8.erb       - Stream
+        @track.listens.create(ip_address: request.ip, user: current_user)
+
+        render :show
+      end
+      format.json     # show.json.jbuilder  - JSON API Response
+      format.xml      # show.xml.builder    - OEmbed API Response
+      format.mp3 do  # MP3 File Download
         return head :unauthorized unless @track.downloadable?
+
+        @track.listens.create(ip_address: request.ip, user: current_user)
 
         send_data @track.audio.download,
           content_type: :mp3,
@@ -37,6 +53,17 @@ class TracksController < ApplicationController
     @title = t('.title', track: @track.name)
   end
 
+  swagger_api :create do
+    summary 'Upload a new track'
+
+    param :form, 'track[name]', :string, :required, 'Name of the track'
+    param :form, 'track[audio]', :string, :required, 'Audio file'
+    param :form, 'track[description]', :string, :optional, 'Description of the track'
+    param :form, 'track[downloadable]', :boolean, :optional, 'Whether the track can be downloaded (default: true)'
+
+    response :unauthorized
+    response :unprocessable_entity
+  end
   def create
     @track = current_user.tracks.build(new_track_params)
 
@@ -56,21 +83,17 @@ class TracksController < ApplicationController
     end
   end
 
-  def listen
-    @user = User.find_by(name: params[:user_id])
-    @track = @user.tracks.find(params[:id])
-    @listen = @track.listens.create(
-      ip_address: request.ip,
-      user: current_user
-    )
+  swagger_api :update do
+    summary 'Edit an existing track'
 
-    if @listen.persisted?
-      render json: @track.listens_count, status: :created
-    else
-      render json: @track.listens_count
-    end
+    param :path, :id, :integer, :required, 'ID of the Track'
+    param :form, 'track[name]', :string, :optional, 'Name of the track'
+    param :form, 'track[description]', :string, :optional, 'Description of the track'
+    param :form, 'track[downloadable]', :boolean, :optional, 'Whether the track can be downloaded'
+
+    response :unauthorized
+    response :unprocessable_entity
   end
-
   def update
     @track = current_user.tracks.find(params[:id])
 
@@ -89,6 +112,14 @@ class TracksController < ApplicationController
     end
   end
 
+  swagger_api :destroy do
+    summary 'Delete a track'
+
+    param :path, :id, :integer, :required, 'ID of the Track'
+
+    response :unauthorized
+    response :unprocessable_entity
+  end
   def destroy
     @track = current_user.tracks.find(params[:id])
 

@@ -1,0 +1,17 @@
+---
+layout: default
+---
+
+<article class="post">
+  <header class="post__header">
+    <h1 class="post__title">{{ page.title }}</h1>
+  </header>
+  <main class="post__content">
+    {{ content }}
+  </main>
+  <footer class="post__footer">
+    <time class="post__date" datetime="{{ page.date }}">
+      Posted on {{ page.date | date: '%B %d, %Y' }} by @{{ page.author }}
+    </time>
+  </footer>
+</article>

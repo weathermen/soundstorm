@@ -39,6 +39,7 @@ module TracksHelper
     data = {
       controller: 'player',
       'player-track': user_track_path(track.user, track),
+      'player-id': track.id,
       'player-liked': current_user&.likes?(track),
       'player-duration': track.duration,
       'player-seek-position': 0
