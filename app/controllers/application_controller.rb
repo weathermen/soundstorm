@@ -7,6 +7,7 @@ class ApplicationController < ActionController::Base
   before_action :doorkeeper_authorize!, if: :api?
   before_action :authorize_admin!, only: %w[index]
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :set_raven_context, if: -> { defined? Raven }
 
   append_before_action :set_paper_trail_whodunnit, if: :user_signed_in?
 
@@ -86,5 +87,9 @@ class ApplicationController < ActionController::Base
       end
       nil
     end
+  end
+
+  def set_raven_context
+    Raven.user_context(user: current_user.name) if user_signed_in?
   end
 end

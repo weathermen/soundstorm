@@ -116,4 +116,6 @@ group :production do
   gem 'redis-rack-cache'
   # Store uploaded files to AWS S3
   gem 'aws-sdk-s3'
+  # Report exceptions to Sentry
+  gem 'sentry-raven'
 end

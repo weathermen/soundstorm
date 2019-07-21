@@ -86,4 +86,7 @@ module Soundstorm
 
   # Whether to use TLS when transmitting mails, defaults to `true`.
   SMTP_TLS      = !!(ENV['SMTP_TLS'] !~ /false/)
+
+  # URL to the Sentry server for reporting exceptions.
+  SENTRY_DSN    = ENV['SENTRY_DSN']
 end
