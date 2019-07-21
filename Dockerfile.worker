@@ -3,4 +3,4 @@
 
 FROM weathermen/soundstorm:latest
 
-CMD ["bundle exec sidekiq", "-C config/sidekiq.yml"]
+CMD ["bundle", "exec", "sidekiq", "-C", "config/sidekiq.yml"]
