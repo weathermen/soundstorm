@@ -11,8 +11,8 @@ install: /usr/local/bin/docker-compose
 	@docker-compose -f docker-compose.yml -f docker-compose.$(RAILS_ENV).yml run --rm web bin/rails db:setup
 
 # Begin CodeClimate statistics reporting in CI
-ci-before: /usr/local/bin/cc-test-reporter
-	@cc-test-reporter before-build
+# ci-before: /usr/local/bin/cc-test-reporter
+# 	@cc-test-reporter before-build
 
 # Run all tests
 test: /usr/local/bin/docker-compose
@@ -20,11 +20,11 @@ test: /usr/local/bin/docker-compose
 check: test
 
 # Report code coverage statistics to CodeClimate
-ci-after: /usr/local/bin/cc-test-reporter
-	@cc-test-reporter after-build --exit-code 0
+# ci-after: /usr/local/bin/cc-test-reporter
+# 	@cc-test-reporter after-build --exit-code 0
 
 # Run tests on CI
-ci: ci-before test ci-after
+ci: test
 
 # Push the latest image to Docker Hub
 push: /usr/local/bin/docker
