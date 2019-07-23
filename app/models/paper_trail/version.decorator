@@ -23,7 +23,7 @@ module PaperTrail
     # change.
     def remote_followers
       followers.reject do |follower|
-        follower.host == ::Rails.configuration.host
+        follower.host == Soundstorm::HOST
       end
     end
 
