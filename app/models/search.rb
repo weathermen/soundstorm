@@ -7,7 +7,8 @@ class Search
 
   attr_reader :query, :filters
 
-  delegate :count, to: :results
+  delegate :records, to: :response
+  delegate :count, :each, to: :records
   delegate_missing_to :to_a
 
   def initialize(query:, **filters)
@@ -18,13 +19,6 @@ class Search
   # Find the amount of items in this query for the given type.
   def count_for(type)
     query_for(type).count || 0
-  end
-
-  # Iterate over every model found in the query results.
-  def each
-    results.each do |result|
-      yield record_for(result)
-    end
   end
 
   # Total number of all items in the query, without filters applied.
@@ -65,28 +59,14 @@ class Search
     json
   end
 
-  def inspect
-    "#{super.gsub(/\>\Z/, '')} @results=#{to_a}>"
-  end
-
   private
 
-  def record_for(result)
-    model_class = result['_type'].classify.constantize
-    attributes = result['_source']
-
-    model_class.new(attributes)
-  end
-
   def results
-    response['hits']['hits']
+    @results ||= response.records
   end
 
   def response
-    Elasticsearch::Model.client.search(
-      index: "soundstorm_#{Rails.env}",
-      body: as_json
-    )
+    @response ||= Elasticsearch::Model.search(as_json)
   end
 
   def query_for(type)

@@ -84,13 +84,26 @@ module PaperTrail
       broadcasted_at.present?
     end
 
+    # Whether this activity should be broadcasted in ActivityPub.
+    #
+    # @return [Boolean] `true` if not broadcasted and remote
+    def broadcastable?
+      !broadcasted? && remote?
+    end
+
+    # Whether any remote users should receive a broadcast of this
+    # activity.
+    def remote?
+      remote_followers.any?
+    end
+
     private
 
     # Publish this event to all ActivityPub subscribers.
     #
     # @return [BroadcastMessageJob] or `nil` if not broadcasting
     def broadcast
-      BroadcastMessageJob.perform_later(self) unless broadcasted?
+      BroadcastMessageJob.perform_later(self) if broadcastable?
     end
   end
 end
