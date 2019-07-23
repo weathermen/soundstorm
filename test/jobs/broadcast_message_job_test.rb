@@ -3,18 +3,39 @@
 require 'test_helper'
 
 class BroadcastMessageJobTest < ActiveJob::TestCase
-  test 'broadcast activitypub message when changes occur' do
-    user = users(:one)
-    track = tracks(:one_untitled)
-    version = PaperTrail::Version.create!(
-      whodunnit: user,
-      item: track,
+  setup do
+    @user = users(:one)
+    @remote = users(:remote)
+    @track = tracks(:one_untitled)
+    @audio = Rails.root.join('test', 'fixtures', 'files', 'one.mp3')
+    @track.audio.attach(io: @audio.open, filename: @audio.basename)
+    @remote.follow!(@user)
+    @version = PaperTrail::Version.new(
+      whodunnit: @user.to_gid,
+      item: @track,
       event: 'create'
     )
+  end
 
+  test 'change will be broadcasted' do
+    refute_empty @version.remote_followers
+    assert @version.broadcastable?
+  end
+
+  test 'enqueue job when version saved' do
+    assert @version.save!
+    refute @version.broadcasted?
     assert_enqueued_jobs 1, only: BroadcastMessageJob
-    refute version.broadcasted?
-    assert BroadcastMessageJob.perform_now(version)
-    assert version.broadcasted?
+  end
+
+  test 'broadcast activitypub message' do
+    skip 'until the change gets posted to soundstorm.social'
+
+    VCR.use_cassette :broadcast_activitypub_message do
+      perform_enqueued_jobs only: BroadcastMessageJob do
+        assert @version.save!
+        assert @version.broadcasted?, 'Change was not broadcasted'
+      end
+    end
   end
 end

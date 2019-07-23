@@ -26,10 +26,10 @@ two:
 
 remote:
   name: remote
-  host: example.com
+  host: www.soundstorm.social
   slug: remote
   display_name: User Two
   email: remote@example.com
   encrypted_password: "$2a$11$qOhMADOLv728QcfQ2w3VG.kT0kneQM2HSaDh42dnrHITjgRCjyd.."
-  key_pem: "<%= Rails.root.join('test', 'fixtures', 'files', 'two.pem').read %>"
+  key_pem: "<%= Rails.root.join('test', 'fixtures', 'files', 'remote.pem').read %>"
   confirmed_at: <%= Time.current %>

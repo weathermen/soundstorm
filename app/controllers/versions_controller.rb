@@ -2,6 +2,7 @@
 
 class VersionsController < ApplicationController
   before_action :verify_signature
+  skip_before_action :verify_authenticity_token
 
   def index
     @user = User.find(params[:user_id])
