@@ -2,5 +2,4 @@
   %main.form__fields
     = render 'fields', f: f
   %footer.form__controls
-    - disable = { disable_with: 'Please wait...' }
-    = f.submit t(:submit, scope: [controller_name, action_name]), data: disable
+    = f.submit_button

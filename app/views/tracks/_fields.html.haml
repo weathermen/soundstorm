@@ -7,9 +7,9 @@
     = f.direct_upload_file_field :audio, required: true, class: 'track-audio'
     %span.form__hint.form__hint--hidden{ data: { target: 'upload.progress' } }
       Progress 0%
+.form__field
+  = f.label :downloadable
+  = f.check_box :downloadable, class: 'track-downloadable'
 .form__field.form__field--textarea
   = f.label :description
   = f.text_area :description, class: 'track-description'
-.form__field.form__field--textarea
-  = f.label :downloadable
-  = f.check_box :downloadable, class: 'track-downloadable'
