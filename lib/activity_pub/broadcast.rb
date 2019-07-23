@@ -9,10 +9,11 @@ module ActivityPub
       @message = message
       @destination = destination
       @date = Time.current
+      @uri = URI.join("https://#{destination}", 'inbox.json')
     end
 
     def deliver
-      @response ||= request.post("#{destination}/inbox.json", json: message.as_json)
+      @response ||= request.post(@uri, json: message.as_json)
     end
 
     def request
