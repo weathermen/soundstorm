@@ -1,0 +1,78 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://soundstorm.social/.well-known/webfinger?resource=acct:tubbo@soundstorm.social
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Connection:
+      - close
+      Host:
+      - soundstorm.social
+      User-Agent:
+      - http.rb/4.0.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '143'
+      Connection:
+      - close
+      Server:
+      - Cowboy
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Date:
+      - Tue, 23 Jul 2019 03:26:58 GMT
+      X-Flash-Messages:
+      - "[]"
+      X-Page-Title:
+      - 'translation missing: en.users.webfinger.title'
+      X-Requested-With:
+      - ''
+      Cache-Control:
+      - public
+      Etag:
+      - W/"f1e888ea1ce1904d6273f5b643cd87b1"
+      X-Request-Id:
+      - c4702291-0ab7-4801-bcf5-dc32d30d67f0
+      X-Runtime:
+      - '0.038782'
+      X-Content-Digest:
+      - de0e597243769811700459927f1363ad19ab384a
+      Age:
+      - '0'
+      X-Rack-Cache:
+      - miss, store
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Via:
+      - 1.1 vegur, 1.1 0e456968e63d1e7575028bb48aa8e96a.cloudfront.net (CloudFront)
+      X-Cache:
+      - Miss from cloudfront
+      X-Amz-Cf-Pop:
+      - PHL50-C1
+      X-Amz-Cf-Id:
+      - kvXvUbl_cQjtf5cCObWlnFGm8BzkvLHFFM9KlbsAP_0_0W6Ls8d0Vw==
+    body:
+      encoding: UTF-8
+      string: '{"subject":"acct:tubbo@soundstorm.social","links":[{"rel":"self","type":"application/activity+json","href":"https://soundstorm.social/tubbo"}]}'
+    http_version: 
+  recorded_at: Tue, 23 Jul 2019 03:26:58 GMT
+recorded_with: VCR 4.0.0

@@ -27,13 +27,12 @@ module ActivityPub
       end
 
       test 'find' do
-        skip 'until we can figure out local VCR requests'
         VCR.use_cassette :webfinger do
-          finger = Finger.find('acct:admin@soundstorm.test')
+          finger = Finger.find('acct:tubbo@soundstorm.social')
 
-          refute_nil(finger)
-          assert_equal('acct:admin@soundstorm.test', finger.id)
-          assert_equal('https://soundstorm.test/admin', finger.links.first[:href])
+          refute_nil finger
+          assert_equal 'acct:tubbo@soundstorm.social', finger.id
+          assert_equal 'https://soundstorm.social/tubbo', finger.links.first['href']
         end
       end
     end

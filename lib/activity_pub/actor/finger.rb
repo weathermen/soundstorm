@@ -37,12 +37,13 @@ module ActivityPub
         url = "https://#{host}/.well-known/webfinger?resource=#{id}"
         response = HTTP.get(url)
 
-        return unless response.success?
+        return unless response.status.success?
+        return unless response.parse['type'] != CONTENT_TYPE
 
         new(
           name: name,
           host: host,
-          links: response.json['links']
+          links: response.parse['links']
         )
       end
 
