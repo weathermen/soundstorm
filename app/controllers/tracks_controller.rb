@@ -8,7 +8,7 @@ class TracksController < ApplicationController
   skip_before_action :doorkeeper_authorize!, only: %i[show listen]
 
   def show
-    @user = User.find_by(name: params[:user_id])
+    @user = User.find_by!(name: params[:user_id])
     @track = @user.tracks.find(params[:id])
     @title = "#{@track.name} by #{@user.name}"
 
