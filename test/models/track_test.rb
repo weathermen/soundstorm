@@ -24,7 +24,7 @@ class TrackTest < ActiveSupport::TestCase
     assert_equal @track.name, @track.as_activity[:name]
     assert @track.as_activity.key?(:url)
     assert_equal 'Link', @track.as_activity[:url][:type]
-    assert_equal @track.audio_url, @track.as_activity[:url][:href]
+    assert_equal @track.stream_url, @track.as_activity[:url][:href]
     assert_equal @track.audio.content_type, @track.as_activity[:url][:mediaType]
   end
 
