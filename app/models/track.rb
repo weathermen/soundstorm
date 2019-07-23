@@ -78,7 +78,7 @@ class Track < ApplicationRecord
   end
 
   def stream_url
-    Rails.application.routes.url_helpers.track_url(self, host: user.host, format: :m3u8)
+    Rails.application.routes.url_helpers.user_track_url(user, self, host: user.host, format: :m3u8)
   end
 
   # Attach audio from ActivityPub URL download.
