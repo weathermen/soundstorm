@@ -42,6 +42,6 @@ class FormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def submit_button_disabled_text
-    I18n.t(:submitted, scope: i18n_scope)
+    I18n.t(:submitting, scope: i18n_scope)
   end
 end

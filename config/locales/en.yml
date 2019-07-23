@@ -78,22 +78,22 @@ en:
     new:
       title: New Track
       submit: Upload New Track
+      submitting: Uploading...
     edit:
-      submit: Save Track
       title: 'Edit "%{track}"'
+      submit: Save Track
+      submitting: Saving...
     destroy:
       success: "Deleted Track '%{name}'"
       failure: "Error Deleting Track: %{errors}"
     create:
       success: "Uploaded Track '%{name}'"
       failure: "Error Uploading Track: %{errors}"
-      submit: Upload Track
       action: uploaded
       object: a new track
     update:
       success: "Successfully edited Track '%{name}'"
       failure: "Error uploading Track: %{errors}"
-      submit: Save Track
       action: edited
       object: 'track "%{name}"'
     show:
@@ -111,8 +111,10 @@ en:
       title: Comments Admin
     new:
       submit: Add Comment
+      submitting: Posting Comment...
     edit:
       submit: Edit Comment
+      submitting: Editing Comment...
     create:
       success: 'Comment on "%{track}" has been added'
       failure: 'Error commenting on %{track}: %{errors}'
@@ -254,12 +256,12 @@ en:
     new:
       title: New Release
       submit: Create
-      submitted: Creating release...
+      submitting: Creating release...
       remove: Undo
     edit:
       title: Edit Release
       submit: Save
-      submitted: Saving changes...
+      submitting: Saving changes...
       remove: Delete
     form:
       basic_information: Basic Information
