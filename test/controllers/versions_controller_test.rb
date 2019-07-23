@@ -3,12 +3,6 @@
 require 'test_helper'
 
 class VersionsControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @user = users(:one)
-
-    sign_in @user
-  end
-
   test 'post activity to inbox' do
     queue = ApplicationJob.queue_adapter
     host = 'other.host'

@@ -29,12 +29,10 @@ class BroadcastMessageJobTest < ActiveJob::TestCase
   end
 
   test 'broadcast activitypub message' do
-    skip 'until the change gets posted to soundstorm.social'
-
     VCR.use_cassette :broadcast_activitypub_message do
       perform_enqueued_jobs only: BroadcastMessageJob do
         assert @version.save!
-        assert @version.broadcasted?, 'Change was not broadcasted'
+        assert @version.reload.broadcasted?, 'Change was not broadcasted'
       end
     end
   end

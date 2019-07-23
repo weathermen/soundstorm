@@ -1,0 +1,59 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://www.soundstorm.social/inbox.json
+    body:
+      encoding: UTF-8
+      string: '{"@context":"https://www.w3.org/ns/activitystreams","id":"http://test.host/one/untitled","type":"Create","actor":"https://test.host/one","object":{"id":"http://test.host/one/untitled","type":"Audio","actor":"https://test.host/one","name":"Untitled","url":{"type":"Link","href":"http://test.host/one/untitled.m3u8","mediaType":"audio/mpeg"},"to":"https://www.w3.org/ns/activitystreams#Public"}}'
+    headers:
+      Host:
+      - www.soundstorm.social
+      Date:
+      - Tue, 23 Jul 2019 16:23:10 GMT
+      Signature:
+      - |-
+        keyId="https://test.host/one",headers="(request-target) host date",signature="RMG5i/fXCX3n3SDHOwjSwuJhJHnKng3L1NBkyqgZoDCn9pu7yYtb/R8sXOu9
+        oFfQsJwl3LhUvixnTInKIMbOe91d1S1v7+HXnVUkA8BmnvjUWGYR256UsglT
+        gxrbTSt9LzUdb5R3+66YbVMLiFoeruhpxZxrp7XzUwd74M9jiD+shBnDp1ON
+        xs4Y5DHpMVZ/e17xvJQdU5aiEWScu4IltlkNmBRyxHhh8fmWJ+h1Pn3DbIGK
+        VDWfYbPyWUvRusQO1Whv45JndAPZHbM/M/HHLqE5YBQaJ7g/HDFf1OYKTkkx
+        0jzY0F1SNG/jq5AZIoCFuwtiVGFy0t6iEUGvRUT1+g==
+        "
+      Connection:
+      - close
+      Content-Type:
+      - application/json; charset=UTF-8
+      User-Agent:
+      - http.rb/4.0.0
+  response:
+    status:
+      code: 500
+      message: Internal Server Error
+    headers:
+      Server:
+      - Cowboy
+      Connection:
+      - close
+      Content-Type:
+      - text/html; charset=UTF-8
+      X-Request-Id:
+      - 30101ae7-bc61-47f0-8f1c-a0d848082ec0
+      X-Runtime:
+      - '0.595756'
+      Date:
+      - Tue, 23 Jul 2019 16:23:11 GMT
+      X-Rack-Cache:
+      - invalidate, pass
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Content-Length:
+      - '0'
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: ''
+    http_version: 
+  recorded_at: Tue, 23 Jul 2019 16:23:11 GMT
+recorded_with: VCR 4.0.0

@@ -3,4 +3,5 @@ tmp/**/*
 config/ssl/**/*
 node_modules/**/*
 vendor/bundle/**/*
+storage/**/*
 tags*
