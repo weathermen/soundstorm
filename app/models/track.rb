@@ -77,6 +77,10 @@ class Track < ApplicationRecord
     Rails.application.routes.url_helpers.rails_blob_url(audio, host: user.host)
   end
 
+  def stream_url
+    Rails.application.routes.url_helpers.track_url(self, host: user.host, format: :m3u8)
+  end
+
   # Attach audio from ActivityPub URL download.
   def url=(href:, **params)
     open(href) do |file|
@@ -104,7 +108,7 @@ class Track < ApplicationRecord
       name: name,
       url: {
         type: 'Link',
-        href: audio_url,
+        href: stream_url,
         mediaType: audio.content_type
       }
     )
