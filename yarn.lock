@@ -2734,6 +2734,11 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
+eventemitter3@3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.0.tgz#090b4d6cdbd645ed10bf750d4b5407942d7ba163"
+  integrity sha512-ivIvhpq/Y0uSjcHDcOIccjmYjGLcP09MFGE7ysAwkAvkXfpZlC985pH2/ui64DKazbTW/4kN3yqozUxlXzI6cA==
+
 eventemitter3@^3.0.0:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-3.1.2.tgz#2d3d48f9c346698fce83a85d7d664e98535df6e7"
@@ -3436,13 +3441,13 @@ hex-color-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/hex-color-regex/-/hex-color-regex-1.1.0.tgz#4c06fccb4602fe2602b3c93df82d7e7dbf1a8a8e"
   integrity sha512-l9sfDFsuqtOqKDsQdqrMRk0U85RZc0RtOR9yPI7mRVOa4FsR/BVnZ0shmQRM96Ji99kYZP/7hn1cedc1+ApsTQ==
 
-hls.js@^0.11.0:
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.11.0.tgz#a205fb61725d9d69bf6258984be3dc2ee829fa9e"
-  integrity sha512-qlCP7uBaHxF1iiP9xw8RFZ9Es9ZM5micqaMTp8P/2WYhd+CSmMMREH+taAzkQDu7u2nHBBd9yZyKgCjg3O3wSw==
+hls.js@^0.12.4:
+  version "0.12.4"
+  resolved "https://registry.yarnpkg.com/hls.js/-/hls.js-0.12.4.tgz#c155b7b2825a11117c111b781973c0ffa759006b"
+  integrity sha512-e8OPxQ60dBVsdkv4atdxR21KzC1mgwspM41qpozpj3Uv1Fz4CaeQy3FWoaV2O+QKKbNRvV5hW+/LipCWdrwnMQ==
   dependencies:
-    string.prototype.endswith "^0.2.0"
-    url-toolkit "^2.1.2"
+    eventemitter3 "3.1.0"
+    url-toolkit "^2.1.6"
 
 hmac-drbg@^1.0.0:
   version "1.0.1"
@@ -7232,11 +7237,6 @@ string-width@^3.0.0, string-width@^3.1.0:
     is-fullwidth-code-point "^2.0.0"
     strip-ansi "^5.1.0"
 
-string.prototype.endswith@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/string.prototype.endswith/-/string.prototype.endswith-0.2.0.tgz#a19c20dee51a98777e9a47e10f09be393b9bba75"
-  integrity sha1-oZwg3uUamHd+mkfhDwm+OTubunU=
-
 string_decoder@^1.0.0, string_decoder@^1.1.1:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/string_decoder/-/string_decoder-1.2.0.tgz#fe86e738b19544afe70469243b2a1ee9240eae8d"
@@ -7847,7 +7847,7 @@ url-parse@^1.4.3:
     querystringify "^2.1.1"
     requires-port "^1.0.0"
 
-url-toolkit@^2.1.2:
+url-toolkit@^2.1.6:
   version "2.1.6"
   resolved "https://registry.yarnpkg.com/url-toolkit/-/url-toolkit-2.1.6.tgz#6d03246499e519aad224c44044a4ae20544154f2"
   integrity sha512-UaZ2+50am4HwrV2crR/JAf63Q4VvPYphe63WGeoJxeu8gmOm0qxPt+KsukfakPNrX9aymGNEkkaoICwn+OuvBw==
