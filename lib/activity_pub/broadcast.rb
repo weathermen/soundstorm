@@ -12,14 +12,15 @@ module ActivityPub
       @uri = URI.join("https://#{destination}", 'inbox.json')
     end
 
+    # Deliver the +Message+ via HTTP POST.
     def deliver
       @response ||= request.post(@uri, json: message.as_json)
     end
 
-    def request
-      @request ||= HTTP.headers(headers)
-    end
-
+    # Headers of the request, including host and signature for remote
+    # verification.
+    #
+    # @return [Hash]
     def headers
       @headers ||= {
         Host: destination,
@@ -28,6 +29,9 @@ module ActivityPub
       }
     end
 
+    # Signature for validating this request.
+    #
+    # @return [ActivityPub::Signature]
     def signature
       @signature ||= Signature.new(
         id: message.actor_id,
@@ -35,6 +39,12 @@ module ActivityPub
         date: date,
         key: message.actor_private_key
       )
+    end
+
+    private
+
+    def request
+      @request ||= HTTP.headers(headers)
     end
   end
 end

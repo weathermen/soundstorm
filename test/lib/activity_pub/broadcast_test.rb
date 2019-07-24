@@ -5,7 +5,7 @@ require 'test_helper'
 module ActivityPub
   class BroadcastTest < ActiveSupport::TestCase
     setup do
-      @destination = 'http://soundstorm.test'
+      @destination = 'soundstorm.test'
       @private_key_pem = Rails.root.join(
         'test', 'fixtures', 'files', 'actor.pem'
       ).read
@@ -32,7 +32,7 @@ module ActivityPub
       response = Minitest::Mock.new
       response.expect(:code, 201)
 
-      @broadcast.request.stub(:post, response) do
+      @broadcast.send(:request).stub(:post, response) do
         assert @broadcast.deliver
         assert_equal 201, @broadcast.response.code
       end
