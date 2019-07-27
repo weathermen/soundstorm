@@ -29,7 +29,7 @@ class VersionsControllerTest < ActionDispatch::IntegrationTest
              '@context': ActivityPub::ACTIVITYSTREAMS_NAMESPACE,
              id: 'https://test.host/one/untitled/comments/12345',
              type: 'Create',
-             actor: actor.as_json,
+             actor: actor.id,
              object: {
                type: 'Note',
                id: 'https://test.host/one/untitled/comments/12345',

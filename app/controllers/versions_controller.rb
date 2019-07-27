@@ -13,7 +13,6 @@ class VersionsController < ApplicationController
   def create
     @activity = ActivityPub::Activity.new(
       host: request.headers['Host'],
-      actor: actor_params.to_unsafe_h.deep_symbolize_keys,
       object: object_params.to_unsafe_h.deep_symbolize_keys,
       **activity_params.to_unsafe_h.deep_symbolize_keys
     )
@@ -27,32 +26,23 @@ class VersionsController < ApplicationController
   private
 
   def activity_params
-    params.permit(:@context, :id, :type)
-  end
-
-  def actor_params
-    params.require(:actor).permit(
-      :@context,
-      :type,
-      :id,
-      :preferredUsername,
-      :name,
-      :summary,
-      publicKey: %i[id owner publicKeyPem]
-    )
+    params.permit(:@context, :id, :type, :actor)
   end
 
   def param_keys_for(type)
     case type
+    when 'Audio'
+      [:name, url: %i[type href mediaType]]
     when 'Note'
-      %i[id content]
+      [:content]
     else
-      [:id]
+      []
     end
   end
 
   def object_params
-    params.require(:object).permit(*param_keys_for(params[:object][:type]))
+    type_params = param_keys_for(params[:object][:type])
+    params.require(:object).permit(:type, :id, *type_params)
   end
 
   def verify_signature
