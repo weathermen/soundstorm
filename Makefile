@@ -30,6 +30,10 @@ ci: test
 push:
 	@docker push weathermen/soundstorm:latest
 
+# Pull the latest image from Docker Hub
+pull:
+	@docker pull weathermen/soundstorm:latest
+
 # Deploy https://soundstorm.social to Heroku
 deploy: /usr/local/bin/heroku
 	@docker build -t registry.heroku.com/${HEROKU_APP}/worker -f Dockerfile.worker .
@@ -38,6 +42,15 @@ deploy: /usr/local/bin/heroku
 	@docker push registry.heroku.com/${HEROKU_APP}/worker
 	@heroku container:release web worker -a ${HEROKU_APP}
 	@heroku run rails db:migrate -a ${HEROKU_APP}
+
+# Provision a new app on Heroku
+provision: /usr/local/bin/heroku pull
+	@docker build -t registry.heroku.com/${HEROKU_APP}/worker -f Dockerfile.worker .
+	@docker tag weathermen/soundstorm:latest registry.heroku.com/${HEROKU_APP}/web
+	@docker push registry.heroku.com/${HEROKU_APP}/web
+	@docker push registry.heroku.com/${HEROKU_APP}/worker
+	@heroku container:release web worker -a ${HEROKU_APP}
+	@heroku run rails db:schema:load db:seed -a ${HEROKU_APP}
 
 # Release a tagged version to Docker Hub
 dist:
@@ -64,4 +77,4 @@ tags:
 /usr/local/bin/heroku:
 	@curl https://cli-assets.heroku.com/install.sh | sh
 
-.PHONY: all database ci-before test check ci-after ci deploy dist clean distclean
+.PHONY: all database ci-before test check ci-after ci deploy dist clean distclean push pull
