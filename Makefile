@@ -50,7 +50,7 @@ provision: /usr/local/bin/heroku pull
 	@docker push registry.heroku.com/${HEROKU_APP}/web
 	@docker push registry.heroku.com/${HEROKU_APP}/worker
 	@heroku container:release web worker -a ${HEROKU_APP}
-	@heroku run rails db:schema:load db:seed -a ${HEROKU_APP}
+	@heroku run rails db:schema:load db:seed elasticsearch cors -a ${HEROKU_APP}
 
 # Release a tagged version to Docker Hub
 dist:
