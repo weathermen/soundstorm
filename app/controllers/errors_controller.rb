@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class ErrorsController < ApplicationController
+  skip_before_action :doorkeeper_authorize!
+
   def show
     @id = params[:id]
     @scope = [:errors, @id]
