@@ -39,7 +39,7 @@ module Soundstorm
       Doorkeeper::ApplicationsController.layout 'application'
     end
 
-    config.after_initialize { Soundstorm::Hub.ping unless defined? Rails::Console }
+    # config.after_initialize { Soundstorm::Hub.ping unless defined? Rails::Console }
 
     # Allow admins to override any copy
     config.i18n.backend = I18n::Backend::Chain.new(
