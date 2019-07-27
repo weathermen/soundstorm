@@ -27,6 +27,7 @@ class UserTest < ActiveSupport::TestCase
 
     assert user.valid?, user.errors.full_messages.to_sentence
     assert user.key_pem.present?
+    assert user.actor.public_key.present?
   end
 
   test 'regenerate private key when password changes' do

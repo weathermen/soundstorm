@@ -147,23 +147,18 @@ class User < ApplicationRecord
   # @return [ActivityPub::Actor] Object for representing this User in
   #                              ActivityPub requests.
   def actor
-    ActivityPub::Actor.new(as_actor)
+    ActivityPub::Actor.new(
+      name: name,
+      summary: display_name,
+      host: host,
+      key: key_pem,
+      secret: encrypted_password
+    )
   end
 
   # Email is only required for local users when they are created.
   def email_required?
     host == Rails.configuration.host
-  end
-
-  # Express the attributes for an +ActivityPub::Actor+ for rehydrating.
-  def as_actor
-    {
-      name: name,
-      summary: display_name,
-      host: host,
-      key: key_pem,
-      secret: token
-    }
   end
 
   # Express activity related to this user as a "Profile" object.
