@@ -40,16 +40,31 @@ module ActivityPub
     end
 
     test 'find' do
-      skip 'until the controller issue is resolved'
       VCR.use_cassette :find_actor do
         actor = Actor.find('https://www.soundstorm.social/tubbo.json')
 
         refute_nil actor
-        refute_nil actor.key
-        refute_nil actor.secret
         assert_equal 'tubbo', actor.name
-        assert_kind_of OpenSSL::PKey::RSA, actor.private_key
+        assert_kind_of OpenSSL::PKey::RSA, actor.public_key
       end
+    end
+
+    test 'from' do
+      key = OpenSSL::PKey::RSA.new(@private_key_pem, 'passphrase')
+      json = {
+        'type' => 'Person',
+        'name' => 'someone',
+        'summary' => 'Somebody Out There',
+        'publicKey' => {
+          'publicKeyPem' => key.public_key.to_pem
+        }
+      }
+      actor = Actor.from(json, host: 'soundstorm.social')
+
+      assert_kind_of Actor, actor
+      assert_equal 'someone', actor.name
+      assert_equal 'Somebody Out There', actor.summary
+      assert_kind_of OpenSSL::PKey::RSA, actor.public_key
     end
   end
 end

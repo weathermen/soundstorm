@@ -1,0 +1,77 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://www.soundstorm.social/tubbo.json
+    body:
+      encoding: UTF-8
+      string: ''
+    headers:
+      Connection:
+      - close
+      Host:
+      - www.soundstorm.social
+      User-Agent:
+      - http.rb/4.0.0
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Cowboy
+      Connection:
+      - close
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json; charset=utf-8
+      X-Flash-Messages:
+      - "[]"
+      X-Page-Title:
+      - tubbo's Profile
+      X-Requested-With:
+      - ''
+      Vary:
+      - X-Requested-With, X-Flash-Messages
+      Cache-Control:
+      - public
+      Etag:
+      - W/"6c6c38cbd0f1524bedb3f7d9119459e5"
+      X-Request-Id:
+      - 19b9b741-3287-497d-aa39-3d4a7f590547
+      X-Runtime:
+      - '0.179524'
+      X-Content-Digest:
+      - df5bfb841c44629c502f0f285516f4421385c1d8
+      Date:
+      - Sat, 27 Jul 2019 22:06:34 GMT
+      Age:
+      - '0'
+      X-Rack-Cache:
+      - stale, valid, store
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+      Content-Length:
+      - '1073'
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: '{"@context":["https://www.w3.org/ns/activitystreams","https://w3id.org/security/v1"],"type":"Person","id":"https://soundstorm.social/tubbo","following":"https://soundstorm.social/tubbo/following.json","followers":"https://soundstorm.social/tubbo/followers.json","liked":"https://soundstorm.social/tubbo/likes.json","inbox":"https://soundstorm.social/tubbo/inbox.json","outbox":"https://soundstorm.social/tubbo/outbox.json","preferredUsername":"tubbo","name":"tubbo","summary":"Tom
+        Phoolery","publicKey":{"id":"https://soundstorm.social/tubbo#main-key","owner":"https://soundstorm.social/tubbo","publicKeyPem":"-----BEGIN
+        PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArQI1t/4cd9lv85H1S5tC\nOK1IakOnmd8Lg988UQEEHAFPg3zmP5Hxq8Ss16xo1d9Hu6gKWfXCeyG/yxfe7T4a\nl07fbNH2Ef8Vn7yK4Y+uEiOiehxB/3pnZBXIcQrCTpjNKTuKNHTP9LqOve5+SJtG\ni5+euMdMR9UY48EjQr79B1WnNCtrnubJApFRznc5//GQvIX/KwIXCPpjSW2H99/Q\nWI8YnfQ4GMIgW5XchCihhMU7J/48XuGgQjE3LklEKiP40KeYK04nDHSrExYsUNpO\nYEcj6DgCQ6DdcRESx0iaykJaL1Esset/LhLvos8k1X/XsUmI+duT9YMGk2z4wzW5\ngQIDAQAB\n-----END
+        PUBLIC KEY-----\n"}}'
+    http_version: 
+  recorded_at: Sat, 27 Jul 2019 22:06:34 GMT
+recorded_with: VCR 4.0.0

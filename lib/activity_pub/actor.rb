@@ -37,7 +37,8 @@ module ActivityPub
       response = HTTP.get(id)
       return unless response.status.success?
 
-      from(response.parse)
+      uri = URI.parse(id)
+      from(response.parse, host: uri.host)
     end
 
     # Parse a JSON response from a federated ActivityPub-speaking
