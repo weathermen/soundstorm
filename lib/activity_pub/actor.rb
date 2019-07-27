@@ -34,10 +34,12 @@ module ActivityPub
     # @param [String] id - URL to the remote actor's profile
     # @return [Actor] or +nil+ if none can be found
     def self.find(id)
-      response = HTTP.get(id)
+      uri = URI.parse(id)
+      uri.path = "#{uri.path}.json" unless uri.path.end_with? '.json'
+      response = HTTP.get(uri)
+
       return unless response.status.success?
 
-      uri = URI.parse(id)
       from(response.parse, host: uri.host)
     end
 
