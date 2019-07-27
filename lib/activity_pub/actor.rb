@@ -35,7 +35,7 @@ module ActivityPub
     # @return [Actor] or +nil+ if none can be found
     def self.find(id)
       response = HTTP.get(id)
-      return unless response.success?
+      return unless response.status.success?
 
       from(response.parse)
     end

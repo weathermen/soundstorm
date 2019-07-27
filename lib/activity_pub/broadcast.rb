@@ -17,6 +17,10 @@ module ActivityPub
       @response ||= request.post(@uri, json: message.as_json)
     end
 
+    def success?
+      @response&.status&.ok?
+    end
+
     # Headers of the request, including host and signature for remote
     # verification.
     #
