@@ -5,8 +5,8 @@
 # below each fixture, per the syntax in the comments below
 #
 one:
-  name: one
-  host: test.host
+  name: tubbo
+  host: www.soundstorm.social
   slug: one
   display_name: User One
   email: one@example.com
@@ -25,10 +25,10 @@ two:
   confirmed_at: <%= Time.current %>
 
 remote:
-  name: remote
-  host: www.soundstorm.social
+  name: admin
+  host: another-soundstorm.herokuapp.com
   slug: remote
-  display_name: User Two
+  display_name: Another Soundstorm Administrator
   email: remote@example.com
   encrypted_password: "$2a$11$qOhMADOLv728QcfQ2w3VG.kT0kneQM2HSaDh42dnrHITjgRCjyd.."
   key_pem: "<%= Rails.root.join('test', 'fixtures', 'files', 'remote.pem').read %>"

@@ -9,9 +9,9 @@ class BroadcastMessageJobTest < ActiveJob::TestCase
     @track = tracks(:one_untitled)
     @audio = Rails.root.join('test', 'fixtures', 'files', 'one.mp3')
     @track.audio.attach(io: @audio.open, filename: @audio.basename)
-    @remote.follow!(@user)
+    @user.follow!(@remote)
     @version = PaperTrail::Version.new(
-      whodunnit: @user.to_gid,
+      whodunnit: @remote.to_gid,
       item: @track,
       event: 'create'
     )
