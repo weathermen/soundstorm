@@ -64,7 +64,7 @@ gem 'elasticsearch-model', '7.0.0.pre', require: 'elasticsearch/model'
 # Sign in with Mastodon
 gem 'omniauth'
 gem 'omniauth-mastodon'
-gem 'mastodon-api', github: 'tubbo/mastodon-api', branch: 'upgrade-to-http-v4'
+gem 'mastodon-api', github: 'tootsuite/mastodon-api'
 gem 'omniauth-rails_csrf_protection'
 # Custom Translations
 gem 'i18n-active_record', require: 'i18n/active_record'

@@ -1,9 +1,8 @@
 import { Controller } from "stimulus"
-// import { Howl } from "howler"
 import HLS from "hls.js"
 import moment from "moment"
 import momentDurationFormatSetup from "moment-duration-format"
-import { each } from "lodash"
+import { csrfToken } from "rails-ujs"
 
 momentDurationFormatSetup(moment)
 
@@ -19,7 +18,7 @@ export default class Player extends Controller {
   }
 
   /**
-   * Create the sound with Howl
+   * Create the sound with HLS
    */
   connect() {
     this.playing = false
@@ -183,11 +182,9 @@ export default class Player extends Controller {
    * Track playback by a given client.
    */
   async listened() {
-    const csrfToken = document.querySelector("meta[name=\"csrf-token\"]")
-                              .getAttribute("content")
     const method = "POST"
     const url = `${this.data.get("track")}/listen.json`
-    const headers = { "X-CSRF-Token": csrfToken }
+    const headers = { "X-CSRF-Token": csrfToken() }
     const response = await fetch(url, { method, headers })
 
     if (response.status === 201) {
