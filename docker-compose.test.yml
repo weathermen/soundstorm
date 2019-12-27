@@ -12,3 +12,5 @@ services:
       - .:/usr/src/app
     environment:
       - CC_TEST_REPORTER_ID
+      - GITHUB_REF
+      - GITHUB_SHA

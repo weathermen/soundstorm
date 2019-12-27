@@ -14,20 +14,11 @@ services:
 
   # Elasticsearch is used as a global search index
   search:
-    image: elasticsearch:7.2.0
+    image: elasticsearch:7.5.1
     volumes:
       - elasticsearch:/usr/share/elasticsearch/data
     environment:
-      - node.name=search
-      - discovery.seed_hosts=search
-      - cluster.initial_master_nodes=search
-      - cluster.name=soundstorm
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
+      - discovery.type=single-node
 
   # The "majestic monolith" that powers Soundstorm, a Rails application
   # serving HTML (for the most part) and containing all of the logic
@@ -43,6 +34,7 @@ services:
       - yarn_cache:/root/.yarn
     environment:
       - SOUNDSTORM_HOST
+      - EDITOR=vi
 
 volumes:
   postgresql:

@@ -1,0 +1,19 @@
+name: Publish New Release
+on: [release]
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v1
+      - name: Build and Publish Image
+        uses: elgohr/Publish-Docker-Github-Action@master
+        env:
+          RAILS_ENV: production
+          RAILS_MASTER_KEY: ${{ secrets.master_key }}
+        with:
+          name: weathermen/soundstorm
+          username: ${{ secrets.docker_login }}
+          password: ${{ secrets.docker_password }}
+          tag_names: true
+          build_args: 'RAILS_ENV,RAILS_MASTER_KEY'

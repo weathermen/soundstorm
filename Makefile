@@ -1,5 +1,4 @@
 RAILS_ENV?=development
-TRAVIS_TEST_RESULT?=0
 HEROKU_APP?=soundstorm-social
 
 # Build the Docker image for the current environment.
@@ -10,29 +9,18 @@ all:
 install:
 	@docker-compose -f docker-compose.yml -f docker-compose.$(RAILS_ENV).yml run --rm web bin/rails db:setup elasticsearch
 
-# Begin CodeClimate statistics reporting in CI
-# ci-before: /usr/local/bin/cc-test-reporter
-# 	@cc-test-reporter before-build
-
 # Run all tests
 test:
 	@docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm web bin/rails test test/**/*_test.rb
 check: test
 
-# Report code coverage statistics to CodeClimate
-# ci-after: /usr/local/bin/cc-test-reporter
-# 	@cc-test-reporter after-build --exit-code 0
+bin/cc-test-reporter:
+	@curl https://s3.amazonaws.com/codeclimate/test-reporter/test-reporter-latest-linux-amd64 -o bin/cc-test-reporter
+	@chmod +x bin/cc-test-reporter
 
-# Run tests on CI
-ci: test
-
-# Push the latest image to Docker Hub
-push:
-	@docker push weathermen/soundstorm:latest
-
-# Pull the latest image from Docker Hub
-pull:
-	@docker pull weathermen/soundstorm:latest
+# Run tests in CI with CodeClimate test coverage reporting
+ci: bin/cc-test-reporter
+	@docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm web bin/ci.sh
 
 # Deploy https://soundstorm.social to Heroku
 deploy: /usr/local/bin/heroku
@@ -61,6 +49,7 @@ dist:
 # installation of Soundstorm
 clean:
 	@docker-compose -f docker-compose.yml -f docker-compose.$(RAILS_ENV).yml down --remove-orphans --volumes --rmi all
+	@rm bin/cc-test-reporter
 
 # Remove all containers and volumes associaed with this installation of
 # Soundstorm
@@ -75,12 +64,7 @@ distclean:
 tags:
 	@ctags -R .
 
-/usr/local/bin/cc-test-reporter:
-	@curl -Lo cc-test-reporter https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64
-	@chmod +x ./cc-test-reporter
-	@sudo mv ./cc-test-reporter /usr/local/bin/cc-test-reporter
-
 /usr/local/bin/heroku:
 	@curl https://cli-assets.heroku.com/install.sh | sh
 
-.PHONY: all database ci-before test check ci-after ci deploy dist clean distclean mostlyclean push pull
+.PHONY: all database ci-before test check ci-after ci deploy dist clean distclean mostlyclean push pull ci ci-setup ci-report
