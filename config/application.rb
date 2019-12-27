@@ -13,7 +13,6 @@ require 'soundstorm'
 require 'elasticsearch/rails/instrumentation'
 # require 'elasticsearch/rails/lograge'
 require 'i18n/backend/active_record'
-require 'active_storage/analyzers/audio_analyzer'
 
 module Soundstorm
   class Application < Rails::Application
@@ -49,9 +48,6 @@ module Soundstorm
 
     # Auto load all translations from config/locales/**/*.yml (and sub-directories).
     config.i18n.load_path += Dir[Rails.root.join('config', 'locales', '**', '*.yml')]
-
-    # Add custom audio analyzer for ActiveStorage track uploads
-    config.active_storage.analyzers.append(ActiveStorage::Analyzer::AudioAnalyzer)
 
     config.oembed_width = 1000
     config.oembed_height = 265

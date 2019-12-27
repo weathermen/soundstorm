@@ -68,6 +68,8 @@ gem 'mastodon-api', github: 'tubbo/mastodon-api', branch: 'fix-http-and-tests'
 gem 'omniauth-rails_csrf_protection'
 # Custom Translations
 gem 'i18n-active_record', require: 'i18n/active_record'
+# Audio Analysis
+gem 'activestorage-audio', '~> 0.1.0'
 
 group :development, :test do
   # Call 'binding.pry' anywhere in the code to stop execution and get a debugger console
