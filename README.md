@@ -148,16 +148,12 @@ eval "$(docker-machine env soundstorm)"
 docker-compose -f docker-compose.yml -f docker-compose.production.yml up
 ```
 
-The production config also works with AWS ECS, which is how
-https://soundstorm.com is deployed:
-
-```bash
-ecs-cli compose -f docker-compose.yml -f docker-compose.production.yml up
-```
-
-(This assumes that ECS CLI is configured properly and your AWS credentials
-are included in the shell as `$AWS_ACCESS_KEY_ID` and
-`$AWS_SECRET_ACCESS_KEY`)
+However, https://soundstorm.social, our reference implementation, is
+hosted on [Heroku][]. The `make deploy` task performs the commands
+needed to deploy the local production images you've already built to the
+Heroku platform. It uses the `docker` CLI to push images to Heroku's container
+registry, and the `heroku` CLI to start those new containers in the
+production environment.
 
 [ActivityPub]: https://www.w3.org/TR/activitypub/
 [Mastodon]: https://joinmastodon.org
