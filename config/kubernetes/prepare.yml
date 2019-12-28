@@ -1,0 +1,16 @@
+---
+# Install or update the database on each deployment of the application.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: soundstorm-prepare-database
+spec:
+  template:
+    metadata:
+      name: soundstorm-prepare-database
+    spec:
+      containers:
+        - name: prepare-database
+          image: tubbo/nation:latest
+          args: ['bin/rails db:prepare']
+      restartPolicy: Never

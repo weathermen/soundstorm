@@ -1,18 +1,25 @@
 RAILS_ENV?=development
-HEROKU_APP?=soundstorm-social
+STACK_OPTS=-c docker-compose.yml -c docker-compose.production.yml -o kubernetes
+COMPOSE_OPTS=-f docker-compose.yml -f docker-compose.$(RAILS_ENV).yml
+COMPOSE_TEST=-f docker-compose.yml -f docker-compose.test.yml
+VERSION?=$(TRAVIS_TAG)
 
 # Build the Docker image for the current environment.
 all:
-	@docker-compose -f docker-compose.yml -f docker-compose.$(RAILS_ENV).yml build web
+	@docker-compose $(COMPOSE_OPTS) build web
+.PHONY: all
 
 # Set up the database in the Docker environment
 install:
-	@docker-compose -f docker-compose.yml -f docker-compose.$(RAILS_ENV).yml run --rm web bin/rails db:setup elasticsearch
+	@docker-compose $(COMPOSE_OPTS) run --rm web bin/rails install
+.PHONY: install
 
 # Run all tests
 test:
-	@docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm web bin/rails test test/**/*_test.rb
+	@docker-compose $(COMPOSE_TEST) run --rm web bin/rails test test/**/*_test.rb
+.PHONY: test
 check: test
+.PHONY: check
 
 bin/cc-test-reporter:
 	@curl https://s3.amazonaws.com/codeclimate/test-reporter/test-reporter-latest-linux-amd64 -o bin/cc-test-reporter
@@ -40,31 +47,48 @@ provision: /usr/local/bin/heroku pull
 	@heroku container:release web worker -a ${HEROKU_APP}
 	@heroku run rails db:schema:load db:seed elasticsearch cors -a ${HEROKU_APP}
 
+# Deploy latest image to https://soundstorm.social
+deploy:
+	@docker stack $(STACK_OPTS) deploy soundstorm
+	@kubectl apply -f config/kubernetes
+.PHONY: deploy
+
 # Release a tagged version to Docker Hub
 dist:
-	@docker tag weathermen/soundstorm:latest weathermen/soundstorm:${TRAVIS_TAG}
-	@docker push weathermen/soundstorm:${TRAVIS_TAG}
+	@docker tag weathermen/soundstorm:latest weathermen/soundstorm:$(VERSION)
+	@docker push weathermen/soundstorm:$(VERSION)
+.PHONY: dist
 
 # Remove all containers, volumes, and images associated with this
 # installation of Soundstorm
 clean:
-	@docker-compose -f docker-compose.yml -f docker-compose.$(RAILS_ENV).yml down --remove-orphans --volumes --rmi all
+	@docker-compose $(COMPOSE_OPTS) down --remove-orphans --volumes --rmi all
+	@rm tags
 	@rm bin/cc-test-reporter
+.PHONY: clean
 
-# Remove all containers and volumes associaed with this installation of
-# Soundstorm
+# Remove all containers and data associated with this installation of
+# Soundstorm.
 mostlyclean:
-	@docker-compose -f docker-compose.yml -f docker-compose.$(RAILS_ENV).yml down --remove-orphans --volumes
+	@docker-compose $(COMPOSE_OPTS) down --remove-orphans --volumes
+.PHONY: mostlyclean
 
 # Remove all production images built by `dist`
 distclean:
 	@docker image rm weathermen/soundstorm:latest weathermen/soundstorm:$(TRAVIS_TAG)
+.PHONY: distclean
 
 # Generate CTags for the Soundstorm codebase
 tags:
 	@ctags -R .
+.PHONY: tags
 
-/usr/local/bin/heroku:
-	@curl https://cli-assets.heroku.com/install.sh | sh
+# Start services locally for development purposes
+start:
+	@docker-compose $(COMPOSE_OPTS) up -d --remove-orphans
+.PHONY: start
 
-.PHONY: all database ci-before test check ci-after ci deploy dist clean distclean mostlyclean push pull ci ci-setup ci-report
+# Stop services when local development is finished
+stop:
+	@docker-compose $(COMPOSE_OPTS) down --remove-orphans
+.PHONY: stop

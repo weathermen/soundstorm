@@ -1,0 +1,32 @@
+---
+# Configure the ingress point for HTTPS traffic into the web
+# application.
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: soundstorm-ingress
+spec:
+  tls:
+    - hosts:
+        - cdn.soundstorm.social
+        - soundstorm.social
+      secretName: tls
+  rules:
+    - host: soundstorm.social
+      http:
+        paths:
+          - backend:
+              serviceName: web
+              servicePort: 3000
+            path: /
+    - host: cdn.soundstorm.social
+      http:
+        paths:
+          - backend:
+              serviceName: web
+              servicePort: 3000
+            path: /assets
+          - backend:
+              serviceName: web
+              servicePort: 3000
+            path: /packs

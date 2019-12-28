@@ -47,13 +47,7 @@ RAILS_SERVE_STATIC_FILES=true
 Create the database, set up its schema, and load in seed data:
 
 ```bash
-docker run --rm -it \
-           --env-file .env \
-           --env SOUNDSTORM_ADMIN_USERNAME=your-username \
-           --env SOUNDSTORM_ADMIN_PASSWORD=your-password \
-           --env SOUNDSTORM_ADMIN_EMAIL=valid@email.address \
-           weathermen/soundstorm \
-           rails db:setup
+docker run --rm -it --env-file .env weathermen/soundstorm rails install
 ```
 
 You can now start the app server using the default container command.
@@ -62,7 +56,7 @@ other neighboring containers:
 
 ```bash
 docker network create soundstorm
-docker create --env-file .env --network soundstorm weathermen/soundstorm
+docker create --name soundstorm --env-file .env --network soundstorm weathermen/soundstorm
 ```
 
 You'll still need to proxy requests from an HTTP server to the app
@@ -82,7 +76,7 @@ your.soundstorm.host {
   }
   root /srv/public
 
-
+ \
   proxy / http://web:3000 {
     fail_timeout 300s
     transparent
@@ -118,22 +112,42 @@ configuration is included whenever `docker-compose` is in use:
 export COMPOSE_FILE="docker-compose.yml:docker-compose.development.yml"
 ```
 
-Next, set up the database:
+Next, clone the repository:
 
 ```bash
-docker-compose run --rm web rails db:setup
+$ git clone https://github.com/weathermen/soundstorm.git
+$ cd soundstorm
 ```
+
+You can now run the install task to build the image and set up its
+database:
+
+```bash
+$ make install
+```
+
+This will prompt you to enter credentials, which you may or may not want
+to do, it's OK to leave this blank for now because all it really needs
+is to generate that brand new `$SECRET_KEY_BASE` and your
+`config/master.key`.
 
 You can now start all services:
 
 ```bash
-docker-compose up
+$ make start
 ```
 
 Once the web app loads, browse to <http://localhost:3000> and log in with
 username **admin** and password **Password1!**. This is configurable by
-setting `$SOUNDSTORM_ADMIN_USERNAME` and `$SOUNDSTORM_ADMIN_PASSWORD` as
-environment variables when running `db:setup`.
+adding the following to your credentials:
+
+```yaml
+admin:
+  name: admin
+  password: Password1
+```
+
+...then running `db:setup`.
 
 For more information on making contributions to this project, read the
 [contributing guide][].
@@ -151,11 +165,14 @@ docker-compose -f docker-compose.yml -f docker-compose.production.yml up
 ```
 
 However, https://soundstorm.social, our reference implementation, is
-hosted on [Heroku][]. The `make deploy` task performs the commands
-needed to deploy the local production images you've already built to the
-Heroku platform. It uses the `docker` CLI to push images to Heroku's container
-registry, and the `heroku` CLI to start those new containers in the
-production environment.
+hosted using [Kubernetes][] and the [Compose API][], via the `docker stack`
+command-line tool. The following command will deploy Soundstorm, using
+the latest production image, to the Docker Stack and Kubernetes cluster
+configured by `kubectl` (assumes you already have it configured):
+
+```bash
+$ make deploy
+```
 
 [ActivityPub]: https://www.w3.org/TR/activitypub/
 [Mastodon]: https://joinmastodon.org

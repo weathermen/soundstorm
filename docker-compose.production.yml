@@ -9,6 +9,8 @@ version: '3'
 services:
   redis:
     image: redis
+    volumes:
+      - redis:/data
   web:
     build:
       context: .
@@ -16,42 +18,19 @@ services:
         - RAILS_ENV=production
         - SECRET_KEY_BASE
     image: weathermen/soundstorm
-    environment:
-      - SOUNDSTORM_HOST
-      - SOUNDSTORM_CDN_URL
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
-      - AWS_REGION
-      - AWS_S3_BUCKET_NAME
-      - DATABASE_URL=postgres://postgres@db:5432/soundstorm_production
-      - ELASTICSEARCH_URL=http://search:9200
-      - REDIS_URL=redis://redis:6379
-      - RAILS_SERVE_STATIC_FILES=true
-      - RAILS_LOG_TO_STDOUT=true
-      - SMTP_HOST
-      - SMTP_PORT
-      - SMTP_USERNAME
-      - SMTP_PASSWORD
-      - SMTP_AUTH
-      - SMTP_TLS
+    env_file:
+      - config/production.env
+    secrets:
+      - master_key
   sidekiq:
     image: weathermen/soundstorm
     command: bundle exec sidekiq -C config/sidekiq.yml
-    environment:
-      - SOUNDSTORM_HOST
-      - SOUNDSTORM_CDN_URL
-      - AWS_ACCESS_KEY_ID
-      - AWS_SECRET_ACCESS_KEY
-      - AWS_REGION
-      - AWS_S3_BUCKET_NAME
-      - DATABASE_URL=postgres://postgres@db:5432/soundstorm_production
-      - ELASTICSEARCH_URL=http://search:9200
-      - REDIS_URL=redis://redis:6379
-      - RAILS_SERVE_STATIC_FILES=true
-      - RAILS_LOG_TO_STDOUT=true
-      - SMTP_HOST
-      - SMTP_PORT
-      - SMTP_USERNAME
-      - SMTP_PASSWORD
-      - SMTP_AUTH
-      - SMTP_TLS
+    env_file:
+      - config/production.env
+    secrets:
+      - master_key
+volumes:
+  redis:
+secrets:
+  master_key:
+    file: ./config/master.key

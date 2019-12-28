@@ -38,7 +38,8 @@ RUN bundle install --jobs `expr $(cat /proc/cpuinfo | grep -c "cpu cores") - 1` 
 ARG RAILS_ENV=development
 ARG SECRET_KEY_BASE
 ENV NODE_ENV=$RAILS_ENV \
-    RAILS_LOG_TO_STDOUT=true
+    RAILS_LOG_TO_STDOUT=true \
+    EDITOR=vi
 
 # Install JavaScript dependencies
 RUN yarn install --check-files
