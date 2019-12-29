@@ -166,13 +166,33 @@ docker-compose -f docker-compose.yml -f docker-compose.production.yml up
 
 However, https://soundstorm.social, our reference implementation, is
 hosted using [Kubernetes][] and the [Compose API][], via the `docker stack`
-command-line tool. The following command will deploy Soundstorm, using
-the latest production image, to the Docker Stack and Kubernetes cluster
-configured by `kubectl` (assumes you already have it configured):
+command-line tool. To deploy to a Kubernetes cluster using the Make
+commands, you must first have it configured as your current context in
+`kubectl`. With DigitalOcean's `doctl`, you can do that like so
+(assuming your cluster's name is **soundstorm**:
+
+```bash
+$ doctl kubernetes kubeconfig save soundstorm
+```
+
+Next, make sure you have [Helm][] installed, and run the following
+command to provision the cluster with the Compose API. You only have to
+do this once:
+
+```bash
+$ make compose
+```
+
+You can now deploy Soundstorm using Docker stack and the latest
+production image to your Kubernetes cluster with the following command:
 
 ```bash
 $ make deploy
 ```
+
+The aforementioned command is also used to deploy to Kubernetes on every
+subsequent push, you won't need to run `make compose` again unless
+you're setting up a new cluster for the first time.
 
 [ActivityPub]: https://www.w3.org/TR/activitypub/
 [Mastodon]: https://joinmastodon.org
