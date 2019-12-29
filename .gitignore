@@ -32,10 +32,6 @@ yarn-debug.log*
 .env.secrets
 config/ssl
 
-# AWS ECS
-ecs-params.yml
-task-execution-assume-role.json
-
 # test coverage
 coverage
 
@@ -45,3 +41,6 @@ coverage
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+# Docker Compose
+/bin/compose-api-installer

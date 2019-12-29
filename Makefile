@@ -47,7 +47,8 @@ provision: /usr/local/bin/heroku pull
 	@heroku container:release web worker -a ${HEROKU_APP}
 	@heroku run rails db:schema:load db:seed elasticsearch cors -a ${HEROKU_APP}
 
-# Deploy latest image to https://soundstorm.social
+# Deploy latest image to https://soundstorm.social. Assumes you have
+# `kubectl` installed.
 deploy:
 	@docker stack $(STACK_OPTS) deploy soundstorm
 	@kubectl apply -f config/kubernetes
@@ -63,8 +64,7 @@ dist:
 # installation of Soundstorm
 clean:
 	@docker-compose $(COMPOSE_OPTS) down --remove-orphans --volumes --rmi all
-	@rm tags
-	@rm bin/cc-test-reporter
+	@rm -f tags bin/cc-test-reporter bin/compose-api-installer
 .PHONY: clean
 
 # Remove all containers and data associated with this installation of
@@ -92,3 +92,19 @@ start:
 stop:
 	@docker-compose $(COMPOSE_OPTS) down --remove-orphans
 .PHONY: stop
+
+# Provision your Kubernetes cluster with Helm and the Compose API for
+# Kubernetes. This allows deployment using `docker stack`, and assumes
+# you have `helm` installed.
+compose: bin/compose-api-installer
+	@kubectl create namespace compose
+	@kubectl -n kube-system create serviceaccount tiller
+	@kubectl -n kube-system create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount kube-system:tiller
+	@helm init --service-account tiller
+	@helm install --name etcd-operator stable/etcd-operator --namespace compose
+	@bin/compose-api-installer -namespace=compose -etcd-servers=http://compose-etcd-client:2379
+.PHONY: compose
+
+# Pull down the latest Compose API installer.
+bin/compose-api-installer:
+	@curl https://github.com/docker/compose-on-kubernetes/releases/latest/download/installer-darwin -o bin/compose-api-installer
