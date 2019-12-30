@@ -1,5 +1,5 @@
 RAILS_ENV?=development
-STACK_OPTS=-c docker-compose.yml -c docker-compose.production.yml -o kubernetes
+STACK_OPTS=-c docker-compose.yml -c docker-compose.production.yml --orchestrator kubernetes
 COMPOSE_OPTS=-f docker-compose.yml -f docker-compose.$(RAILS_ENV).yml
 COMPOSE_TEST=-f docker-compose.yml -f docker-compose.test.yml
 VERSION?=$(TRAVIS_TAG)
@@ -28,30 +28,13 @@ bin/cc-test-reporter:
 # Run tests in CI with CodeClimate test coverage reporting
 ci: bin/cc-test-reporter
 	@docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm web bin/ci.sh
-
-# Deploy https://soundstorm.social to Heroku
-deploy: /usr/local/bin/heroku
-	@docker build -t registry.heroku.com/${HEROKU_APP}/worker -f Dockerfile.worker .
-	@docker tag weathermen/soundstorm:latest registry.heroku.com/${HEROKU_APP}/web
-	@docker push registry.heroku.com/${HEROKU_APP}/web
-	@docker push registry.heroku.com/${HEROKU_APP}/worker
-	@heroku container:release web worker -a ${HEROKU_APP}
-	@heroku run rails db:migrate -a ${HEROKU_APP}
-
-# Provision a new app on Heroku
-provision: /usr/local/bin/heroku pull
-	@docker build -t registry.heroku.com/${HEROKU_APP}/worker -f Dockerfile.worker .
-	@docker tag weathermen/soundstorm:latest registry.heroku.com/${HEROKU_APP}/web
-	@docker push registry.heroku.com/${HEROKU_APP}/web
-	@docker push registry.heroku.com/${HEROKU_APP}/worker
-	@heroku container:release web worker -a ${HEROKU_APP}
-	@heroku run rails db:schema:load db:seed elasticsearch cors -a ${HEROKU_APP}
+.PHONY: ci
 
 # Deploy latest image to https://soundstorm.social. Assumes you have
 # `kubectl` installed.
 deploy:
-	@docker stack $(STACK_OPTS) deploy soundstorm
-	@kubectl apply -f config/kubernetes
+	@docker stack deploy $(STACK_OPTS) soundstorm
+	@kubectl apply -f config/kubernetes/*.yml
 .PHONY: deploy
 
 # Release a tagged version to Docker Hub

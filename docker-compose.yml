@@ -4,7 +4,7 @@
 # environment.
 #
 
-version: '3'
+version: '3.7'
 services:
   # PostgreSQL is the primary persistent data store for the application.
   db:

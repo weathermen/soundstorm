@@ -13,7 +13,7 @@ jobs:
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
           RAILS_ENV: production
-          RAILS_MASTER_KEY: ${{ secrets.master_key }}
+          SECRET_KEY_BASE: ${{ secrets.key_base }}
         with:
           name: weathermen/soundstorm
           username: ${{ secrets.docker_login }}

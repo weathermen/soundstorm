@@ -36,9 +36,11 @@ RUN bundle install --jobs `expr $(cat /proc/cpuinfo | grep -c "cpu cores") - 1` 
 
 # Define build environment
 ARG RAILS_ENV=development
-ARG SECRET_KEY_BASE
-ENV NODE_ENV=$RAILS_ENV \
+ARG RAILS_MASTER_KEY
+ENV RAILS_ENV=$RAILS_ENV \
+    NODE_ENV=$RAILS_ENV \
     RAILS_LOG_TO_STDOUT=true \
+    RAILS_SERVE_STATIC_FILES=true \
     EDITOR=vi
 
 # Install JavaScript dependencies
@@ -48,7 +50,7 @@ RUN yarn install --check-files
 COPY . $APP_PATH
 
 # Precompile assets in production
-RUN if [ "$RAILS_ENV" = "production" ] ; then rails assets:precompile; fi
+RUN if [ "$RAILS_ENV" = "production" ] ; then bin/rails assets:precompile; fi
 
 # Install entrypoint script
 COPY bin/entrypoint.sh /usr/bin/

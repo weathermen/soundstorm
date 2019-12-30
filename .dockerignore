@@ -6,3 +6,4 @@ vendor/bundle/**/*
 storage/**/*
 tags*
 config/master.key
+config/credentials.yml.enc

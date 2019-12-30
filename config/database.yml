@@ -84,4 +84,4 @@ test:
 #
 production:
   <<: *default
-  url: <%= ENV["DATABASE_URL"] %>
+  url: <%= ENV.fetch("DATABASE_URL", 'postgres://postgres@db:5432/soundstorm_production') %>

@@ -25,7 +25,7 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.public_file_server.enabled = Soundstorm::SERVE_STATIC_FILES
+  config.public_file_server.enabled = true
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = Uglifier.new(harmony: true)
@@ -37,7 +37,7 @@ Rails.application.configure do
   # `config.assets.precompile` and `config.assets.version` have moved to config/initializers/assets.rb
 
   # Enable serving of images, stylesheets, and JavaScripts from a CDN
-  config.action_controller.asset_host = Soundstorm::CDN_URL
+  config.action_controller.asset_host = credentials.cdn_url
 
   # Specifies the header that your server uses for sending files.
   # config.action_dispatch.x_sendfile_header = 'X-Sendfile' # for Apache
@@ -90,22 +90,21 @@ Rails.application.configure do
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
-  if Soundstorm::LOG_TO_STDOUT
-    logger           = ActiveSupport::Logger.new(STDOUT)
-    logger.formatter = config.log_formatter
-    config.logger    = ActiveSupport::TaggedLogging.new(logger)
-  end
+  # Always log to STDOUT
+  config.logger    = ActiveSupport::TaggedLogging.new \
+    ActiveSupport::Logger.new(STDOUT).tap do |logger|
+      logger.formatter = config.log_formatter
+    end
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  ActionMailer::Base.smtp_settings = {
-    user_name: Soundstorm::SMTP_USERNAME,
-    password: Soundstorm::SMTP_PASSWORD,
-    domain: Soundstorm::HOST,
-    address: Soundstorm::SMTP_HOST,
-    port: Soundstorm::SMTP_PORT,
-    authentication: Soundstorm::SMTP_AUTH,
-    enable_starttls_auto: Soundstorm::SMTP_TLS
-  }
+  # Authenticate with mailers from SMTP credentials
+  ActionMailer::Base.smtp_settings = credentials.smtp.reverse_merge(
+    domain: credentials.host,
+    port: 587,
+    authentication: :plain,
+
+    enable_starttls_auto: true
+  )
 end

@@ -1,15 +1,22 @@
 # frozen_string_literal: true
 
 # Create initial admin user
+creds = Rails.credentials.admin_user || {}
+raise "Error: You must set up admin user credentials" \
+  if Rails.env.production? && creds.empty?
 admin = User.create!(
-  name: Soundstorm::ADMIN_USERNAME,
-  email: Soundstorm::ADMIN_EMAIL,
-  password: Soundstorm::ADMIN_PASSWORD,
-  display_name: 'Soundstorm Administrator',
-  confirmed_at: Time.current,
-  admin: true
+  creds.reverse_merge(
+    name: 'admin',
+    email: 'admin@example.com',
+    password: 'Password1!',
+    password_confirmation: creds[:password] || 'Password1!',
+    confirmed_at: Time.current,
+    display_name: 'Soundstorm Administrator',
+    admin: true
+  )
 )
 
+# Create development seed data
 if Rails.env.development?
   fan = User.create!(
     name: 'fan',

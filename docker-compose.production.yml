@@ -5,32 +5,31 @@
 # builds the production image with a hard-coded RAILS_ENV=production to
 # ensure the image builds with assets correctly.
 #
-version: '3'
+version: '3.7'
 services:
   redis:
     image: redis
     volumes:
       - redis:/data
   web:
+    image: weathermen/soundstorm
     build:
       context: .
       args:
         - RAILS_ENV=production
-        - SECRET_KEY_BASE
+        - RAILS_MASTER_KEY
     image: weathermen/soundstorm
-    env_file:
-      - config/production.env
     secrets:
-      - master_key
+      - master
   sidekiq:
     image: weathermen/soundstorm
     command: bundle exec sidekiq -C config/sidekiq.yml
-    env_file:
-      - config/production.env
     secrets:
-      - master_key
+      - master
 volumes:
   redis:
 secrets:
-  master_key:
+  master:
     file: ./config/master.key
+  credentials:
+    file: ./config/credentials.yml.enc

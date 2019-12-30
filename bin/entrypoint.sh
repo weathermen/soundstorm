@@ -4,10 +4,11 @@ set -e
 # Remove a potentially pre-existing server.pid for Rails.
 rm -f /usr/src/app/tmp/pids/server.pid
 
-# Write `config/master.key` file from k8s secrets
-[ -f /run/secrets/master_key ] && \
-  [ ! -f /usr/src/app/config/master.key ] &&
-  cp /run/secrets/master_key /usr/src/app/config/master.key
+# Use secrets when available
+if [ -d /run/secrets ]; then
+  ln -s /run/secrets/master /usr/src/app/config/master.key
+  ln -s /run/secrets/credentials /usr/src/app/config/credentials.yml.enc
+fi
 
 # Then exec the container's main process (what's set as CMD in the Dockerfile).
 exec "$@"
