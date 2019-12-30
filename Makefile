@@ -16,7 +16,7 @@ install:
 
 # Run all tests
 test:
-	@docker-compose -f docker-compose.yml -f docker-compose.$(RAILS_ENV).yml run --rm web bin/rails test test/**/*_test.rb
+	@docker-compose -f docker-compose.yml -f docker-compose.test.yml run --rm web bin/rails test test/**/*_test.rb
 check: test
 
 # Report code coverage statistics to CodeClimate
@@ -57,13 +57,19 @@ dist:
 	@docker tag weathermen/soundstorm:latest weathermen/soundstorm:${TRAVIS_TAG}
 	@docker push weathermen/soundstorm:${TRAVIS_TAG}
 
-# Remove all containers and data associated with this installation of
-# Soundstorm
+# Remove all containers, volumes, and images associated with this
+# installation of Soundstorm
 clean:
 	@docker-compose -f docker-compose.yml -f docker-compose.$(RAILS_ENV).yml down --remove-orphans --volumes --rmi all
 
+# Remove all containers and volumes associaed with this installation of
+# Soundstorm
+mostlyclean:
+	@docker-compose -f docker-compose.yml -f docker-compose.$(RAILS_ENV).yml down --remove-orphans --volumes
+
+# Remove all production images built by `dist`
 distclean:
-	@docker-compose -f docker-compose.yml -f docker-compose.$(RAILS_ENV).yml down --remove-orphans
+	@docker image rm weathermen/soundstorm:latest weathermen/soundstorm:$(TRAVIS_TAG)
 
 # Generate CTags for the Soundstorm codebase
 tags:
@@ -77,4 +83,4 @@ tags:
 /usr/local/bin/heroku:
 	@curl https://cli-assets.heroku.com/install.sh | sh
 
-.PHONY: all database ci-before test check ci-after ci deploy dist clean distclean push pull
+.PHONY: all database ci-before test check ci-after ci deploy dist clean distclean mostlyclean push pull
