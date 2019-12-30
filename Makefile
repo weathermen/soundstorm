@@ -100,11 +100,11 @@ compose: bin/compose-api-installer
 	@kubectl create namespace compose
 	@kubectl -n kube-system create serviceaccount tiller
 	@kubectl -n kube-system create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount kube-system:tiller
-	@helm init --service-account tiller
-	@helm install --name etcd-operator stable/etcd-operator --namespace compose
+	@helm install etcd-operator stable/etcd-operator --namespace compose
 	@bin/compose-api-installer -namespace=compose -etcd-servers=http://compose-etcd-client:2379
 .PHONY: compose
 
 # Pull down the latest Compose API installer.
 bin/compose-api-installer:
-	@curl https://github.com/docker/compose-on-kubernetes/releases/latest/download/installer-darwin -o bin/compose-api-installer
+	@curl -L https://github.com/docker/compose-on-kubernetes/releases/latest/download/installer-darwin -o bin/compose-api-installer
+	@chmod +x bin/compose-api-installer
