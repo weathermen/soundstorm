@@ -3,7 +3,7 @@
 #
 
 # Use latest Ruby
-FROM ruby:2.5.3-alpine
+FROM ruby:2.6.5-alpine
 
 # Install system dependencies
 RUN apk update
