@@ -1,9 +1,10 @@
-name: Deploy to Production
+name: Build
 on:
   push:
     branches: [master]
 jobs:
-  deploy:
+  build:
+    name: Build Image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Code
@@ -19,11 +20,11 @@ jobs:
           password: ${{ secrets.docker_password }}
           tag_names: true
           build_args: 'RAILS_ENV,RAILS_MASTER_KEY'
-      - name: Configure Kubernetes with DigitalOcean
-        uses: digitalocean/action-doctl@master
-        env:
-          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.digitalocean_token }}
-        with:
-          args: kubernetes cluster kubeconfig save soundstorm
-      - name: Deploy to Kubernetes Cluster
-        run: make deploy
+      # - name: Configure Kubernetes with DigitalOcean
+      #   uses: digitalocean/action-doctl@master
+      #   env:
+      #     DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.digitalocean_token }}
+      #   with:
+      #     args: kubernetes cluster kubeconfig save soundstorm
+      # - name: Deploy to Kubernetes Cluster
+      #   run: make deploy

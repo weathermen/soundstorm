@@ -1,6 +1,8 @@
 # Soundstorm
 
-[![Build Status](https://travis-ci.org/weathermen/soundstorm.svg?branch=master)](https://travis-ci.org/weathermen/soundstorm)
+[![Tests Status](https://github.com/weathermen/soundstorm/workflows/Tests/badge.svg)][ci]
+[![Build Status](https://github.com/weathermen/soundstorm/workflows/Build/badge.svg)][ci]
+[![Release Status](https://github.com/weathermen/soundstorm/workflows/Release/badge.svg)][ci]
 [![Test Coverage](https://api.codeclimate.com/v1/badges/bc1fd5c8bb8b54b1da49/test_coverage)](https://codeclimate.com/github/weathermen/soundstorm/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/bc1fd5c8bb8b54b1da49/maintainability)](https://codeclimate.com/github/weathermen/soundstorm/maintainability)
 
@@ -161,3 +163,4 @@ production environment.
 [Docker image]: https://cloud.docker.com/u/weathermen/repository/docker/weathermen/soundstorm
 [Caddy]: https://caddyserver.com
 [puma-dev]: https://github.com/puma/puma-dev
+[ci]: https://github.com/weathermen/soundstorm/actions

@@ -1,7 +1,10 @@
-name: Publish New Release
-on: [release]
+name: Release
+on:
+  push:
+    tags: [v*]
 jobs:
   publish:
+    name: Publish New Release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Code
@@ -17,3 +20,15 @@ jobs:
           password: ${{ secrets.docker_password }}
           tag_names: true
           build_args: 'RAILS_ENV,RAILS_MASTER_KEY'
+      - name: Find Current Version
+        id: get_version
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          release_name: Release ${{ steps.get_version.outputs.VERSION }}
+          draft: true
