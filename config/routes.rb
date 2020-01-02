@@ -25,7 +25,6 @@ Rails.application.routes.draw do
   resources :comments, only: %i[index show]
   resources :translations
   get :health, to: 'application#health'
-  get '/users', to: 'users#index', as: :users
   resources :users, path: '', only: %i[show] do
     member do
       post :inbox, to: 'versions#create'

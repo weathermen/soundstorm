@@ -6,10 +6,6 @@ class UsersController < ApplicationController
   before_action :authorize_admin!, except: %i[show webfinger dashboard]
   skip_before_action :doorkeeper_authorize!, only: %i[show webfinger]
 
-  def new
-    @user = User.new
-  end
-
   def show
     @user = User.includes(:tracks).find_by!(name: params[:id])
     @title = t('.title', user: @user.name)

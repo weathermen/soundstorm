@@ -1,9 +1,6 @@
 require "application_system_test_case"
 
 class CommentsTest < ApplicationSystemTestCase
-  setup do
-  end
-
   test 'view track comments' do
     comment = comments(:one_untitled_praise)
 

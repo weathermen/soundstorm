@@ -1,7 +1,7 @@
 !!!
 %html
   = render 'head'
-  %body
+  %body{ data: { controller: 'sentry', "sentry-env": Rails.env, "sentry-dsn": Rails.application.credentials.sentry_dsn } }
     %header.header
       .header__logo
         = link_to app_title, root_path
