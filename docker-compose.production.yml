@@ -26,6 +26,13 @@ services:
     command: bundle exec sidekiq -C config/sidekiq.yml
     secrets:
       - master
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.5.1
+    environment:
+      - SERVER_NAME=logs.soundstorm.social
+      - ELASTICSEARCH_HOSTS=http://search:9200
+  apm:
+    image: docker.elastic.co/apm/apm-server:7.5.1
 volumes:
   redis:
 secrets:

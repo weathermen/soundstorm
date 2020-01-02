@@ -18,20 +18,28 @@ conventional social audio service.
 
 ## Installation
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 Soundstorm is distributed as a [Docker image][] for deployment ease. The
-reference instance, https://soundstorm.social, uses Amazon ECS for
+reference instance, https://soundstorm.social, uses Kubernetes for
 deployment, but the image is self-contained and can be run on any
 infrastructure. This image runs in `RAILS_ENV=production` mode by
 default, and comes pre-loaded with compiled assets and everything you'll
 need to run a Soundstorm instance in production.
 
-The easiest way to get started (for now) is to clone the repository and
-set up locally with Docker Compose:
+To get started, download the latest version of Soundstorm's
+configuration locally by running:
 
 ```bash
-$ git clone https://github.com/weathermen/soundstorm.git
-$ cd soundstorm
-$ rm -f config/credentials.yml.enc # so you can generate your own
+$ curl -L https://github.com/weathermen/soundstorm/releases/latest/installer.tar.gz
+$ tar -zxvf installer.tar.gz
+$ cd soundstorm-installer
+```
+
+Make sure [Docker][] is installed and running, then run the following
+command to get started:
+
+```bash
 $ make install
 ```
 
@@ -62,14 +70,28 @@ smtp:
   user_name: username to auth with
   password: password to auth with
   address: smtp address
+
+# Elastic APM secret token.
+# Generate this with:
+#
+#   ruby -r securerandom -e 'print SecureRandom.uuid'
+#
+# Then, copy the token here and use the same token on your APM server.
+apm_token:
 ```
 
-Make sure to keep the **config/master.key** available in a password
-manager to share with your teammates. It will not be committed to the
-repo.
+This will also generate a file named **config/master.key**. Keep this
+available in a password manager to share with your teammates, and make
+sure both this file and the **config/credentials.yml.enc** file are in
+place when deploying Soundstorm.
 
-Once the Rails app has finished installing, you'll be able to access it
-at <http://localhost:3000>!
+Start all services by running:
+
+```bash
+$ make start
+```
+
+And you'll see your Soundstorm instance running at <http://localhost:3000>!
 
 ## Development
 

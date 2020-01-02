@@ -2,7 +2,9 @@ RAILS_ENV?=development
 STACK_OPTS=-c docker-compose.yml -c docker-compose.production.yml --orchestrator kubernetes
 COMPOSE_OPTS=-f docker-compose.yml -f docker-compose.$(RAILS_ENV).yml
 COMPOSE_TEST=-f docker-compose.yml -f docker-compose.test.yml
+COMPOSE_PROD=-f docker-compose.yml -f docker-compose.production.yml
 VERSION?=$(TRAVIS_TAG)
+FILES=./Makefile ./docker-compose.*
 
 # Build the Docker image for the current environment.
 all:
@@ -34,14 +36,12 @@ ci: bin/cc-test-reporter
 # `kubectl` installed.
 deploy:
 	@docker stack deploy $(STACK_OPTS) soundstorm
-	@kubectl apply -f config/kubernetes/*.yml
+	@kubectl apply -f config/kubernetes/prepare.yml
 .PHONY: deploy
 
-# Release a tagged version to Docker Hub
+# Archive necessary files for building Soundstorm for your own needs
 dist:
-	@docker tag weathermen/soundstorm:latest weathermen/soundstorm:$(VERSION)
-	@docker push weathermen/soundstorm:$(VERSION)
-.PHONY: dist
+	@git archive --output=dist/installer.tar.gz --prefix=soundstorm-installer/ HEAD $(FILES)
 
 # Remove all containers, volumes, and images associated with this
 # installation of Soundstorm
@@ -56,9 +56,9 @@ mostlyclean:
 	@docker-compose $(COMPOSE_OPTS) down --remove-orphans --volumes
 .PHONY: mostlyclean
 
-# Remove all production images built by `dist`
+# Remove the `dist` folder
 distclean:
-	@docker image rm weathermen/soundstorm:latest weathermen/soundstorm:$(TRAVIS_TAG)
+	@rm -rf $(PKG_DIR)
 .PHONY: distclean
 
 # Generate CTags for the Soundstorm codebase
@@ -84,6 +84,7 @@ compose: bin/compose-api-installer
 	@kubectl -n kube-system create serviceaccount tiller
 	@kubectl -n kube-system create clusterrolebinding tiller --clusterrole cluster-admin --serviceaccount kube-system:tiller
 	@helm install etcd-operator stable/etcd-operator --namespace compose
+	@kubectl apply -f config/kubernetes/etcd.yml
 	@bin/compose-api-installer -namespace=compose -etcd-servers=http://compose-etcd-client:2379
 .PHONY: compose
 
@@ -91,3 +92,19 @@ compose: bin/compose-api-installer
 bin/compose-api-installer:
 	@curl -L https://github.com/docker/compose-on-kubernetes/releases/latest/download/installer-darwin -o bin/compose-api-installer
 	@chmod +x bin/compose-api-installer
+
+# Install the nginx ingress controller. Assumes you have `helm`
+# installed and a cluster configured in `kubectl`.
+ingress:
+	@helm install nginx-ingress stable/nginx-ingress --set controller.publishService.enabled=true
+	@kubectl apply -f https://raw.githubusercontent.com/jetstack/cert-manager/release-0.11/deploy/manifests/00-crds.yaml
+	@kubectl create namespace cert-manager
+	@helm repo add jetstack https://charts.jetstack.io
+	@helm install cert-manager jetstack/cert-manager --version v0.11.0 --namespace cert-manager
+	@docker-compose $(COMPOSE_PROD) run --rm web rails k8s:issuer | kubectl apply -f -
+	@docker-compose $(COMPOSE_PROD) run --rm web rails k8s:ingress | kubectl apply -f -
+.PHONY: ingress
+
+# Provision the Kubernetes cluster for first-time deployment
+cluster: compose ingress
+.PHONY: cluster

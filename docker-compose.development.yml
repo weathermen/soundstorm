@@ -5,15 +5,10 @@
 #
 version: '3.7'
 services:
-  # In development, Mailcatcher is used to receive and process emails.
-  # It can be accessed at http://localhost:1080.
   mailcatcher:
     image: schickling/mailcatcher
     ports:
       - 1080:1080
-
-  # Cache application dependencies and use the local database in
-  # development
   web:
     build: .
     ports:

@@ -1,14 +1,10 @@
-<<<<<<< HEAD
 name: Build
-=======
-name: Deploy
->>>>>>> Add Sentry integration
 on:
   push:
     branches: [master]
 jobs:
   build:
-    name: Build Image
+    name: Build and Deploy Latest Image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Code
@@ -17,7 +13,7 @@ jobs:
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
           RAILS_ENV: production
-          SECRET_KEY_BASE: ${{ secrets.key_base }}
+          RAILS_MASTER_KEY: ${{ secrets.master_key }}
         with:
           name: weathermen/soundstorm
           username: ${{ secrets.docker_login }}

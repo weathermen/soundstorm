@@ -1,3 +1,66 @@
 {
-  "stack": "container"
+  "name": "Soundstorm",
+  "description": "The Federated Social Audio Platform",
+  "keywords": [
+    "fediverse",
+    "social network",
+    "music",
+    "audio"
+  ],
+  "website": "https://docs.soundstorm.social",
+  "repository": "https://github.com/weathermen/soundstorm.git",
+  "success_url": "/",
+  "scripts": {
+    "postdeploy": "bin/rails db:setup"
+  },
+  "stack": "container",
+  "addons": [
+    {
+      "plan": "heroku-postgresql",
+      "as": "DATABASE"
+    },
+    {
+      "plan": "heroku-redis",
+      "as": "REDIS"
+    },
+    {
+      "plan": "bonsai-elasticsearch",
+      "as": "ELASTICSEARCH"
+    },
+    {
+      "plan": "sendgrid",
+      "as": "SMTP"
+    }
+  ],
+  "env": {
+    "AWS_ACCESS_KEY_ID": {
+      "description": "Your AWS Access Key"
+    },
+    "AWS_SECRET_ACCESS_KEY": {
+      "description": "Your AWS Secret Key"
+    },
+    "AWS_S3_BUCKET_NAME": {
+      "description": "Name of the S3 bucket"
+    },
+    "AWS_REGION": {
+      "description": "Region to connect to",
+      "value": "us-east-1"
+    },
+    "SOUNDSTORM_HOST": {
+      "description": "Hostname of your instance"
+    },
+    "ADMIN_USERNAME": {
+      "description": "Username of the initial admin user"
+    },
+    "ADMIN_PASSWORD": {
+      "description": "Password of the initial admin user"
+    },
+    "ADMIN_EMAIL": {
+      "description": "Email address of the initial admin user"
+    },
+    "SECRET_KEY_BASE": {
+      "description": "Key to use when encrypting passwords and sessions",
+      "generator": "secret"
+    }
+  }
 }

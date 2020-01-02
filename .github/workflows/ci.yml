@@ -1,16 +1,17 @@
 name: Tests
 on: [push]
 jobs:
+  env:
+    RAILS_ENV: test
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Build Application
         run: make install
-        env:
-          RAILS_ENV: test
       - name: Run Tests
         run: make ci
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.codeclimate_id }}
-          RAILS_ENV: test
+      - name: Clean Up All Artifacts
+        run: make clean

@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
 # Create initial admin user
-creds = Rails.credentials.admin_user || {}
+creds = Rails.credentials.admin_user || ENV.slice(
+  'ADMIN_USERNAME',
+  'ADMIN_PASSWORD',
+  'ADMIN_EMAIL'
+).compact
 raise "Error: You must set up admin user credentials" \
   if Rails.env.production? && creds.empty?
 admin = User.create!(

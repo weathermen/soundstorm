@@ -119,6 +119,9 @@ GEM
       unf (>= 0.0.5, < 1.0.0)
     doorkeeper (5.2.3)
       railties (>= 5)
+    elastic-apm (3.3.0)
+      concurrent-ruby (~> 1.0)
+      http (>= 3.0)
     elasticsearch (7.4.0)
       elasticsearch-api (= 7.4.0)
       elasticsearch-transport (= 7.4.0)
@@ -428,6 +431,7 @@ DEPENDENCIES
   chromedriver-helper
   devise
   doorkeeper
+  elastic-apm
   elasticsearch-model (= 7.0.0.pre)
   elasticsearch-rails (= 7.0.0.pre)
   friendly_id

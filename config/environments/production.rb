@@ -107,4 +107,9 @@ Rails.application.configure do
 
     enable_starttls_auto: true
   )
+
+  # Configure Elastic APM
+  config.elastic_apm.service_name = 'Soundstorm'
+  config.elastic_apm.server_url = "https://#{config.host}"
+  config.elastic_apm.secret_token = credentials.apm_token
 end

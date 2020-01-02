@@ -44,3 +44,6 @@ yarn-debug.log*
 
 # Docker Compose
 /bin/compose-api-installer
+
+# Tarballs
+/dist

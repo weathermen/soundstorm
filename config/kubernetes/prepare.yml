@@ -3,11 +3,11 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: soundstorm-prepare-database
+  name: prepare-db
 spec:
   template:
     metadata:
-      name: soundstorm-prepare-database
+      name: prepare-db
     spec:
       containers:
         - name: prepare-database
