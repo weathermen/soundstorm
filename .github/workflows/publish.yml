@@ -1,15 +1,15 @@
-name: Release
+name: Build
 on:
   push:
     tags: [v*]
 jobs:
-  publish:
-    name: Publish New Release
+  image:
+    name: Build Image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v1
-      - name: Build and Publish Image
+      - name: Build and Publish Image to Docker Hub
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
           RAILS_ENV: production

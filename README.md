@@ -2,7 +2,7 @@
 
 [![Tests Status](https://github.com/weathermen/soundstorm/workflows/Tests/badge.svg)][ci]
 [![Build Status](https://github.com/weathermen/soundstorm/workflows/Build/badge.svg)][ci]
-[![Release Status](https://github.com/weathermen/soundstorm/workflows/Release/badge.svg)][ci]
+[![Deploy Status](https://github.com/weathermen/soundstorm/workflows/Deploy/badge.svg)][ci]
 [![Test Coverage](https://api.codeclimate.com/v1/badges/bc1fd5c8bb8b54b1da49/test_coverage)](https://codeclimate.com/github/weathermen/soundstorm/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/bc1fd5c8bb8b54b1da49/maintainability)](https://codeclimate.com/github/weathermen/soundstorm/maintainability)
 
@@ -77,14 +77,7 @@ The above goes into installing Soundstorm for real-world use, but you
 may also want to contribute to the project in some way. Developing on
 Soundstorm also requires the use of Docker.
 
-First, make sure your `$COMPOSE_FILE` is set, so that development-level
-configuration is included whenever `docker-compose` is in use:
-
-```bash
-export COMPOSE_FILE="docker-compose.yml:docker-compose.development.yml"
-```
-
-Next, clone the repository:
+First, clone the repository:
 
 ```bash
 $ git clone https://github.com/weathermen/soundstorm.git
@@ -100,7 +93,7 @@ $ make install
 
 This will prompt you to enter credentials, which you may or may not want
 to do, it's OK to leave this blank for now because all it really needs
-is to generate that brand new `$SECRET_KEY_BASE` and your
+is to generate that brand new `secret_key_base` and your
 `config/master.key`.
 
 You can now start all services:
@@ -119,7 +112,13 @@ admin:
   password: Password1
 ```
 
-...then running `db:setup`.
+...then running:
+
+```bash
+$ make mostlyclean install
+```
+
+to reinstall the database and its seeds.
 
 For more information on making contributions to this project, read the
 [contributing guide][].
@@ -156,6 +155,5 @@ you'll need to run.
 [Mastodon]: https://joinmastodon.org
 [Docker]: https://www.docker.com/
 [Docker image]: https://cloud.docker.com/u/weathermen/repository/docker/weathermen/soundstorm
-[Caddy]: https://caddyserver.com
 [puma-dev]: https://github.com/puma/puma-dev
 [ci]: https://github.com/weathermen/soundstorm/actions

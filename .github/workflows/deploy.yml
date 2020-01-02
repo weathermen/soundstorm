@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 name: Build
+=======
+name: Deploy
+>>>>>>> Add Sentry integration
 on:
   push:
     branches: [master]
@@ -20,11 +24,18 @@ jobs:
           password: ${{ secrets.docker_password }}
           tag_names: true
           build_args: 'RAILS_ENV,RAILS_MASTER_KEY'
-      # - name: Configure Kubernetes with DigitalOcean
-      #   uses: digitalocean/action-doctl@master
-      #   env:
-      #     DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.digitalocean_token }}
-      #   with:
-      #     args: kubernetes cluster kubeconfig save soundstorm
-      # - name: Deploy to Kubernetes Cluster
-      #   run: make deploy
+      - name: Configure Kubernetes with DigitalOcean
+        uses: digitalocean/action-doctl@master
+        env:
+          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.digitalocean_token }}
+        with:
+          args: kubernetes cluster kubeconfig save soundstorm
+      - name: Deploy to Kubernetes Cluster
+        run: make deploy
+      - name: Notify Sentry of Deployment
+        uses: juankaram/sentry-release@master
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.sentry_token }}
+          SENTRY_ORG: soundstorm-social
+          SENTRY_PROJECT: soundstorm
+          ENVIRONMENT: production
