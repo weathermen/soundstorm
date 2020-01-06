@@ -12,13 +12,13 @@ body {
   word-wrap: break-word;
 }
 
-.page {
+.site {
   display: flex;
 }
 
 .navigation {
   flex: 1;
-  background: lightgray;
+  background: #f6f8fa;
   min-height: 97vh;
 
   ul {
@@ -41,6 +41,10 @@ body {
 
   a {
     text-decoration: none;
+
+    &:visited {
+      color: #0366d6;
+    }
   }
 }
 
@@ -52,33 +56,34 @@ body {
 .header {
   padding: 5px;
   font-weight: bold;
-  background: black;
+  background: #CCC;
 
   a {
-    color: white;
+    color: black;
     text-decoration: none;
   }
 }
 
-h1 {
-  font-size: 1.7em;
-  font-weight: bold;
-}
-h2 {
-  font-size: 1.3em;
-  font-weight: bold;
-}
-h3 {
-  font-size: 1.1em;
-  font-weight: bold;
-}
+.page, .post {
+  margin: 0 auto;
+  max-width: 960px;
 
-h1, h2, h3, p {
-  padding: 1vh 0;
-}
+  h1 {
+    font-size: 1.7em;
+    font-weight: bold;
+  }
+  h2 {
+    font-size: 1.3em;
+    font-weight: bold;
+  }
+  h3 {
+    font-size: 1.1em;
+    font-weight: bold;
+  }
 
-.highlight {
-  font-family: monospace;
+  h1, h2, h3, p {
+    padding: 1vh 0;
+  }
 }
 
 .post {
