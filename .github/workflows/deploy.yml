@@ -16,10 +16,10 @@ jobs:
             -H "Content-Type: application/json; charset=utf-8" \
             -d "{\"ref\": \"${{ github.ref }}\", \"description\": \"Continuous Deployment via GitHub Actions\" }"
       - name: Set Initial GitHub Deployment Status
-          uses: unacast/actions-github-deployment-status@master
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            status: pending
+        uses: unacast/actions-github-deployment-status@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          status: pending
       - name: Build and Publish Image
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
