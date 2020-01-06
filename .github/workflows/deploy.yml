@@ -9,6 +9,17 @@ jobs:
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v1
+      - name: Create GitHub Deployment
+        run: |
+          curl https://api.github.com/repos/${{ github.repository }}/deployments \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -d "{\"ref\": \"${{ github.ref }}\", \"description\": \"Continuous Deployment via GitHub Actions\" }"
+      - name: Set Initial GitHub Deployment Status
+          uses: unacast/actions-github-deployment-status@master
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            status: pending
       - name: Build and Publish Image
         uses: elgohr/Publish-Docker-Github-Action@master
         env:
@@ -35,3 +46,9 @@ jobs:
           SENTRY_ORG: soundstorm-social
           SENTRY_PROJECT: soundstorm
           ENVIRONMENT: production
+      - name: Update GitHub Deployment
+          if: always()
+          uses: unacast/actions-github-deployment-status@master
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            status: ${{ job.status }}
