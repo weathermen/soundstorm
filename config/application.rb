@@ -23,8 +23,9 @@ module Soundstorm
       generate.assets false
     end
 
-    # Set the host from the $SOUNDSTORM_HOST environment variable.
-    config.host = credentials.host
+    # Set the host from the $DOMAIN_NAME environment variable, or your
+    # credentials.
+    config.host = ENV.fetch 'DOMAIN_NAME', credentials.host
     config.action_mailer.default_url_options = { host: config.host }
     config.global_id.app = config.host
 
