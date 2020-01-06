@@ -47,8 +47,8 @@ jobs:
           SENTRY_PROJECT: soundstorm
           ENVIRONMENT: production
       - name: Update GitHub Deployment
-          if: always()
-          uses: unacast/actions-github-deployment-status@master
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
-            status: ${{ job.status }}
+        if: always()
+        uses: unacast/actions-github-deployment-status@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          status: ${{ job.status }}
