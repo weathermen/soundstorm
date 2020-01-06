@@ -8,7 +8,6 @@
       "path": "/tracks.json",
       "operations": [
         {
-          "summary": "Upload a new track",
           "parameters": [
             {
               "paramType": "form",
@@ -39,6 +38,7 @@
               "required": false
             }
           ],
+          "summary": "Upload a new track",
           "responseMessages": [
             {
               "code": 401,
@@ -60,7 +60,6 @@
       "path": "/tracks/{id}.json",
       "operations": [
         {
-          "summary": "Edit an existing track",
           "parameters": [
             {
               "paramType": "path",
@@ -91,6 +90,7 @@
               "required": false
             }
           ],
+          "summary": "Edit an existing track",
           "responseMessages": [
             {
               "code": 401,
@@ -112,7 +112,6 @@
       "path": "/tracks/{id}.json",
       "operations": [
         {
-          "summary": "Delete a track",
           "parameters": [
             {
               "paramType": "path",
@@ -122,6 +121,7 @@
               "required": true
             }
           ],
+          "summary": "Delete a track",
           "responseMessages": [
             {
               "code": 401,
@@ -143,7 +143,6 @@
       "path": "/{user_id}/{id}.json",
       "operations": [
         {
-          "summary": "View a track's information",
           "parameters": [
             {
               "paramType": "path",
@@ -160,6 +159,7 @@
               "required": true
             }
           ],
+          "summary": "View a track's information",
           "responseMessages": [
             {
               "code": 401,

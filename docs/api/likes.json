@@ -8,7 +8,6 @@
       "path": "/{user_id}/{track_id}/like.json",
       "operations": [
         {
-          "summary": "Unlike a Track",
           "parameters": [
             {
               "paramType": "path",
@@ -18,6 +17,7 @@
               "required": true
             }
           ],
+          "summary": "Unlike a Track",
           "responseMessages": [
             {
               "code": 200,
@@ -34,7 +34,6 @@
       "path": "/{user_id}/{track_id}/like.json",
       "operations": [
         {
-          "summary": "Like a Track",
           "parameters": [
             {
               "paramType": "path",
@@ -44,6 +43,7 @@
               "required": true
             }
           ],
+          "summary": "Like a Track",
           "responseMessages": [
             {
               "code": 200,

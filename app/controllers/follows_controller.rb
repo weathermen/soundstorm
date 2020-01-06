@@ -3,6 +3,13 @@
 class FollowsController < ApplicationController
   before_action :authenticate_user!
 
+  swagger_controller :follows, 'Follow Users'
+
+  swagger_controller :create do
+    summary 'Follow a User'
+
+    param :path, :user_id, :string, :required, 'User to follow'
+  end
   def create
     @user = User.find_by!(name: params[:user_id])
 
@@ -18,6 +25,11 @@ class FollowsController < ApplicationController
     end
   end
 
+  swagger_controller :destroy do
+    summary 'Unfollow a User'
+
+    param :path, :user_id, :string, :required, 'User to unfollow'
+  end
   def destroy
     @user = User.find_by!(name: params[:user_id])
 

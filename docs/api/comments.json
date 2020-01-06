@@ -1,0 +1,155 @@
+{
+  "apiVersion": "0.1",
+  "swaggerVersion": "1.2",
+  "basePath": "/api",
+  "resourcePath": "comments",
+  "apis": [
+    {
+      "path": "/comments/{id}.json",
+      "operations": [
+        {
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Comment ID",
+              "required": true
+            }
+          ],
+          "nickname": "Comments#show",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/{user_id}/{track_id}/comments.json",
+      "operations": [
+        {
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "user_id",
+              "type": "string",
+              "description": "User who made the track",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "track_id",
+              "type": "string",
+              "description": "Track to comment on",
+              "required": true
+            }
+          ],
+          "nickname": "Comments#index",
+          "method": "get"
+        }
+      ]
+    },
+    {
+      "path": "/{user_id}/{track_id}/comments.json",
+      "operations": [
+        {
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "user_id",
+              "type": "string",
+              "description": "User who made the track",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "track_id",
+              "type": "string",
+              "description": "Track to comment on",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "comment[content]",
+              "type": "string",
+              "description": "Comment text",
+              "required": true
+            }
+          ],
+          "nickname": "Comments#create",
+          "method": "post"
+        }
+      ]
+    },
+    {
+      "path": "/{user_id}/{track_id}/comments/{id}.json",
+      "operations": [
+        {
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "user_id",
+              "type": "string",
+              "description": "User who made the track",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "track_id",
+              "type": "string",
+              "description": "Track to comment on",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Comment ID",
+              "required": true
+            },
+            {
+              "paramType": "form",
+              "name": "comment[content]",
+              "type": "string",
+              "description": "Comment text",
+              "required": true
+            }
+          ],
+          "nickname": "Comments#update",
+          "method": "patch"
+        }
+      ]
+    },
+    {
+      "path": "/{user_id}/{track_id}/comments/{id}.json",
+      "operations": [
+        {
+          "parameters": [
+            {
+              "paramType": "path",
+              "name": "user_id",
+              "type": "string",
+              "description": "User who made the track",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "track_id",
+              "type": "string",
+              "description": "Track to comment on",
+              "required": true
+            },
+            {
+              "paramType": "path",
+              "name": "id",
+              "type": "integer",
+              "description": "Comment ID",
+              "required": true
+            }
+          ],
+          "nickname": "Comments#destroy",
+          "method": "delete"
+        }
+      ]
+    }
+  ],
+  "authorizations": null
+}

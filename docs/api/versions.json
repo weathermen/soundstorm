@@ -8,7 +8,6 @@
       "path": "/{id}/inbox.json",
       "operations": [
         {
-          "summary": "Add Remote Activity",
           "parameters": [
             {
               "paramType": "header",
@@ -123,6 +122,7 @@
               "required": true
             }
           ],
+          "summary": "Add Remote Activity",
           "responseMessages": [
             {
               "code": 200,
@@ -144,10 +144,10 @@
       "path": "/{id}/outbox.json",
       "operations": [
         {
-          "summary": "View all activities a User has left to transmit",
           "parameters": [
 
           ],
+          "summary": "View all activities a User has left to transmit",
           "responseMessages": [
             {
               "code": 200,

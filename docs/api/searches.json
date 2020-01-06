@@ -1,0 +1,34 @@
+{
+  "apiVersion": "0.1",
+  "swaggerVersion": "1.2",
+  "basePath": "/api",
+  "resourcePath": "searches",
+  "apis": [
+    {
+      "path": "/search.json",
+      "operations": [
+        {
+          "parameters": [
+            {
+              "paramType": "query",
+              "name": "q",
+              "type": "string",
+              "description": "Search Query",
+              "required": true
+            },
+            {
+              "paramType": "query",
+              "name": "type",
+              "type": "string",
+              "description": "Type of object to search",
+              "required": false
+            }
+          ],
+          "nickname": "Searches#show",
+          "method": "get"
+        }
+      ]
+    }
+  ],
+  "authorizations": null
+}

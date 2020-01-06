@@ -42,8 +42,21 @@ body {
   a {
     text-decoration: none;
 
-    &:visited {
+    &.active {
+      color: black;
+
+      &:visited {
+        color: black;
+      }
+    }
+    &:active {
+      color: black;
+    }
+    &:link, &:visited, &:focus {
       color: #0366d6;
+    }
+    &:hover {
+      color: darken(#0366d6, 20%);
     }
   }
 }
@@ -87,10 +100,6 @@ body {
 }
 
 .post {
-  // max-width: 38rem;
-  // padding: 2rem;
-  // margin: auto;
-
   .post__header {
     h1 {
       margin-top: 0;

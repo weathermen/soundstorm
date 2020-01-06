@@ -8,7 +8,6 @@
       "path": "/releases.json",
       "operations": [
         {
-          "summary": "Create a New Release",
           "parameters": [
             {
               "paramType": "form",
@@ -53,6 +52,7 @@
               "required": false
             }
           ],
+          "summary": "Create a New Release",
           "nickname": "Releases#create",
           "method": "post"
         }
@@ -62,7 +62,6 @@
       "path": "/releases/{id}.json",
       "operations": [
         {
-          "summary": "Edit an existing release",
           "parameters": [
             {
               "paramType": "form",
@@ -121,6 +120,7 @@
               "required": true
             }
           ],
+          "summary": "Edit an existing release",
           "nickname": "Releases#update",
           "method": "patch"
         }
@@ -130,7 +130,6 @@
       "path": "/releases/{id}.json",
       "operations": [
         {
-          "summary": "Destroy an existing release",
           "parameters": [
             {
               "paramType": "path",
@@ -140,6 +139,7 @@
               "required": true
             }
           ],
+          "summary": "Destroy an existing release",
           "responseMessages": [
             {
               "code": 200,
@@ -161,7 +161,6 @@
       "path": "/{user_id}/releases/{id}.json",
       "operations": [
         {
-          "summary": "View Release Details",
           "parameters": [
             {
               "paramType": "path",
@@ -178,6 +177,7 @@
               "required": true
             }
           ],
+          "summary": "View Release Details",
           "responseMessages": [
             {
               "code": 200,

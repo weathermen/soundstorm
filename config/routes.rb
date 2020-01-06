@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   resources :tracks, except: %i[index show]
   resources :releases, except: %i[index show]
   resources :likes, only: %i[index]
-  resources :comments, only: %i[index show]
+  resources :comments, only: %i[show]
   resources :translations
   get :health, to: 'application#health'
   get '/users', to: 'users#index', as: :users
@@ -39,7 +39,7 @@ Rails.application.routes.draw do
         post :listen
       end
 
-      resources :comments, only: %w[edit create update destroy]
+      resources :comments, except: %i[show]
       resource :like, only: %i[create destroy]
     end
   end

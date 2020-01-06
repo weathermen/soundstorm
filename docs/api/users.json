@@ -8,10 +8,10 @@
       "path": "/{id}.json",
       "operations": [
         {
-          "summary": "View a user's profile",
           "parameters": [
 
           ],
+          "summary": "View a user's profile",
           "responseMessages": [
             {
               "code": 401,
@@ -28,7 +28,6 @@
       "path": "/.well-known/webfinger.json",
       "operations": [
         {
-          "summary": "Perform a Webfinger request on a User",
           "parameters": [
             {
               "paramType": "query",
@@ -38,6 +37,7 @@
               "required": true
             }
           ],
+          "summary": "Perform a Webfinger request on a User",
           "responseMessages": [
             {
               "code": 401,

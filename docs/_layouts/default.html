@@ -60,6 +60,16 @@
     </main>
     <script>
       hljs.initHighlightingOnLoad();
+
+      const links = document.querySelectorAll('.navigation a');
+
+      links.forEach(function(link) {
+        const href = link.getAttribute("href");
+
+        if (href === window.location.pathname) {
+          link.classList.add("active");
+        }
+      });
     </script>
   </body>
 </html>

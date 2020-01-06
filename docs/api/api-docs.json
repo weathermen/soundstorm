@@ -4,6 +4,10 @@
   "basePath": "/api",
   "apis": [
     {
+      "path": "/searches.{format}",
+      "description": "Search"
+    },
+    {
       "path": "/tracks.{format}",
       "description": "Track Management and Uploading"
     },
@@ -14,6 +18,10 @@
     {
       "path": "/likes.{format}",
       "description": "Liking Tracks"
+    },
+    {
+      "path": "/comments.{format}",
+      "description": "Track Comments"
     },
     {
       "path": "/users.{format}",
@@ -27,6 +35,6 @@
   "authorizations": null,
   "info": {
     "title": "Soundstorm API",
-    "description": "The REST API for Soundstorm"
+    "description": "This is the REST API for all Soundstorm servers. When authenticated\nusing an OAuth access token, all of these endpoints are available\nto use.\n"
   }
 }

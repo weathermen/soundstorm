@@ -3,9 +3,24 @@
 class CommentsController < ApplicationController
   include CommentsHelper
 
+  swagger_controller :comments, 'Track Comments'
+
   before_action :authenticate_user!
   before_action :find_track, except: %i[index]
 
+  swagger_api :index do
+    param :path, :user_id, :string, :required, 'User who made the track'
+    param :path, :track_id, :string, :required, 'Track to comment on'
+  end
+  def index
+    render json: @comments
+  end
+
+  swagger_api :show do
+    param :path, :user_id, :string, :required, 'User who made the track'
+    param :path, :track_id, :string, :required, 'Track to comment on'
+    param :path, :id, :integer, :required, 'Comment ID'
+  end
   def show
     @comment = Comment.find(params[:id])
 
@@ -20,6 +35,11 @@ class CommentsController < ApplicationController
     @title = %(Edit comment on "#{@track.name}")
   end
 
+  swagger_api :create do
+    param :path, :user_id, :string, :required, 'User who made the track'
+    param :path, :track_id, :string, :required, 'Track to comment on'
+    param :form, 'comment[content]', :string, :required, 'Comment text'
+  end
   def create
     @comment = @comments.build(comment_params)
     @comment.user = current_user
@@ -40,6 +60,12 @@ class CommentsController < ApplicationController
     end
   end
 
+  swagger_api :update do
+    param :path, :user_id, :string, :required, 'User who made the track'
+    param :path, :track_id, :string, :required, 'Track to comment on'
+    param :path, :id, :integer, :required, 'Comment ID'
+    param :form, 'comment[content]', :string, :required, 'Comment text'
+  end
   def update
     @comment = @comments.find(params[:id])
 
@@ -59,6 +85,11 @@ class CommentsController < ApplicationController
     end
   end
 
+  swagger_api :destroy do
+    param :path, :user_id, :string, :required, 'User who made the track'
+    param :path, :track_id, :string, :required, 'Track to comment on'
+    param :path, :id, :integer, :required, 'Comment ID'
+  end
   def destroy
     @comment = @comments.find(params[:id])
 
