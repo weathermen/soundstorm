@@ -48,4 +48,8 @@ class UsersController < ApplicationController
       render json: { error: message }, status: :not_found
     end
   end
+
+  def dashboard
+    @activities = current_user.activities
+  end
 end

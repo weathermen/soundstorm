@@ -25,12 +25,6 @@ class ApplicationController < ActionController::Base
   end
 
   def splash
-    if user_signed_in?
-      @activities = current_user.activities
-      render 'users/dashboard'
-    else
-      render 'splash'
-    end
   end
 
   def health

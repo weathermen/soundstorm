@@ -17,15 +17,23 @@ Rails.application.routes.draw do
     get "/#{status}", to: 'errors#show', id: id, as: id
   end
 
-  # rest api
+  # health checks
+  get :health, to: 'application#health'
+
+  # activitypub
+  get '/.well-known/webfinger', to: 'users#webfinger', format: :json, as: :webfinger
+  post :inbox, to: 'versions#create'
+
+  # global api
   resource :search, only: %i[show]
   resources :tracks, except: %i[index show]
   resources :releases, except: %i[index show]
   resources :likes, only: %i[index]
   resources :comments, only: %i[show]
   resources :translations
-  get :health, to: 'application#health'
   get '/users', to: 'users#index', as: :users
+
+  # root user interface, must be last
   resources :users, path: '', only: %i[show] do
     member do
       post :inbox, to: 'versions#create'
@@ -44,10 +52,11 @@ Rails.application.routes.draw do
     end
   end
 
-  # activitypub
-  get '/.well-known/webfinger', to: 'users#webfinger', format: :json, as: :webfinger
-  post :inbox, to: 'versions#create'
+  # user dashboard for authenticated users
+  authenticated do
+    root to: 'users#dashboard'
+  end
 
-  # dashboard
+  # splash page for unauthenticated users
   root to: 'application#splash'
 end
